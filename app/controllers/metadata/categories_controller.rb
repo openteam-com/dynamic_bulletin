@@ -1,4 +1,4 @@
-class Metadata::CategoriesController < ApplicationController
+class Metadata::CategoriesController < Metadata::ApplicationController
   before_action :find_category, only: [:show, :edit, :update, :destroy]
 
   def index
