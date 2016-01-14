@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20160114065451) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "adverts", force: :cascade do |t|
     t.text     "description"
     t.integer  "category_id"
@@ -20,7 +23,7 @@ ActiveRecord::Schema.define(version: 20160114065451) do
     t.datetime "updated_at",  null: false
   end
 
-  add_index "adverts", ["category_id"], name: "index_adverts_on_category_id"
+  add_index "adverts", ["category_id"], name: "index_adverts_on_category_id", using: :btree
 
   create_table "attributes", force: :cascade do |t|
     t.string   "type"
@@ -44,13 +47,16 @@ ActiveRecord::Schema.define(version: 20160114065451) do
 
   create_table "values", force: :cascade do |t|
     t.integer  "advert_id"
-    t.integer  "attribute_category_id"
+    t.integer  "attribute_id"
     t.string   "type"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
-  add_index "values", ["advert_id"], name: "index_values_on_advert_id"
-  add_index "values", ["attribute_category_id"], name: "index_values_on_attribute_category_id"
+  add_index "values", ["advert_id"], name: "index_values_on_advert_id", using: :btree
+  add_index "values", ["attribute_id"], name: "index_values_on_attribute_id", using: :btree
 
+  add_foreign_key "adverts", "categories"
+  add_foreign_key "values", "adverts"
+  add_foreign_key "values", "attributes"
 end
