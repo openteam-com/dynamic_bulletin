@@ -1,2 +1,2 @@
-class Metadata::ApplicationController < Metadata::ApplicationController
+class Metadata::ApplicationController < ApplicationController
 end
