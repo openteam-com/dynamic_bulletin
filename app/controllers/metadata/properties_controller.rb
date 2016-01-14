@@ -1,15 +1,18 @@
 class Metadata::PropertiesController < Metadata::ApplicationController
+  before_action :find_category
   before_action :find_property, only: [:show, :edit, :update, :destroy]
 
-  def create
-    category = Category.find(property_params[:category_id])
-    @property = category.properties.create(property_params)
-
-    respond_with @property, location: -> { metadata_category_path(@property.category) }
+  def new
+    @property = params[:property][:type].constantize.new(property_params)
   end
 
-  def get_fields_for_subproperties
-    render partial: params[:property_name].underscore and return if request.xhr?
+  def create
+    @property = params[:property][:type].constantize.new(property_params)
+    @property.category = @category
+
+    @property.save
+
+    respond_with @property, location: -> { metadata_category_path(@property.category) }
   end
 
   private
@@ -18,6 +21,10 @@ class Metadata::PropertiesController < Metadata::ApplicationController
   end
 
   def property_params
-    params.require(:property).permit(:name, :category_id)
+    params.require(:property).permit(:title, :max_length)
+  end
+
+  def find_category
+    @category = Category.find(params[:category_id])
   end
 end

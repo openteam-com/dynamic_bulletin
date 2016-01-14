@@ -1,7 +1,8 @@
 class Property < ActiveRecord::Base
   belongs_to :category
+  validates_presence_of :title
 
-  alias_attribute :to_s, :name
+  alias_attribute :to_s, :title
 
   def self.types
     #self.subclasses.map(&:name)

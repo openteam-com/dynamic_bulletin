@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
   namespace :metadata do
-    resources :categories
-    resources :properties do
-      get 'get_fields_for_subproperties/:property_name' => 'properties#get_fields_for_subproperties', as: :get_fields_for_subproperties, on: :collection
+    resources :categories do
+      resources :properties
     end
 
     root to: 'categories#index'

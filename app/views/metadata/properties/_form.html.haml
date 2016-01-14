@@ -1,0 +1,6 @@
+= simple_nested_form_for [:metadata, @category, @property.becomes(Property)] do |f|
+  = f.input :type, :as => :hidden
+  = f.input :title
+  = render :partial => "#{@property.class.name.underscore}_fields", locals: {:f => f}
+
+  = f.submit
