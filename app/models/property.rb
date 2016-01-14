@@ -1,5 +1,5 @@
-class Attribute < ActiveRecord::Base
-  def self.attribute_types
+class Property < ActiveRecord::Base
+  def self.types
     self.subclasses.map(&:name)
   end
 end

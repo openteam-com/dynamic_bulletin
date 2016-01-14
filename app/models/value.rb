@@ -1,6 +1,6 @@
 class Value < ActiveRecord::Base
   belongs_to :advert
-  belongs_to :attribute_category
+  belongs_to :property
 end
 
 # == Schema Information

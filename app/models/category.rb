@@ -1,6 +1,6 @@
 class Category < ActiveRecord::Base
   has_many :adverts
-  has_many :attributes
+  has_many :properties
 
   alias_attribute :to_s, :title
 end

@@ -25,7 +25,13 @@ ActiveRecord::Schema.define(version: 20160114065451) do
 
   add_index "adverts", ["category_id"], name: "index_adverts_on_category_id", using: :btree
 
-  create_table "attributes", force: :cascade do |t|
+  create_table "categories", force: :cascade do |t|
+    t.string   "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "properties", force: :cascade do |t|
     t.string   "type"
     t.string   "name"
     t.integer  "category_id"
@@ -33,13 +39,7 @@ ActiveRecord::Schema.define(version: 20160114065451) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "categories", force: :cascade do |t|
-    t.string   "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "string_attributes", force: :cascade do |t|
+  create_table "string_properties", force: :cascade do |t|
     t.integer  "max_length"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -47,16 +47,16 @@ ActiveRecord::Schema.define(version: 20160114065451) do
 
   create_table "values", force: :cascade do |t|
     t.integer  "advert_id"
-    t.integer  "attribute_id"
+    t.integer  "property_id"
     t.string   "type"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   add_index "values", ["advert_id"], name: "index_values_on_advert_id", using: :btree
-  add_index "values", ["attribute_id"], name: "index_values_on_attribute_id", using: :btree
+  add_index "values", ["property_id"], name: "index_values_on_property_id", using: :btree
 
   add_foreign_key "adverts", "categories"
   add_foreign_key "values", "adverts"
-  add_foreign_key "values", "attributes"
+  add_foreign_key "values", "properties"
 end

@@ -17,7 +17,7 @@ module DynamicBulletin
     # config.time_zone = 'Central Time (US & Canada)'
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    config.autoload_paths += Dir[Rails.root.join('app', 'models', 'attributes')]
+    config.autoload_paths += Dir[Rails.root.join('app', 'models', 'properties')]
     config.i18n.default_locale = :ru
 
     # Do not swallow errors in after_commit/after_rollback callbacks.

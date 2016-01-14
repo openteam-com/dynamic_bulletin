@@ -1,4 +1,4 @@
-class StringAttribute < Attribute
+class StringProperty < Property
 end
 
 # == Schema Information

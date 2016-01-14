@@ -4,4 +4,12 @@ Rails.application.routes.draw do
 
     root to: 'categories#index'
   end
+
+  namespace :my do
+    resources :adverts
+
+    root to: 'adverts#index'
+  end
+
+  root to: 'adverts#index'
 end
