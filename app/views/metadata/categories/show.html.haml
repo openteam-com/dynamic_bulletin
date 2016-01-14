@@ -1,0 +1,5 @@
+.row
+  .col-xs-12
+    %p= @category
+    %p= link_to 'Редактировать', edit_metadata_category_path(@category)
+    %p= link_to 'Удалить', metadata_category_path(@category), method: :delete, data: { confirm: 'Вы уверены?' }

@@ -12,6 +12,7 @@ group :default do
   gem 'nested_form'
   gem 'pg'
   gem 'rails', '~> 4.2'
+  gem 'responders'
   gem 'simple_form'
   gem 'turbolinks'
   gem 'uglifier', '>= 1.3.0'
