@@ -1,2 +1,8 @@
 ru:
-  hello: "Hello world"
+  adverts:
+    new: Добавить объявление
+
+  categories:
+    new: Добавить категорию
+    choose: Выберите категорию
+

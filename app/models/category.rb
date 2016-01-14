@@ -3,10 +3,13 @@ class Category < ActiveRecord::Base
 
   has_many :adverts
   has_many :properties
+  validates_presence_of :title
 
   accepts_nested_attributes_for :properties
 
   alias_attribute :to_s, :title
+
+  scope :ordered, -> {order('title')}
 end
 
 # == Schema Information

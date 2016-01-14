@@ -1,4 +1,4 @@
 - @categories.each do |category|
   %p= link_to category, metadata_category_path(category)
 
-= link_to 'Новая категория', new_metadata_category_path
+= link_to t('categories.new'), new_metadata_category_path

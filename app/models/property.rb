@@ -1,12 +1,13 @@
 class Property < ActiveRecord::Base
   belongs_to :category
 
+  alias_attribute :to_s, :name
+
   def self.types
     #self.subclasses.map(&:name)
     ['StringProperty']
   end
 
-  alias_attribute :to_s, :name
 end
 
 # == Schema Information

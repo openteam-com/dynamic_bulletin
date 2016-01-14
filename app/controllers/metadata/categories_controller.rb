@@ -2,7 +2,7 @@ class Metadata::CategoriesController < Metadata::ApplicationController
   before_action :find_category, only: [:show, :edit, :update, :destroy]
 
   def index
-    @categories = Category.all
+    @categories = Category.ordered
   end
 
   def new

@@ -1,0 +1,7 @@
+- if @advert
+  = render partial: 'form'
+- else
+  %h1= t('categories.choose')
+  - @categories.each do |category|
+    %p= link_to category, [:new, :my, :advert, category_id: category]
+
