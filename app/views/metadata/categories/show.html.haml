@@ -3,3 +3,15 @@
     %p= @category
     %p= link_to 'Редактировать', edit_metadata_category_path(@category)
     %p= link_to 'Удалить', metadata_category_path(@category), method: :delete, data: { confirm: 'Вы уверены?' }
+
+    %ul
+      - @category.properties.each do |property|
+        %li=property
+
+    %h4='Добавление нового аттрибута'
+    = simple_form_for [:metadata, @property] do |f|
+      = f.input :name
+      = f.input :types, as: :select, collection: Property.types, include_blank: true, selected: nil, input_html: { class: 'js-properties-types' }
+      = f.input :category_id, input_html: { value: @category.id }, as: :hidden
+
+      = f.submit

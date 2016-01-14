@@ -1,3 +1,4 @@
-= simple_form_for [:metadata, @category] do |f|
+= simple_nested_form_for [:metadata, @category] do |f|
   = f.input :title
+
   = f.submit

@@ -19,6 +19,7 @@ class Metadata::CategoriesController < Metadata::ApplicationController
   end
 
   def show
+    @property = Property.new
   end
 
   def update
