@@ -1,4 +1,7 @@
 class Attribute < ActiveRecord::Base
+  def self.attribute_types
+    self.subclasses.map(&:name)
+  end
 end
 
 # == Schema Information

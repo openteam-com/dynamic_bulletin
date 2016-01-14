@@ -1,4 +1,4 @@
-class StringAttribute < ActiveRecord::Base
+class StringAttribute < Attribute
 end
 
 # == Schema Information
