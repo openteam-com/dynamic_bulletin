@@ -1,0 +1,2 @@
+module Metadata::CategoriesHelper
+end
