@@ -1,4 +1,7 @@
 class StringProperty < Property
+  def permitted_attributes
+    %W(string_value)
+  end
 end
 
 # == Schema Information

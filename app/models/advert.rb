@@ -1,17 +1,31 @@
 class Advert < ActiveRecord::Base
+  attr_accessor :values_attributes
   belongs_to :category
   has_many :values, dependent: :destroy
 
-  accepts_nested_attributes_for :values
+  accepts_nested_attributes_for :values, reject_if: proc {false}
 
-  after_initialize :build_values
+  after_initialize :build_values, :if => :new_record?
+
+  def title
+    values.first.value
+  end
 
   private
   def build_values
     return unless category
     category.properties.each do |property|
-raise property.values.build.inspect
-      values << "#{property.class.name}Value".constantize.new(:propertiable => property)
+      values << "#{property.class.name}Value".constantize.new(
+        {:propertiable => property}.merge((prepare_values_attributes[property.id] || {} ).extract!(*property.permitted_attributes))
+      )
+    end
+  end
+
+  def prepare_values_attributes
+    @prepare_values_attributes ||= {}.tap do |hash|
+      (values_attributes || {}).values.each do |value_attributes|
+        hash[value_attributes.delete('propertiable_id').to_i] = value_attributes
+      end
     end
   end
 end

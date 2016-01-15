@@ -1,4 +1,5 @@
 class My::AdvertsController < My::ApplicationController
+  before_action :find_category, only: [:new, :create]
   before_action :find_advert, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -6,17 +7,15 @@ class My::AdvertsController < My::ApplicationController
   end
 
   def new
-    @category = Category.find_by_id(params[:category_id])
     if @category
       @advert = @category.adverts.build
-      raise @category.properties.inspect
     else
       @categories = Category.ordered
     end
   end
 
   def create
-    @advert = Advert.create(advert_params)
+    @advert = @category.adverts.create(advert_params)
 
     respond_with @advert, location: -> { [:my, @advert] }
   end
@@ -41,10 +40,14 @@ class My::AdvertsController < My::ApplicationController
 
   private
   def advert_params
-    params.require(:advert).permit(:description, values_attributes: [:string_value])
+    params.require(:advert).permit(:description, values_attributes: [:string_value, :propertiable_id, :propertiable_type, :type])
   end
 
   def find_advert
     @advert = Advert.find(params[:id])
+  end
+
+  def find_category
+    @category = Category.find_by_id(params[:category_id] || params[:advert].try(:[], :category_id))
   end
 end

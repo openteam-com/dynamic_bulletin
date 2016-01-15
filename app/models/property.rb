@@ -11,6 +11,11 @@ class Property < ActiveRecord::Base
     ['StringProperty']
   end
 
+  def permitted_attributes
+    []
+  end
+
+
 end
 
 # == Schema Information

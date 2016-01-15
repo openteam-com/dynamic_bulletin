@@ -1,4 +1,4 @@
 - @adverts.each do |advert|
-  %p= link_to advert, [:my, advert]
+  %p= link_to "#{advert.category.title} #{advert.title}", [:my, advert]
 
 = link_to t('adverts.new'), new_my_advert_path
