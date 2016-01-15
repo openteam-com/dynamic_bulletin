@@ -9,6 +9,7 @@ class My::AdvertsController < My::ApplicationController
     @category = Category.find_by_id(params[:category_id])
     if @category
       @advert = @category.adverts.build
+      raise @category.properties.inspect
     else
       @categories = Category.ordered
     end
@@ -40,7 +41,7 @@ class My::AdvertsController < My::ApplicationController
 
   private
   def advert_params
-    params.require(:advert).permit(:description)
+    params.require(:advert).permit(:description, values_attributes: [:string_value])
   end
 
   def find_advert

@@ -2,6 +2,8 @@ class Property < ActiveRecord::Base
   belongs_to :category
   validates_presence_of :title
 
+  has_many :values, as: :propertiable
+
   alias_attribute :to_s, :title
 
   def self.types

@@ -1,0 +1,2 @@
+class StringPropertyValue < Value
+end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160114112118) do
+ActiveRecord::Schema.define(version: 20160115021821) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,16 +42,16 @@ ActiveRecord::Schema.define(version: 20160114112118) do
 
   create_table "values", force: :cascade do |t|
     t.integer  "advert_id"
-    t.integer  "property_id"
     t.string   "type"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.integer  "propertiable_id"
+    t.string   "propertiable_type"
+    t.string   "string_value"
   end
 
   add_index "values", ["advert_id"], name: "index_values_on_advert_id", using: :btree
-  add_index "values", ["property_id"], name: "index_values_on_property_id", using: :btree
 
   add_foreign_key "adverts", "categories"
   add_foreign_key "values", "adverts"
-  add_foreign_key "values", "properties"
 end

@@ -1,6 +1,6 @@
 class Value < ActiveRecord::Base
   belongs_to :advert
-  belongs_to :property
+  belongs_to :propertiable, polymorphic: true
 end
 
 # == Schema Information
