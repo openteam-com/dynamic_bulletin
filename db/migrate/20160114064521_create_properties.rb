@@ -1,9 +1,9 @@
 class CreateProperties < ActiveRecord::Migration
   def change
     create_table :properties do |t|
-      t.string :type
-      t.string :name
-      t.references :category
+      t.string :kind
+      t.string :title
+      t.references :category, index: true, foreign_key: true
 
       t.timestamps null: false
     end

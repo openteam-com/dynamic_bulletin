@@ -4,6 +4,14 @@ class Value < ActiveRecord::Base
   belongs_to :list_item
 
   def value
+    case property.kind.to_sym
+    when :string
+      string_value
+    when :limited_list
+      list_item
+    else
+      ''
+    end
   end
 
 end

@@ -33,35 +33,39 @@ ActiveRecord::Schema.define(version: 20160119052622) do
 
   create_table "list_items", force: :cascade do |t|
     t.string   "title"
-    t.integer  "propertiable_id"
-    t.string   "propertiable_type"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.integer  "property_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
+  add_index "list_items", ["property_id"], name: "index_list_items_on_property_id", using: :btree
+
   create_table "properties", force: :cascade do |t|
-    t.string   "type"
+    t.string   "kind"
     t.string   "title"
     t.integer  "category_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.integer  "max_length"
-    t.string   "kind"
   end
+
+  add_index "properties", ["category_id"], name: "index_properties_on_category_id", using: :btree
 
   create_table "values", force: :cascade do |t|
     t.integer  "advert_id"
-    t.string   "type"
+    t.integer  "property_id"
+    t.string   "string_value"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-    t.string   "string_value"
-    t.string   "property_id"
     t.integer  "list_item_id"
   end
 
   add_index "values", ["advert_id"], name: "index_values_on_advert_id", using: :btree
   add_index "values", ["list_item_id"], name: "index_values_on_list_item_id", using: :btree
+  add_index "values", ["property_id"], name: "index_values_on_property_id", using: :btree
 
   add_foreign_key "adverts", "categories"
+  add_foreign_key "list_items", "properties"
+  add_foreign_key "properties", "categories"
   add_foreign_key "values", "adverts"
+  add_foreign_key "values", "properties"
 end

@@ -11,7 +11,7 @@
 #
 
 class ListItem < ActiveRecord::Base
-  belongs_to :propertiable, polymorphic: true
+  belongs_to :property
 
   alias_attribute :to_s, :title
 end
