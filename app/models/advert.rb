@@ -15,8 +15,7 @@ class Advert < ActiveRecord::Base
   def build_values
     return unless category
     category.properties.each do |property|
-      values << "#{property.class.name}Value".constantize.new(
-        {:propertiable => property}.merge((prepare_values_attributes[property.id] || {} ).extract!(*property.permitted_attributes))
+      values << property.values.new((prepare_values_attributes[property.id] || {} ).extract!(*property.permitted_attributes)
       )
     end
   end
@@ -24,7 +23,7 @@ class Advert < ActiveRecord::Base
   def prepare_values_attributes
     @prepare_values_attributes ||= {}.tap do |hash|
       (values_attributes || {}).values.each do |value_attributes|
-        hash[value_attributes.delete('propertiable_id').to_i] = value_attributes
+        hash[value_attributes.delete('property_id').to_i] = value_attributes
       end
     end
   end

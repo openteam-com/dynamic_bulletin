@@ -3,7 +3,7 @@ class Property < ActiveRecord::Base
   belongs_to :category
   validates_presence_of :title
 
-  has_many :values, as: :propertiable
+  has_many :values
 
   has_many :list_items, as: :propertiable, dependent: :destroy
   accepts_nested_attributes_for :list_items
@@ -18,7 +18,14 @@ class Property < ActiveRecord::Base
   #end
 
   def permitted_attributes
-    []
+    case kind.to_sym
+    when :string
+      ['string_value']
+    when :limited_list
+      ['list_item_id']
+    else
+      []
+    end
   end
 
 
@@ -35,4 +42,5 @@ end
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  max_length  :integer
+#  kind        :string
 #
