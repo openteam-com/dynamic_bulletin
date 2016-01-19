@@ -1,0 +1,7 @@
+%h2 Справочник значений
+- @property.list_items.build
+- @property.list_items.build
+- @property.list_items.build
+- @property.list_items.build
+= f.simple_fields_for :list_items do |item_form|
+  = item_form.input :title

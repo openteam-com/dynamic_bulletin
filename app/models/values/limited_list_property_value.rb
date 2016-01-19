@@ -12,8 +12,9 @@
 #  string_value      :string
 #
 
-class StringPropertyValue < Value
+class LimitedListPropertyValue < Value
+  belongs_to :list_item
   def value
-    string_value
+    list_item.title
   end
 end
