@@ -12,11 +12,6 @@ class Property < ActiveRecord::Base
 
   enumerize :kind, in: [:string, :limited_list]
 
-  #def self.types
-    ##self.subclasses.map(&:name)
-    #['StringProperty', 'LimitedListProperty']
-  #end
-
   def permitted_attributes
     case kind.to_sym
     when :string
