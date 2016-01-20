@@ -23,9 +23,9 @@ end
 #
 #  id           :integer          not null, primary key
 #  advert_id    :integer
-#  type         :string
+#  property_id  :integer
+#  string_value :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  string_value :string
-#  property_id  :string
+#  list_item_id :integer
 #

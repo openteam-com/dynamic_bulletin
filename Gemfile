@@ -24,6 +24,8 @@ group :development, :test do
   gem 'awesome_print'
   gem 'byebug'
   gem 'sdoc', '~> 0.4.0', group: :doc
+  gem 'rails-erd'
+  gem 'rspec-rails'
 end
 
 group :development do

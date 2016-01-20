@@ -1,8 +1,8 @@
 class Category < ActiveRecord::Base
-  attr_accessor :properties_types
-
   has_many :adverts, dependent: :destroy
   has_many :properties, dependent: :destroy
+  has_many :properties, dependent: :destroy
+
   validates_presence_of :title
 
   accepts_nested_attributes_for :properties

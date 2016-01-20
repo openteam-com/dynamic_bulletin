@@ -1,5 +1,4 @@
 class Property < ActiveRecord::Base
-  extend Enumerize
   belongs_to :category
   validates_presence_of :title
 
@@ -10,6 +9,7 @@ class Property < ActiveRecord::Base
 
   alias_attribute :to_s, :title
 
+  extend Enumerize
   enumerize :kind, in: [:string, :limited_list]
 
   def permitted_attributes
@@ -23,7 +23,6 @@ class Property < ActiveRecord::Base
     end
   end
 
-
 end
 
 # == Schema Information
@@ -31,11 +30,9 @@ end
 # Table name: properties
 #
 #  id          :integer          not null, primary key
-#  type        :string
+#  kind        :string
 #  title       :string
 #  category_id :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  max_length  :integer
-#  kind        :string
 #
