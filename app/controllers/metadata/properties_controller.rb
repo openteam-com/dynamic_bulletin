@@ -21,6 +21,10 @@ class Metadata::PropertiesController < Metadata::ApplicationController
     respond_with @property, location: -> { metadata_category_path(@category)  }
   end
 
+  def destroy
+    @property.destroy
+    respond_with @property, location: -> { metadata_category_path(@category)  }
+  end
   private
   def find_property
     @property = @category.properties.find(params[:id])

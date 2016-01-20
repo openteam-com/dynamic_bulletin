@@ -7,9 +7,12 @@
     %ul
     - @category.properties.each do |property|
       %li= link_to property, edit_metadata_category_property_path(@category, property)
+      = link_to 'Remove', metadata_category_property_path(@category, property), method: :delete, data: { confirm: 'Вы уверены?' }
 
     %h4='Добавление нового аттрибута'
     = simple_form_for :property, url: new_metadata_category_property_path(@category), method: :get do |f|
       = f.input :kind, as: :select, collection: Property.kind.options, include_blank: true, selected: nil, input_html: { class: 'js-properties-types' }
 
       = f.submit
+%p= link_to 'Вернуться', metadata_categories_path
+

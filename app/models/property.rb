@@ -3,7 +3,7 @@ class Property < ActiveRecord::Base
   belongs_to :category
   validates_presence_of :title
 
-  has_many :values
+  has_many :values, dependent: :destroy
 
   has_many :list_items, dependent: :destroy
   accepts_nested_attributes_for :list_items

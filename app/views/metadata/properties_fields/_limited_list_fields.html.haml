@@ -1,7 +1,6 @@
 %h2 Справочник значений
-- @property.list_items.build
-- @property.list_items.build
-- @property.list_items.build
-- @property.list_items.build
 = f.simple_fields_for :list_items do |item_form|
   = item_form.input :title
+  = item_form.link_to_remove 'Remove'
+
+= f.link_to_add 'Add', :list_items
