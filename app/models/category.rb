@@ -6,6 +6,8 @@ class Category < ActiveRecord::Base
 
   accepts_nested_attributes_for :properties
 
+  has_ancestry
+
   alias_attribute :to_s, :title
 
   scope :ordered, -> {order('title')}
@@ -19,4 +21,5 @@ end
 #  title      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  ancestry   :string
 #

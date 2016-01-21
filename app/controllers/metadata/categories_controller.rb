@@ -2,7 +2,7 @@ class Metadata::CategoriesController < Metadata::ApplicationController
   before_action :find_category, only: [:show, :edit, :update, :destroy]
 
   def index
-    @categories = Category.ordered
+    @categories = Category.roots.ordered
   end
 
   def new
@@ -12,7 +12,7 @@ class Metadata::CategoriesController < Metadata::ApplicationController
   def create
     @category = Category.create(category_params)
 
-    respond_with @category, location: -> { metadata_category_path(@category) }
+    respond_with @category, location: -> { [:metadata, @category.parent.present? ? @category.parent : @category]}
   end
 
   def edit
@@ -35,7 +35,7 @@ class Metadata::CategoriesController < Metadata::ApplicationController
 
   private
   def category_params
-    params.require(:category).permit(:title)
+    params.require(:category).permit(:title, :parent_id)
   end
 
   def find_category

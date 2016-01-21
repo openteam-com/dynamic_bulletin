@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   namespace :metadata do
     resources :categories do
       resources :properties
+      resources :categories
     end
 
     root to: 'categories#index'
