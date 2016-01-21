@@ -1,18 +1,21 @@
 .row
-  .col-xs-12
+  .col-xs-9
+    %h4='Категория'
     %p= @category
-    %p= link_to 'Редактировать', edit_metadata_category_path(@category)
-    %p= link_to 'Удалить', metadata_category_path(@category), method: :delete, data: { confirm: 'Вы уверены?' }
 
+  .col-xs-3
+    %p= "#{link_to 'Редактировать', edit_metadata_category_path(@category)} | #{link_to 'Удалить', metadata_category_path(@category), method: :delete, data: { confirm: 'Вы уверены?' }} | #{link_to 'Вернуться', metadata_categories_path}".html_safe
+
+.row
+  .col-xs-6
+    %h4='Аттрибуты'
     %ul
     - @category.properties.each do |property|
-      %li= link_to property, edit_metadata_category_property_path(@category, property)
-      = link_to 'Remove', metadata_category_property_path(@category, property), method: :delete, data: { confirm: 'Вы уверены?' }
+      %li= "#{link_to property, edit_metadata_category_property_path(@category, property)} | #{link_to 'Удалить аттрибут', metadata_category_property_path(@category, property), method: :delete, data: { confirm: 'Вы уверены?' }}".html_safe
 
+  .col-xs-6
     %h4='Добавление нового аттрибута'
     = simple_form_for :property, url: new_metadata_category_property_path(@category), method: :get do |f|
       = f.input :kind, as: :select, collection: Property.kind.options, include_blank: true, selected: nil, input_html: { class: 'js-properties-types' }
 
-      = f.submit
-%p= link_to 'Вернуться', metadata_categories_path
-
+      = f.submit 'Добавить', class: 'btn btn-success'

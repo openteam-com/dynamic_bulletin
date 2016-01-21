@@ -1,7 +1,12 @@
 class Value < ActiveRecord::Base
   belongs_to :advert
   belongs_to :property
+
   belongs_to :list_item
+
+  has_many :list_item_values
+  has_many :list_items, through: :list_item_values
+
   validates_uniqueness_of :property_id, scope: :advert_id
 
   def value

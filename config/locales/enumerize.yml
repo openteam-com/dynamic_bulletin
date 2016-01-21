@@ -1,0 +1,6 @@
+ru:
+  enumerize:
+    property:
+      kind:
+        string: 'Строковое значение'
+        limited_list: 'Ограниченный список'

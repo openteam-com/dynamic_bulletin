@@ -40,7 +40,7 @@ class My::AdvertsController < My::ApplicationController
 
   private
   def advert_params
-    params.require(:advert).permit(:description, values_attributes: [:string_value, :property_id, :list_item_id, :id])
+    params.require(:advert).permit(:description, values_attributes: [:string_value, :property_id, :id, :list_item_id, list_item_ids: []])
   end
 
   def find_advert

@@ -1,3 +1,12 @@
+class ListItem < ActiveRecord::Base
+  belongs_to :property
+
+  has_many :list_item_values
+  has_many :values, through: :list_item_values
+
+  alias_attribute :to_s, :title
+end
+
 # == Schema Information
 #
 # Table name: list_items
@@ -8,9 +17,3 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
-
-class ListItem < ActiveRecord::Base
-  belongs_to :property
-
-  alias_attribute :to_s, :title
-end

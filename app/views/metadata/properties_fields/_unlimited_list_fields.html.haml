@@ -1,6 +1,6 @@
 %h2 Справочник значений
 = f.simple_fields_for :list_items do |item_form|
   = item_form.input :title
-  = item_form.link_to_remove 'Удалить'
+  = item_form.link_to_remove 'Remove'
 
-= f.link_to_add 'Добавить', :list_items
+= f.link_to_add 'Add', :list_items

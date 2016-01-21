@@ -1,7 +1,6 @@
 class Category < ActiveRecord::Base
   has_many :adverts, dependent: :destroy
   has_many :properties, dependent: :destroy
-  has_many :properties, dependent: :destroy
 
   validates_presence_of :title
 

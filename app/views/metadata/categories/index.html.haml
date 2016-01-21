@@ -1,4 +1,11 @@
-- @categories.each do |category|
-  %p= link_to category, metadata_category_path(category)
+.row
+  .col-xs-10
+    %h1='Управление категориями'
 
-= link_to t('categories.new'), new_metadata_category_path
+    %h3='Категории'
+    %ul
+    - @categories.each do |category|
+      %li= link_to category, metadata_category_path(category)
+
+  .col-xs-2
+    = link_to t('categories.new'), new_metadata_category_path, class: 'btn btn-default'

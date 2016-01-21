@@ -1,28 +1,17 @@
 class Property < ActiveRecord::Base
   belongs_to :category
-  validates_presence_of :title
 
   has_many :values, dependent: :destroy
-
   has_many :list_items, dependent: :destroy
+
+  validates_presence_of :title
+
   accepts_nested_attributes_for :list_items
 
   alias_attribute :to_s, :title
 
   extend Enumerize
-  enumerize :kind, in: [:string, :limited_list]
-
-  def permitted_attributes
-    case kind.to_sym
-    when :string
-      ['string_value']
-    when :limited_list
-      ['list_item_id']
-    else
-      []
-    end
-  end
-
+  enumerize :kind, in: [:string, :limited_list, :unlimited_list]
 end
 
 # == Schema Information
