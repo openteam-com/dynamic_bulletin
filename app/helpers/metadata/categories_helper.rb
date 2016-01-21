@@ -6,7 +6,7 @@ module Metadata::CategoriesHelper
 
     content = '<ul>'
     node.children.each do |child|
-      content << "<li>#{link_to child, metadata_category_categories_path(node, child)}</li>"
+      content << "<li>#{link_to child, metadata_category_category_path(node, child)}</li>"
 
       content << recursive_children(child) if child.children.present?
     end
