@@ -14,17 +14,12 @@ class Advert < ActiveRecord::Base
   def build_empty_values
     return unless category
 
-    merge_categories.each do |category|
+    category.path.each do |category|
       category.properties.each do |property|
         values << property.values.new unless values.select {|v| v.property == property}.any?
       end
     end
   end
-
-  def merge_categories
-    category.ancestors.to_a.push category
-  end
-
 end
 
 # == Schema Information
