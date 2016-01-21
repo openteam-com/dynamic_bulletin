@@ -8,9 +8,13 @@ class My::AdvertsController < My::ApplicationController
 
   def new
     if @category
-      @advert = @category.adverts.build
+      if @category.children.present?
+        @categories = @category.children
+      else
+        @advert = @category.adverts.build
+      end
     else
-      @categories = Category.ordered
+      @categories = Category.roots.ordered
     end
   end
 

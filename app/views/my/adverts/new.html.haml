@@ -4,4 +4,5 @@
   %h1= t('categories.choose')
   - @categories.each do |category|
     %p= link_to category, [:new, :my, :advert, category_id: category]
+
 %p= link_to 'Вернуться', my_adverts_path
