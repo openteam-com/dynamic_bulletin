@@ -7,3 +7,14 @@ RSpec.describe Advert, type: :model do
     expect(advert).to eq(Advert.last)
   end
 end
+
+# == Schema Information
+#
+# Table name: adverts
+#
+#  id          :integer          not null, primary key
+#  description :text
+#  category_id :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
