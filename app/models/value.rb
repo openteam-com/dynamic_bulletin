@@ -1,7 +1,6 @@
 class Value < ActiveRecord::Base
   belongs_to :advert
   belongs_to :property
-
   belongs_to :list_item
 
   has_many :list_item_values

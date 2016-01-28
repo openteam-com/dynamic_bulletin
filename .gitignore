@@ -30,3 +30,5 @@ erd.pdf
 dump.rdb
 .idea
 /contest_templates
+*.swp
+*~

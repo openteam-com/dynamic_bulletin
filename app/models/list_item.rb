@@ -4,6 +4,7 @@ class ListItem < ActiveRecord::Base
   has_many :list_item_values
   has_many :values, through: :list_item_values
 
+  has_ancestry
   alias_attribute :to_s, :title
 end
 

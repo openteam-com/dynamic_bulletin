@@ -1,0 +1,6 @@
+= @list_item
+- if @list_item.children.present?
+  - @list_item.children.each do |child|
+    %p= link_to child.title, metadata_category_property_list_item_list_item_path(@category, @property, @list_item, child)
+= link_to 'Добавить вложенное', new_metadata_category_property_list_item_list_item_path(@category, @property, @list_item, parent_id: params[:id])
+= link_to 'Вернуться', @list_item.parent.present? ? metadata_category_property_list_item_path(@category, @property, @list_item.parent) : metadata_category_property_path(@category, @property)

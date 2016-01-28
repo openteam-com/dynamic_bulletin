@@ -13,7 +13,7 @@
     %h4='Аттрибуты'
     %ul
     - @category.properties.each do |property|
-      %li= "#{link_to property, edit_metadata_category_property_path(@category, property)} | #{link_to 'Удалить аттрибут', metadata_category_property_path(@category, property), method: :delete, data: { confirm: 'Вы уверены?' }}".html_safe
+      %li= "#{link_to property, metadata_category_property_path(@category, property)} | #{link_to 'Редактировать', edit_metadata_category_property_path(@category, property)} | #{link_to 'Удалить аттрибут', metadata_category_property_path(@category, property), method: :delete, data: { confirm: 'Вы уверены?' }}".html_safe
 
     %h4='Вложенные категории'
     =link_to 'Добавить вложенную категорию', new_metadata_category_category_path(@category, parent_id: params[:id])

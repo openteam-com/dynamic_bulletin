@@ -1,0 +1,5 @@
+%h1= @property
+%ul
+- @property.list_items.each do |item|
+  = link_to item, metadata_category_property_list_item_path(@category, @property, item)
+= link_to 'К категории', metadata_category_path(@category)
