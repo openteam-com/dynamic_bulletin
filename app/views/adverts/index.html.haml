@@ -6,4 +6,20 @@
 .row
   .col-xs-12
     - @adverts.each do |advert|
-      = link_to advert, advert_path(advert)
+      %p= link_to advert, advert_path(advert)
+
+.row
+  .col-xs-12
+    = simple_form_for :search, url: root_path, method: :get do |f|
+      .row
+        %ul
+          - @categories.each do |category|
+            - if category.properties.any?
+              .col-xs-2
+                %li
+                  =# category
+                  - category.properties.with_public.filterable.each do |property|
+                    = property
+                    = f.input "#{property.id}_list_items".html_safe, as: property.show_as.to_sym, collection: property.list_items
+
+      = f.submit 'Search'

@@ -6,6 +6,7 @@ group :default do
   gem 'coffee-rails', '~> 4.1.0'
   gem 'compass-rails'
   gem 'configliere'
+  gem 'default_value_for'
   gem 'enumerize'
   gem 'haml'
   gem 'jbuilder', '~> 2.0'

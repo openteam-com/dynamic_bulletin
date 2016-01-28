@@ -9,7 +9,7 @@ class Advert < ActiveRecord::Base
   alias_attribute :to_s, :title
 
   def title
-    values.first.value
+    values.first.value.presence || description
   end
 
   private

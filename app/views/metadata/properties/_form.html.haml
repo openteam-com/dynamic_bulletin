@@ -1,6 +1,10 @@
 = simple_nested_form_for [:metadata, @category, @property] do |f|
   = f.input :kind, :as => :hidden
   = f.input :title
+  - unless @property.kind == 'string'
+    = f.input :show_on_public
+    = f.input :show_as, include_blank: false
+
   = render :partial => "metadata/properties_fields/#{@property.kind}_fields", locals: {:f => f}
 
   = f.submit

@@ -11,6 +11,12 @@
 
 class AdvertsController < ApplicationController
   def index
-    @adverts = Advert.all
+    unless params[:utf8]
+      @adverts = Advert.all
+      @categories = Category.all
+    else
+      @adverts = Advert.all.take(2)
+      @categories = Category.all.take(2)
+    end
   end
 end

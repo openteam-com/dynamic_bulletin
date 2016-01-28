@@ -83,6 +83,8 @@ GEM
       highline (= 1.5.2)
       multi_json (~> 1.10.1)
     debug_inspector (0.0.2)
+    default_value_for (3.0.1)
+      activerecord (>= 3.2.0, < 5.0)
     diff-lcs (1.2.5)
     enumerize (1.1.1)
       activesupport (>= 3.2)
@@ -231,6 +233,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   compass-rails
   configliere
+  default_value_for
   enumerize
   haml
   jbuilder (~> 2.0)

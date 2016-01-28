@@ -5,6 +5,9 @@ class ListItem < ActiveRecord::Base
   has_many :values, through: :list_item_values
 
   has_ancestry
+
+  validates :title, uniqueness: { scope: :property_id }
+
   alias_attribute :to_s, :title
 end
 

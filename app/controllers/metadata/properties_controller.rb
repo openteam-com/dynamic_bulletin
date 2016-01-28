@@ -33,7 +33,7 @@ class Metadata::PropertiesController < Metadata::ApplicationController
   end
 
   def property_params
-    params.require(:property).permit(:title, :kind, :max_length, list_items_attributes: [:title])
+    params.require(:property).permit(:title, :kind, :show_on_public, :show_as, list_items_attributes: [:id, :title, :_destroy])
   end
 
   def find_category

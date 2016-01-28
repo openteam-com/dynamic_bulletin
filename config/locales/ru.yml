@@ -5,3 +5,11 @@ ru:
   categories:
     new: Добавить категорию
     choose: Выберите категорию
+
+  activerecord:
+    errors:
+      models:
+        list_item:
+          attributes:
+            title:
+              taken: 'Такое название уже использовано в этом свойстве'
