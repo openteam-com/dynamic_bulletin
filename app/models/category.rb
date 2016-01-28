@@ -6,7 +6,7 @@ class Category < ActiveRecord::Base
 
   accepts_nested_attributes_for :properties
 
-  has_ancestry
+  has_ancestry cache_depth: true
 
   alias_attribute :to_s, :title
 
@@ -17,9 +17,10 @@ end
 #
 # Table name: categories
 #
-#  id         :integer          not null, primary key
-#  title      :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  ancestry   :string
+#  id             :integer          not null, primary key
+#  title          :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  ancestry       :string
+#  ancestry_depth :integer          default(0)
 #

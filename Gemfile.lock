@@ -90,6 +90,11 @@ GEM
       activesupport (>= 3.2)
     erubis (2.7.0)
     execjs (2.6.0)
+    factory_girl (3.5.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (3.5.0)
+      factory_girl (~> 3.5.0)
+      railties (>= 3.0.0)
     ffi (1.9.10)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
@@ -235,6 +240,7 @@ DEPENDENCIES
   configliere
   default_value_for
   enumerize
+  factory_girl_rails
   haml
   jbuilder (~> 2.0)
   jquery-rails

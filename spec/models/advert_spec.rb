@@ -1,10 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe Advert, type: :model do
-  it 'shoud create new advert' do
-    advert = Advert.create
+  it 'should generate empty values for new advert across categories' do
+    parent_category = create :category, :with_properties, :with_children
+    category = parent_category.children.first.children.first
+    advert = category.adverts.new
 
-    expect(advert).to eq(Advert.last)
+    expect(advert.values.size).to eq(category.path.map(&:properties).map(&:count).sum)
+  end
+
+  it 'should`t return values unless category empty' do
+    advert = Advert.new
+
+    expect(advert.values.size).to eq(0)
   end
 end
 

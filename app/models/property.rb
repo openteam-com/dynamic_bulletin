@@ -39,5 +39,6 @@ end
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  row_order      :integer
-#  show_on_public :boolean
+#  show_on_public :boolean          default(TRUE)
+#  show_as        :string           default("check_boxes")
 #
