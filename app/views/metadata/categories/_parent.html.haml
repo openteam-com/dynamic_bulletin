@@ -2,7 +2,6 @@
   - parents.each do |category|
     .row
       .col-xs-9
-        %h4= 'Родительская категория'
         %p= link_to category, metadata_category_path(category)
 
     .row
@@ -10,5 +9,5 @@
         %h4='Аттрибуты'
         %ul
         - category.properties.each do |property|
-          %li= link_to property, edit_metadata_category_property_path(category, property)
+          %li= "#{link_to property, edit_metadata_category_property_path(category, property)}".html_safe
     %hr

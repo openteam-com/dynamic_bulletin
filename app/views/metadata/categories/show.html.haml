@@ -11,9 +11,9 @@
 .row
   .col-xs-6
     %h4='Аттрибуты'
-    %ul
+    %ul.js-sortable-wrapper{data: { path: update_property_position_metadata_categories_path  }}
     - @category.properties.each do |property|
-      %li= "#{link_to property, metadata_category_property_path(@category, property)} | #{link_to 'Редактировать', edit_metadata_category_property_path(@category, property)} | #{link_to 'Удалить аттрибут', metadata_category_property_path(@category, property), method: :delete, data: { confirm: 'Вы уверены?' }}".html_safe
+      %li.js-sortable-item{data: { id: property.id  }}= "#{link_to property, metadata_category_property_path(@category, property)} | #{link_to 'Редактировать', edit_metadata_category_property_path(@category, property)} | #{link_to 'Удалить аттрибут', metadata_category_property_path(@category, property), method: :delete, data: { confirm: 'Вы уверены?' }}(#{property.kind_text}) <span class='glyphicon glyphicon glyphicon-resize-ve    rtical js-handle-sortable sortable' aria-hidden='true'></span>".html_safe
 
     %h4='Вложенные категории'
     =link_to 'Добавить вложенную категорию', new_metadata_category_category_path(@category, parent_id: params[:id])

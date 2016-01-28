@@ -1,2 +1,9 @@
-= link_to 'Добавить объявление', new_my_advert_path
-= link_to 'Управление метаданными', metadata_root_path
+.row
+  .col-xs-12
+    = link_to 'Добавить объявление', new_my_advert_path
+    = link_to 'Управление метаданными', metadata_root_path
+
+.row
+  .col-xs-12
+    - @adverts.each do |advert|
+      = link_to advert, advert_path(advert)

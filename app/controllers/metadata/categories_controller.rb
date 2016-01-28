@@ -33,6 +33,14 @@ class Metadata::CategoriesController < Metadata::ApplicationController
     respond_with @category, location: -> { metadata_categories_path }
   end
 
+  def update_property_position
+    if request.xhr?
+      Property.find(params[:id]).update_attribute :row_order_position, params[:row_order]
+
+      render nothing: true and return
+    end
+  end
+
   private
   def category_params
     params.require(:category).permit(:title, :parent_id)

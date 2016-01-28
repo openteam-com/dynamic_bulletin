@@ -4,7 +4,9 @@ class Advert < ActiveRecord::Base
 
   accepts_nested_attributes_for :values, reject_if: -> (value) { value.blank? }
 
-  after_initialize :build_empty_values
+  after_initialize :build_empty_values, if: :new_record?
+
+  alias_attribute :to_s, :title
 
   def title
     values.first.value

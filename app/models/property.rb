@@ -1,4 +1,7 @@
 class Property < ActiveRecord::Base
+  include RankedModel
+  ranks :row_order, with_same: :category_id
+
   belongs_to :category
 
   has_many :values, dependent: :destroy
@@ -12,6 +15,10 @@ class Property < ActiveRecord::Base
 
   extend Enumerize
   enumerize :kind, in: [:string, :limited_list, :unlimited_list]
+
+  scope :by_position, -> { order('row_order') }
+
+  default_scope { by_position }
 end
 
 # == Schema Information
@@ -24,4 +31,5 @@ end
 #  category_id :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  row_order   :integer
 #
