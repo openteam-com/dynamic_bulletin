@@ -42,6 +42,12 @@ class My::AdvertsController < My::ApplicationController
     respond_with @advert, location: -> { my_adverts_path }
   end
 
+  def get_category_children
+    if request.xhr?
+      render partial: 'my/values_fields/limited_list', locals: { has_children: true, list_item: ListItem.find(params[:parent_id]) } and return
+    end
+  end
+
   private
   def advert_params
     params.require(:advert).permit(:description, values_attributes: [:string_value, :property_id, :id, :list_item_id, list_item_ids: []])

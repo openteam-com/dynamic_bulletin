@@ -2,8 +2,7 @@ class Metadata::ListItemsController < Metadata::ApplicationController
   before_action :find_category
   before_action :find_property
   before_action :find_list_item, only: [:show, :edit, :update, :destroy]
-  before_action :find_parent_item
-  before_action :init_list_item
+  before_action :find_parent_item, only: [:create]
 
   def new
     if params[:parent_id]
@@ -19,6 +18,7 @@ class Metadata::ListItemsController < Metadata::ApplicationController
     else
       @list_item = ListItem.create(list_item_params)
     end
+
     respond_with @list_item, location: -> { [:metadata, @category, @property, @list_item.parent.present? ? @list_item.parent : @list_item]}
   end
 
@@ -32,15 +32,13 @@ class Metadata::ListItemsController < Metadata::ApplicationController
 
   def find_parent_item
     if params[:parent_id]
-    @parent_item = ListItem.find(params[:parent_id])
+      @parent_item = ListItem.find(params[:parent_id])
     end
   end
+
   private
   def find_list_item
     @list_item = ListItem.find(params[:id])
-  end
-
-  def init_list_item
   end
 
   def list_item_params

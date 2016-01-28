@@ -1,1 +1,4 @@
-= f.input :list_item_id, label: f.object.property.title, as: :select, collection: f.object.property.list_items
+<!-- f.object - категория -->
+
+= f.input :list_item_id, label: f.object.property.title, as: :select, collection: f.object.property.list_items, input_html: { class: 'js-get-list-items-children' }
+=# f.input :list_item_id, label: false, as: :select, collection: f.object.property.list_items.map(&:children).flatten

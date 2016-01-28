@@ -1,5 +1,5 @@
 @init_sortable_properties = ->
-  $('.js-sortable-wrapper').sortable('refresh')
+  #$('.js-sortable-wrapper').sortable('refresh')
 
   $('.js-sortable-wrapper').sortable
     axis: 'y'
@@ -25,3 +25,7 @@
           id: item_id
           row_order: position
         }
+
+      return
+    true
+  true
