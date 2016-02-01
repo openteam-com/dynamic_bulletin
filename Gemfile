@@ -36,6 +36,8 @@ group :development do
   gem 'awesome_print'
   gem 'spring'
   gem 'web-console', '~> 2.0'
-  gem 'openteam-capistrano', '~> 1.0.7'
 end
 
+group :production do
+  gem 'openteam-capistrano', '~> 1.0.7'
+end
