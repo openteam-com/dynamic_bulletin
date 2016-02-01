@@ -12,6 +12,8 @@ class Value < ActiveRecord::Base
     case property.kind.to_sym
     when :string
       string_value
+    when :integer
+      integer_value
     when :limited_list
       list_item
     else

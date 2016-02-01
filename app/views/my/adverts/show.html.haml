@@ -3,4 +3,4 @@
 %p= @advert.description
 %p= link_to 'Редактировать', edit_my_advert_path(@advert)
 %p= link_to 'Удалить', my_advert_path(@advert), method: :delete, data: { confirm: 'Вы уверены?' }
-
+%p= link_to 'Мои объявления', my_adverts_path

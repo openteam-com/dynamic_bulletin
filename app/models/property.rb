@@ -21,7 +21,7 @@ class Property < ActiveRecord::Base
   alias_attribute :to_s, :title
 
   extend Enumerize
-  enumerize :kind, in: [:string, :limited_list, :unlimited_list]
+  enumerize :kind, in: [:string, :limited_list, :unlimited_list, :integer]
   enumerize :show_as, in: [:check_boxes, :radio_buttons, :select]
 
   default_value_for :show_on_public, true

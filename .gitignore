@@ -10,6 +10,7 @@
 /config/database_sevastopol.yml
 /config/deploy.yml
 /config/sape.yml
+/config/secrets.yml
 /config/settings.yml
 /config/sunspot.yml
 /db/*.sqlite3
