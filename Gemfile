@@ -13,6 +13,7 @@ group :default do
   gem 'jquery-rails'
   gem 'jquery-ui-sass-rails'
   gem 'nested_form'
+  gem 'openteam-commons'
   gem 'pg'
   gem 'rails', '~> 4.2'
   gem 'ranked-model'
@@ -39,5 +40,5 @@ group :development do
 end
 
 group :production do
-  gem 'openteam-capistrano', '~> 1.0.7'
+  gem 'openteam-capistrano',    '~> 1.0.9'
 end
