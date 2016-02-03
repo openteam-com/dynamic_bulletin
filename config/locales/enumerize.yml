@@ -2,6 +2,7 @@ ru:
   enumerize:
     property:
       kind:
+        integer: 'Числовое значение'
         string: 'Строковое значение'
         limited_list: 'Ограниченный список'
         unlimited_list: 'Список с выбором значений'

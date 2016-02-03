@@ -1,0 +1,8 @@
+%p= render_breadcrumbs
+%p= @category
+- if @category.children.present?
+  - @category.children.each do |child|
+    = link_to child, category_path(child)
+- else
+  - @category.adverts.each do |advert|
+    = link_to advert, advert_path(advert)

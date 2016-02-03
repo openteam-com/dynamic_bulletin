@@ -1,3 +1,7 @@
+- @categories.each do |category|
+  - if category.parent.present? == false
+    = link_to category, category_path(category)
+
 .row
   .col-xs-12
     = link_to 'Добавить объявление', new_my_advert_path
@@ -17,7 +21,6 @@
             - if category.properties.any?
               .col-xs-2
                 %li
-                  =# category
                   - category.properties.with_public.filterable.each do |property|
                     = property
                     = f.input "#{property.id}_list_items".html_safe, as: property.show_as.to_sym, collection: property.list_items

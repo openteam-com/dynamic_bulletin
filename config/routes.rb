@@ -22,6 +22,8 @@ Rails.application.routes.draw do
     root to: 'adverts#index'
   end
 
+  resources :categories
+
   resources :adverts
   root to: 'adverts#index'
 end

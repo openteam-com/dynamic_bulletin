@@ -11,6 +11,7 @@ class Category < ActiveRecord::Base
   alias_attribute :to_s, :title
 
   scope :ordered, -> {order('title')}
+
 end
 
 # == Schema Information

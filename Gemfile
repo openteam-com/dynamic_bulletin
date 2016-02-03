@@ -34,6 +34,7 @@ end
 
 group :development do
   gem 'annotate'
+  gem 'breadcrumbs_on_rails'
   gem 'awesome_print'
   gem 'spring'
   gem 'web-console', '~> 2.0'
