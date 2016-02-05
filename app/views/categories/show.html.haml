@@ -1,8 +1,28 @@
 %p= render_breadcrumbs
+
 %p= @category
+
+- unless @category.children.present?
+  .row
+    .col-xs-12
+      = simple_form_for :search, url: category_path(@category), method: :get do |f|
+        .row
+          %ul
+            - if @category.all_properties.any?
+              .col-xs-2
+                %li
+                  - @category.all_properties.each do |property|
+                    = property
+                    = f.input :list_items,
+                      as: property.show_as.to_sym,
+                      collection: property.list_items,
+                      checked: params.try(:[], 'search').try(:[], 'list_items').to_a.compact
+
+        = f.submit 'Search'
+
 - if @category.children.present?
   - @category.children.each do |child|
     = link_to child, category_path(child)
 - else
-  - @category.adverts.each do |advert|
+  - @adverts.each do |advert|
     = link_to advert, advert_path(advert)

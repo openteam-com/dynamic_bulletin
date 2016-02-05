@@ -1,28 +1,9 @@
+.row
+  .col-xs-6.pull-right
+    = link_to 'Добавить объявление', new_my_advert_path, class: 'btn btn-default'
+    = link_to 'Управление метаданными', metadata_root_path, class: 'btn btn-default'
+
+%p='Категории'
 - @categories.each do |category|
   - if category.parent.present? == false
     = link_to category, category_path(category)
-
-.row
-  .col-xs-12
-    = link_to 'Добавить объявление', new_my_advert_path
-    = link_to 'Управление метаданными', metadata_root_path
-
-.row
-  .col-xs-12
-    - @adverts.each do |advert|
-      %p= link_to advert, advert_path(advert)
-
-.row
-  .col-xs-12
-    = simple_form_for :search, url: root_path, method: :get do |f|
-      .row
-        %ul
-          - @categories.each do |category|
-            - if category.properties.any?
-              .col-xs-2
-                %li
-                  - category.properties.with_public.filterable.each do |property|
-                    = property
-                    = f.input "#{property.id}_list_items".html_safe, as: property.show_as.to_sym, collection: property.list_items
-
-      = f.submit 'Search'

@@ -12,6 +12,9 @@ class Category < ActiveRecord::Base
 
   scope :ordered, -> {order('title')}
 
+  def all_properties
+    path.map(&:properties).map(&:with_public).map(&:filterable).flatten
+  end
 end
 
 # == Schema Information

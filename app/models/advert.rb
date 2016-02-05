@@ -22,6 +22,12 @@ class Advert < ActiveRecord::Base
       end
     end
   end
+
+  searchable include: [:values] do
+    integer :list_item_ids, multiple: true do
+      values.map { |v| v.list_items.map(&:id) }.flatten
+    end
+  end
 end
 
 # == Schema Information
