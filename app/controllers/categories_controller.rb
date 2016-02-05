@@ -11,6 +11,10 @@
 #
 
 class CategoriesController < ApplicationController
+  def index
+    @categories = Category.all
+  end
+
   def show
     @category = Category.find(params[:id])
     unless params[:utf8]
@@ -29,7 +33,7 @@ class CategoriesController < ApplicationController
       @parent = @parent.parent
     end
 
-    add_breadcrumb 'Корень', adverts_path
+    add_breadcrumb 'Корень', root_path
     bread.reverse!.each do |b|
       add_breadcrumb b, category_path(b)
     end
