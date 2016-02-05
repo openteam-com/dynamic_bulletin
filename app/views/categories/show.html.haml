@@ -1,6 +1,6 @@
 %p= render_breadcrumbs
 
-%p= @category
+%h3= @category
 
 - unless @category.children.present?
   .row
@@ -24,5 +24,6 @@
   - @category.children.each do |child|
     = link_to child, category_path(child)
 - else
+  %ul
   - @adverts.each do |advert|
-    = link_to advert, advert_path(advert)
+    %li= link_to advert.title, advert_path(advert)
