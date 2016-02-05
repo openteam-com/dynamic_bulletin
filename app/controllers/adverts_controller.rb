@@ -10,11 +10,6 @@
 #
 
 class AdvertsController < ApplicationController
-  def index
-    @adverts = Advert.all
-    @categories = Category.all
-  end
-
   def show
     @advert = Advert.find(params[:id])
     @parent = @advert.category
