@@ -1,5 +1,6 @@
 class Advert < ActiveRecord::Base
   belongs_to :category
+
   has_many :values, dependent: :destroy
 
   accepts_nested_attributes_for :values, reject_if: -> (value) { value.blank? }
@@ -26,6 +27,7 @@ class Advert < ActiveRecord::Base
   searchable include: [:values] do
     integer :list_item_ids, multiple: true do
       values.map { |v| v.list_items.map(&:id) }.flatten
+      #values.map { |v| v.hierarch_list_item.map(&:id) }.flatten
     end
   end
 end

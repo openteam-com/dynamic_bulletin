@@ -1,4 +1,6 @@
 class Value < ActiveRecord::Base
+  attr_accessor :hierarch_list_item_parent_id
+
   belongs_to :advert
   belongs_to :property
   belongs_to :list_item
@@ -30,11 +32,12 @@ end
 #
 # Table name: values
 #
-#  id           :integer          not null, primary key
-#  advert_id    :integer
-#  property_id  :integer
-#  string_value :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  list_item_id :integer
+#  id            :integer          not null, primary key
+#  advert_id     :integer
+#  property_id   :integer
+#  string_value  :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  list_item_id  :integer
+#  integer_value :integer
 #

@@ -1,0 +1,4 @@
+- if value.hierarch_list_item.present?
+  %h4= value.property.title
+  - value.hierarch_list_item.path.each do |item|
+    %p=item

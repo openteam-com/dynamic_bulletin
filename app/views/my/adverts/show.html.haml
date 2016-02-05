@@ -1,5 +1,8 @@
 - @advert.values.each do |value|
   = render partial: "common/values/#{value.property.kind}", locals: {:value => value}
+
+  %hr
+
 %p= @advert.description
 %p= link_to 'Редактировать', edit_my_advert_path(@advert)
 %p= link_to 'Удалить', my_advert_path(@advert), method: :delete, data: { confirm: 'Вы уверены?' }
