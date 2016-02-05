@@ -2,6 +2,7 @@ class Value < ActiveRecord::Base
   belongs_to :advert
   belongs_to :property
   belongs_to :list_item
+  belongs_to :hierarch_list_item
 
   has_many :list_item_values
   has_many :list_items, through: :list_item_values
@@ -16,6 +17,8 @@ class Value < ActiveRecord::Base
       integer_value
     when :limited_list
       list_item
+    when :hierarch_limited_list
+      hierarch_list_item
     else
       ''
     end

@@ -7,8 +7,8 @@ class Metadata::PropertiesController < Metadata::ApplicationController
   end
 
   def create
+    #raise @property.inspect
     @property.save
-
     respond_with @property, location: -> { metadata_category_path(@property.category) }
   end
 
@@ -33,7 +33,7 @@ class Metadata::PropertiesController < Metadata::ApplicationController
   end
 
   def property_params
-    params.require(:property).permit(:title, :kind, :show_on_public, :show_as, list_items_attributes: [:id, :title, :_destroy])
+    params.require(:property).permit(:title, :kind, :show_on_public, :show_as, hierarch_list_items_attributes: [:id, :title, :_destroy], list_items_attributes: [:id, :title, :_destroy])
   end
 
   def find_category

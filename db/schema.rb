@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160201054352) do
+ActiveRecord::Schema.define(version: 20160203095439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,16 @@ ActiveRecord::Schema.define(version: 20160201054352) do
 
   add_index "categories", ["ancestry"], name: "index_categories_on_ancestry", using: :btree
 
+  create_table "hierarch_list_items", force: :cascade do |t|
+    t.string   "title"
+    t.string   "ancestry"
+    t.integer  "property_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "hierarch_list_items", ["property_id"], name: "index_hierarch_list_items_on_property_id", using: :btree
+
   create_table "list_item_values", force: :cascade do |t|
     t.integer "list_item_id"
     t.integer "value_id"
@@ -45,10 +55,8 @@ ActiveRecord::Schema.define(version: 20160201054352) do
     t.integer  "property_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.string   "ancestry"
   end
 
-  add_index "list_items", ["ancestry"], name: "index_list_items_on_ancestry", using: :btree
   add_index "list_items", ["property_id"], name: "index_list_items_on_property_id", using: :btree
 
   create_table "properties", force: :cascade do |t|
@@ -79,6 +87,7 @@ ActiveRecord::Schema.define(version: 20160201054352) do
   add_index "values", ["property_id"], name: "index_values_on_property_id", using: :btree
 
   add_foreign_key "adverts", "categories"
+  add_foreign_key "hierarch_list_items", "properties"
   add_foreign_key "list_items", "properties"
   add_foreign_key "properties", "categories"
   add_foreign_key "values", "adverts"

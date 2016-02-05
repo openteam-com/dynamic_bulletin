@@ -28,12 +28,9 @@ class AdvertsController < ApplicationController
       bread << @parent
       @parent = @parent.parent
     end
-
     add_breadcrumb 'Корень', adverts_path
     bread.reverse!.each do |b|
       add_breadcrumb b, category_path(b)
     end
-
-
   end
 end

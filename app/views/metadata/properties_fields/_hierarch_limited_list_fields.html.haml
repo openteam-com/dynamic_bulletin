@@ -1,0 +1,7 @@
+%h2 Дерево значений
+-#= raise f.object.inspect
+= f.simple_fields_for :hierarch_list_items do |item_form|
+  = item_form.input :title
+  = item_form.link_to_remove 'Удалить'
+  = item_form.input :parent_id, input_html: { value: params[:parent_id] }, as: :hidden if params[:parent_id]
+= f.link_to_add 'Добавить', :hierarch_list_items

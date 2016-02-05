@@ -1,0 +1,8 @@
+= @hierarch_list_item
+-#= raise @list_item.inspect
+= simple_nested_form_for [:metadata, @category, @property, @hierarch_list_item] do |f|
+  = f.input :title
+  = f.input :parent_id, input_html: { value: params[:parent_id] }, as: :hidden if params[:parent_id]
+
+  = f.submit
+= link_to 'Вернуться', @hierarch_list_item.parent.present? ? metadata_category_property_hierarch_list_item_path(@category, @property, @hierarch_list_item.parent) : metadata_category_property_path(@category, @property)

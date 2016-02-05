@@ -1,5 +1,9 @@
 %h1= @property
 %ul
-- @property.list_items.each do |item|
-  = link_to item, metadata_category_property_list_item_path(@category, @property, item)
-= link_to 'К категории', metadata_category_path(@category)
+- if @property.kind != 'hierarch_limited_list'
+  - @property.list_items.each do |item|
+    = link_to item, metadata_category_property_list_item_path(@category, @property, item)
+- else
+  - @property.hierarch_list_items.each do |item|
+    = link_to item, metadata_category_property_hierarch_list_item_path(@category, @property, item)
+  = link_to 'К категории', metadata_category_path(@category)

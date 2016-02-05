@@ -1,4 +1,7 @@
-FactoryGirl.define do
+FactoryGirl.define do  factory :hierarch_list_item do
+    
+  end
+
   sequence :title do |n|
     "Категория #{n}"
   end

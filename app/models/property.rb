@@ -12,16 +12,17 @@ class Property < ActiveRecord::Base
 
   has_many :values, dependent: :destroy
   has_many :list_items, dependent: :destroy
-
+  has_many :hierarch_list_items, dependent: :destroy
 
   validates_presence_of :title
 
   accepts_nested_attributes_for :list_items, allow_destroy: true
+  accepts_nested_attributes_for :hierarch_list_items, allow_destroy: true
 
   alias_attribute :to_s, :title
 
   extend Enumerize
-  enumerize :kind, in: [:string, :limited_list, :unlimited_list, :integer]
+  enumerize :kind, in: [:string, :limited_list, :unlimited_list, :integer, :hierarch_limited_list]
   enumerize :show_as, in: [:check_boxes, :radio_buttons, :select]
 
   default_value_for :show_on_public, true
