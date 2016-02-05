@@ -5,4 +5,5 @@ ru:
         integer: 'Числовое значение'
         string: 'Строковое значение'
         limited_list: 'Ограниченный список'
+        hierarch_limited_list: 'Дерево значений'
         unlimited_list: 'Список с выбором значений'

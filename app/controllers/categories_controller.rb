@@ -21,7 +21,7 @@ class CategoriesController < ApplicationController
       @adverts = @category.adverts
     else
       @adverts = Advert.search do
-        with :list_item_ids, params[:search][:list_items]
+        #with :list_item_ids, params[:search][:list_items]
       end.results
     end
 
