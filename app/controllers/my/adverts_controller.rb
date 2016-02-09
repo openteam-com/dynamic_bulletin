@@ -17,7 +17,6 @@ class My::AdvertsController < My::ApplicationController
       @categories = Category.roots.ordered
     end
   end
-
   def create
     @advert = @category.adverts.create(advert_params)
 

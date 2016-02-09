@@ -1,15 +1,15 @@
 <!-- f.object - значение -->
-
+-#= raise f.object.hierarch_list_item.inspect
 = f.input :hierarch_list_item_parent_id,
   label: f.object.property.title,
   as: :select,
   collection: f.object.property.hierarch_list_items,
   input_html: { class: 'js-get-list-items-parent' },
-  :selected => params[:action] == 'edit' ? f.object.hierarch_list_item.parent.id : nil,
+  :selected => params[:action] == 'edit' && !f.object.hierarch_list_item.nil? ? f.object.hierarch_list_item.parent.id : nil,
   :include_blank => true
 = f.input :hierarch_list_item_id,
   label: false,
   as: :select,
-  collection: params[:action] == 'new' ? [1,2,3] : f.object.hierarch_list_item.parent.children,
-  input_html: params[:action] == 'new' ? { class: 'js-get-list-items-children hidden' } : { class: 'js-get-list-items-children' },
-  :selected => params[:action] == 'edit' ? :hierarch_list_item_id : nil
+  collection: params[:action] == 'edit' && f.object.hierarch_list_item != nil ? f.object.hierarch_list_item.parent.children : [1, 2, 3],
+  input_html: params[:action] == 'edit' && f.object.hierarch_list_item != nil ? { class: 'js-get-list-items-children' } : { class: 'js-get-list-items-children hidden' },
+  :selected => params[:action] == 'edit' && f.object.hierarch_list_item != nil ? :hierarch_list_item_id : nil
