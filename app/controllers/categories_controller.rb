@@ -11,6 +11,7 @@
 #
 
 class CategoriesController < ApplicationController
+  include Breadcrumbs
   def index
     @categories = Category.all
   end
@@ -21,21 +22,11 @@ class CategoriesController < ApplicationController
       @adverts = @category.adverts
     else
       @adverts = Advert.search do
-        #with :list_item_ids, params[:search][:list_items]
+        with :list_item_ids, params[:search][:list_items]
       end.results
     end
 
-    # breadcrumbs NOTE: Почистить и поправить
-    @parent = @category.parent
-    bread = []
-    while @parent.present?
-      bread << @parent
-      @parent = @parent.parent
-    end
-
-    add_breadcrumb 'Корень', root_path
-    bread.reverse!.each do |b|
-      add_breadcrumb b, category_path(b)
-    end
+    breadcrumbs_create(@category.parent)
+    add_breadcrumb @category, category_path(@category)
   end
 end

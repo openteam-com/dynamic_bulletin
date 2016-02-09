@@ -10,17 +10,10 @@
 #
 
 class AdvertsController < ApplicationController
+  include Breadcrumbs
   def show
     @advert = Advert.find(params[:id])
-    @parent = @advert.category
-    bread = []
-    while @parent.present?
-      bread << @parent
-      @parent = @parent.parent
-    end
-    add_breadcrumb 'Корень', adverts_path
-    bread.reverse!.each do |b|
-      add_breadcrumb b, category_path(b)
-    end
+    breadcrumbs_create(@advert.category)
+    add_breadcrumb @advert, advert_path(@advert)
   end
 end
