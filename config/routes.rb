@@ -1,10 +1,14 @@
 Rails.application.routes.draw do
+  devise_for :users
+  get 'persons/profile'
+
   namespace :metadata do
     resources :categories do
       resources :categories
       get 'update_property_position', on: :collection
 
       resources :properties do
+        resources :list_items
         resources :hierarch_list_items do
           resources :hierarch_list_items
         end

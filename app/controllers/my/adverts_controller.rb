@@ -19,7 +19,6 @@ class My::AdvertsController < My::ApplicationController
   end
   def create
     @advert = @category.adverts.create(advert_params)
-
     respond_with @advert, location: -> { [:my, @advert] }
   end
 
@@ -59,7 +58,15 @@ class My::AdvertsController < My::ApplicationController
 
   private
   def advert_params
-    params.require(:advert).permit(:description, values_attributes: [:string_value, :integer_value,  :property_id, :id, :list_item_id, :hierarch_list_item_id, :category_id, list_item_ids: []])
+    params.
+      require(:advert).
+      permit(:description, :category_id,
+             values_attributes: [:string_value, :integer_value,
+                                 :property_id, :id,
+                                 :list_item_id,
+                                 :hierarch_list_item_id,
+                                 :category_id,
+                                 list_item_ids: []])
   end
 
   def find_advert

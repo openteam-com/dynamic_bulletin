@@ -1,9 +1,7 @@
 = simple_form_for [:my, @advert] do |f|
   = f.input :category_id, as: :hidden
-
   = f.simple_fields_for :values do |value_form|
     = value_form.input :property_id, as: :hidden
-    = value_form.input :id, as: :hidden
     = render partial: "my/values_fields/#{value_form.object.property.kind}", locals: {:f => value_form}
 
   = f.input :description # Стандартное описание объявления
