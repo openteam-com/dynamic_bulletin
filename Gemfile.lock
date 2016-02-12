@@ -58,6 +58,7 @@ GEM
     breadcrumbs_on_rails (2.3.1)
     builder (3.2.2)
     byebug (8.2.2)
+    cancancan (1.10.1)
     capistrano (3.4.0)
       i18n
       rake (>= 10.0.0)
@@ -119,6 +120,7 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    devise-bootstrap-views (0.0.7)
     diff-lcs (1.2.5)
     enumerize (1.1.1)
       activesupport (>= 3.2)
@@ -187,6 +189,8 @@ GEM
     progress_bar (1.0.5)
       highline (~> 1.6)
       options (~> 2.3.0)
+    quiet_assets (1.1.0)
+      railties (>= 3.1, < 5.0)
     rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -321,11 +325,13 @@ DEPENDENCIES
   bootstrap-sass
   breadcrumbs_on_rails
   byebug
+  cancancan
   coffee-rails (~> 4.1.0)
   compass-rails
   configliere
   default_value_for
   devise
+  devise-bootstrap-views
   enumerize
   factory_girl_rails
   haml
@@ -337,6 +343,7 @@ DEPENDENCIES
   openteam-commons
   pg
   progress_bar
+  quiet_assets
   rails (~> 4.2)
   rails-erd
   ranked-model

@@ -3,7 +3,7 @@ class My::AdvertsController < My::ApplicationController
   before_action :find_advert, only: [:show, :edit, :update, :destroy]
 
   def index
-    @adverts = Advert.all
+    @adverts = current_user.adverts
   end
 
   def new
@@ -17,8 +17,10 @@ class My::AdvertsController < My::ApplicationController
       @categories = Category.roots.ordered
     end
   end
+
   def create
     @advert = @category.adverts.create(advert_params)
+
     respond_with @advert, location: -> { [:my, @advert] }
   end
 
@@ -66,6 +68,7 @@ class My::AdvertsController < My::ApplicationController
                                  :list_item_id,
                                  :hierarch_list_item_id,
                                  :category_id,
+                                 :user_id,
                                  list_item_ids: []])
   end
 
