@@ -1,5 +1,6 @@
 class Advert < ActiveRecord::Base
   belongs_to :category
+  belongs_to :user
 
   has_many :values, dependent: :destroy
   accepts_nested_attributes_for :values, reject_if: -> (value) { value.blank? }
