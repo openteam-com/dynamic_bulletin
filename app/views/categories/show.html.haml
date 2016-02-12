@@ -12,11 +12,22 @@
               .col-xs-2
                 %li
                   - @category.all_properties.each do |property|
-                    = property
-                    = f.input :list_items,
-                      as: property.show_as.to_sym,
-                      collection: property.list_items,
-                      checked: params.try(:[], 'search').try(:[], 'list_items').to_a.compact
+                    %h3= property
+                    -#= raise property.inspect
+
+                    - if property.kind.to_s != 'hierarch_limited_list'
+                      = f.input :list_items,
+                        as: :check_boxes,
+                        collection: property.list_items,
+                        checked: params.try(:[], 'search').try(:[], 'list_items').to_a.compact
+
+                    - if property.kind.to_s == 'hierarch_limited_list'
+                      - property.hierarch_list_items.each do |parent|
+                        = parent
+                        = f.input :hierarch_list_items,
+                          as: :check_boxes,
+                          collection: parent.children,
+                          checked: params.try(:[], 'search').try(:[], 'hierarch_list_items').to_a.compact
 
         = f.submit 'Search'
 

@@ -21,8 +21,11 @@ class CategoriesController < ApplicationController
     unless params[:utf8]
       @adverts = @category.adverts
     else
-      @adverts = Advert.search do
-        with :list_item_ids, params[:search][:list_items]
+      @adverts = @category.adverts.search do
+        any_of do
+          with :list_item_ids, params.try(:[], 'search').try(:[], 'list_items')
+          with :hierarch_list_item_ids, params.try(:[], 'search').try(:[], 'hierarch_list_items')
+        end
       end.results
     end
 

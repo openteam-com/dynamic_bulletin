@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 group :default do
   gem 'ancestry'
   gem 'breadcrumbs_on_rails'
+  gem 'devise'
   gem 'bootstrap-sass'
   gem 'coffee-rails', '~> 4.1.0'
   gem 'compass-rails'

@@ -4,7 +4,7 @@ class Property < ActiveRecord::Base
 
   scope :by_position, -> { order('row_order') }
   scope :with_public, -> { where(show_on_public: true) }
-  scope :filterable, -> { where(kind: [:limited_list, :unlimited_list]) }
+  scope :filterable, -> { where(kind: [:limited_list, :unlimited_list, :hierarch_limited_list]) }
 
   default_scope { by_position }
 
