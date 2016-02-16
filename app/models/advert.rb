@@ -22,6 +22,7 @@ class Advert < ActiveRecord::Base
         values << property.values.new unless values.select {|v| v.property == property}.any?
       end
     end
+    #set_presences_validate
   end
 
   searchable include: [:values] do
@@ -44,4 +45,5 @@ end
 #  category_id :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  user_id     :integer
 #

@@ -4,3 +4,12 @@ class Permission < ActiveRecord::Base
   extend Enumerize
   enumerize :role, in: [:admin, :manager], prefix: true
 end
+
+# == Schema Information
+#
+# Table name: permissions
+#
+#  id      :integer          not null, primary key
+#  role    :string
+#  user_id :integer
+#

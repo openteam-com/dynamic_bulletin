@@ -12,12 +12,16 @@
 
 class CategoriesController < ApplicationController
   include Breadcrumbs
+
+  after_action :initialize_breadcrumbs
+
   def index
     @categories = Category.all
   end
 
   def show
     @category = Category.find(params[:id])
+
     unless params[:utf8]
       @adverts = @category.adverts
     else
@@ -29,7 +33,10 @@ class CategoriesController < ApplicationController
       end.results
     end
 
-    breadcrumbs_create(@category.parent)
-    add_breadcrumb @category, category_path(@category)
+    breadcrumbs_create(@category)
+  end
+
+  def initialize_breadcrumbs
+    breadcrumbs_create(@category) rescue nil
   end
 end

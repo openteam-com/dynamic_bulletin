@@ -1,6 +1,9 @@
 class My::AdvertsController < My::ApplicationController
+  include Breadcrumbs
+
   before_action :find_category, only: [:new, :create]
   before_action :find_advert, only: [:show, :edit, :update, :destroy]
+  #after_action :initialize_breadcrumbs, only: :new
 
   def index
     @adverts = current_user.adverts
@@ -19,7 +22,7 @@ class My::AdvertsController < My::ApplicationController
   end
 
   def create
-    @advert = @category.adverts.create(advert_params)
+    @advert = @category.adverts.create!(advert_params)
 
     respond_with @advert, location: -> { [:my, @advert] }
   end
@@ -62,13 +65,12 @@ class My::AdvertsController < My::ApplicationController
   def advert_params
     params.
       require(:advert).
-      permit(:description, :category_id,
+      permit(:description, :category_id, :user_id,
              values_attributes: [:string_value, :integer_value,
                                  :property_id, :id,
                                  :list_item_id,
                                  :hierarch_list_item_id,
                                  :category_id,
-                                 :user_id,
                                  list_item_ids: []])
   end
 
@@ -78,5 +80,9 @@ class My::AdvertsController < My::ApplicationController
 
   def find_category
     @category = Category.find_by_id(params[:category_id] || params[:advert].try(:[], :category_id))
+  end
+
+  def initialize_breadcrumbs
+    breadcrumbs_create(@category)
   end
 end

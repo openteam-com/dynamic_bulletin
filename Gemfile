@@ -42,6 +42,7 @@ end
 group :development do
   gem 'annotate'
   gem 'awesome_print'
+  gem 'puma'
   gem 'quiet_assets'
   gem 'spring'
   gem 'web-console', '~> 2.0'

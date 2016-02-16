@@ -7,6 +7,8 @@
     = csrf_meta_tags
 
   %body
+    = render partial: 'navbar'
+
     .container-fluid
       .container
         = yield
