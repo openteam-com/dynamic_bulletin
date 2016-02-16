@@ -1,6 +1,8 @@
 = simple_nested_form_for [:metadata, @category, @property] do |f|
   = f.input :kind, :as => :hidden
   = f.input :title
+  = f.input :necessarily
+
   - unless @property.kind == 'string' || @property.kind == 'integer'
     = f.input :show_on_public
     = f.input :show_as, include_blank: false

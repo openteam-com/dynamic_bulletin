@@ -1,5 +1,4 @@
 @init_select_sublist_items = ->
-  console.log 'init'
   $(document).on 'change', '.js-get-list-items-parent', ->
     item = $(this)
     selected_item = item.find(':selected').val()

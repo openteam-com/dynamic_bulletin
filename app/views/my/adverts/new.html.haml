@@ -1,14 +1,8 @@
-- if params[:category_id].present?
-  %h1= Category.find(params[:category_id]).title
-- if @advert
-  = render partial: 'form'
-- else
+%p= render_breadcrumbs
+
+- if @categories
   %h3= t('categories.choose')
   - @categories.each do |category|
     %p= link_to category, [:new, :my, :advert, category_id: category]
--#= raise params.inspect
-- if params[:category_id].present? && Category.find(params[:category_id]).parent.present?
-  %p= link_to 'Вернуться в ' + Category.find(params[:category_id]).parent.title, [:new, :my, :advert, category_id: Category.find(params[:category_id]).parent]
-- elsif params[:category_id].present?
-  %p= link_to 'Начало',  [:new, :my, :advert]
-%p= link_to 'Отмена', root_path
+- else # @advert.presence
+  = render partial: 'form'
