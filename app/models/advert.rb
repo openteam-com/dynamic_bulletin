@@ -3,7 +3,7 @@ class Advert < ActiveRecord::Base
   belongs_to :user
 
   has_many :values, dependent: :destroy
-  accepts_nested_attributes_for :values, reject_if: -> (value) { value.blank? }
+  accepts_nested_attributes_for :values
 
   after_initialize :build_empty_values, if: :new_record?
 
