@@ -8,7 +8,7 @@ end
 #
 # Table name: list_item_values
 #
-#  id           :integer          not null, primary key
-#  list_item_id :integer
-#  value_id     :integer
-#
+#  id                    :integer          not null, primary key
+#  list_item_id          :integer
+#  value_id              :integer
+#  hierarch_list_item_id :integer

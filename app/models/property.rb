@@ -4,7 +4,7 @@ class Property < ActiveRecord::Base
 
   scope :by_position, -> { order('row_order') }
   scope :with_public, -> { where(show_on_public: true) }
-  scope :filterable, -> { where(kind: [:limited_list, :unlimited_list]) }
+  scope :filterable, -> { where(kind: [:limited_list, :unlimited_list, :hierarch_limited_list]) }
 
   default_scope { by_position }
 
@@ -22,7 +22,7 @@ class Property < ActiveRecord::Base
   alias_attribute :to_s, :title
 
   extend Enumerize
-  enumerize :kind, in: [:string, :limited_list, :unlimited_list, :integer, :hierarch_limited_list]
+  enumerize :kind, in: [:string, :integer, :limited_list, :unlimited_list, :hierarch_limited_list]
   enumerize :show_as, in: [:check_boxes, :radio_buttons, :select]
 
   default_value_for :show_on_public, true
@@ -42,4 +42,5 @@ end
 #  row_order      :integer
 #  show_on_public :boolean          default(TRUE)
 #  show_as        :string           default("check_boxes")
+#  necessarily    :boolean          default(FALSE)
 #

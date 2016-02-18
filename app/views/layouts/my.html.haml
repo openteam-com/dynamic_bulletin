@@ -1,0 +1,14 @@
+!!! 5
+%html
+  %head
+    %title='Динамическая доска объявлений'
+    = stylesheet_link_tag    'my/application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'my/application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+
+  %body
+    = render partial: 'navbar'
+
+    .container-fluid
+      .container
+        = yield

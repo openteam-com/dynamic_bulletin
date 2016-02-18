@@ -2,12 +2,15 @@ source 'https://rubygems.org'
 
 group :default do
   gem 'ancestry'
-  gem 'breadcrumbs_on_rails'
   gem 'bootstrap-sass'
+  gem 'breadcrumbs_on_rails'
+  gem 'cancancan'
   gem 'coffee-rails', '~> 4.1.0'
   gem 'compass-rails'
   gem 'configliere'
   gem 'default_value_for'
+  gem 'devise'
+  gem 'devise-bootstrap-views'
   gem 'enumerize'
   gem 'haml'
   gem 'jbuilder', '~> 2.0'
@@ -38,8 +41,9 @@ end
 
 group :development do
   gem 'annotate'
-  gem 'breadcrumbs_on_rails'
   gem 'awesome_print'
+  gem 'puma'
+  gem 'quiet_assets'
   gem 'spring'
   gem 'web-console', '~> 2.0'
 end

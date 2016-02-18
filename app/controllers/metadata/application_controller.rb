@@ -1,7 +1,12 @@
 class Metadata::ApplicationController < ApplicationController
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
+  load_and_authorize_resource
   protect_from_forgery with: :exception
 
+  before_action :authenticate_user!
+
   layout 'metadata'
+
+  def current_ability
+    Ability.new(current_user, :metadata)
+  end
 end

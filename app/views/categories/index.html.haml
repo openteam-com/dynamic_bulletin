@@ -1,9 +1,5 @@
-.row
-  .col-xs-6.pull-right
-    = link_to 'Добавить объявление', new_my_advert_path, class: 'btn btn-default'
-    = link_to 'Управление метаданными', metadata_root_path, class: 'btn btn-default'
-
-%p='Категории'
+%h4= 'Категории'
 - @categories.each do |category|
-  - if category.parent.present? == false
+  - unless category.parent.present?
     = link_to category, category_path(category)
+    = '|'
