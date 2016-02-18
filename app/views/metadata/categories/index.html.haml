@@ -4,10 +4,11 @@
 
     %h3='Категории'
     %ul
-    - @categories.each do |category|
-      %li
-        = link_to category, metadata_category_path(category)
-        = recursive_children(category)
+      - @categories.each do |category|
+        %li
+          = link_to category, metadata_category_path(category)
+          %span.glyphicon.glyphicon-plus.js-handle-hidden
+          = recursive_children(category)
     %p= link_to 'Главная страница', root_path
 
   .col-xs-2

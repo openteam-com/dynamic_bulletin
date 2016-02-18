@@ -1,6 +1,4 @@
 @init_sortable_properties = ->
-  #$('.js-sortable-wrapper').sortable('refresh')
-
   $('.js-sortable-wrapper').sortable
     axis: 'y'
     items: '.js-sortable-item'
@@ -27,5 +25,13 @@
         }
 
       return
+    true
+  true
+
+@init_handle_hidden = ->
+  $('.js-handle-hidden').click ->
+    $(this).toggleClass('glyphicon-plus glyphicon-minus')
+    $(this).next('ul').toggle()
+
     true
   true

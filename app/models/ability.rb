@@ -4,6 +4,8 @@ class Ability
   # method is_admin?, is_manager? and other see in models/User.rb in define_method block,
   # that creates by Permission.role.values
   def initialize(user, namespace = nil)
+    return unless user
+
     case namespace
     when :my
       can :index, Advert if user.present?
