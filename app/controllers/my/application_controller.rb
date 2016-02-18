@@ -8,4 +8,8 @@ class My::ApplicationController < ApplicationController
   def current_ability
     Ability.new(current_user, :my)
   end
+
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_url, :alert => exception.message
+  end
 end
