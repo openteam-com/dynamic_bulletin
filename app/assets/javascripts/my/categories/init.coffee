@@ -9,12 +9,15 @@
       data: {
         parent_id: selected_item
       }
+
+
+
       success: (data) ->
+        console.log data
         children = item.parent().next().find('.js-get-list-items-children')
         children.empty()
         $(children).removeClass('hidden')
         data = JSON.parse(data)
-
         for item in data
           children.append(
             "<option value='#{item.id}'>#{item.title}"

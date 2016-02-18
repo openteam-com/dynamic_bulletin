@@ -5,3 +5,4 @@
 //= require turbolinks
 //= require jquery_nested_form
 //= require ./main
+//= require ./categories
