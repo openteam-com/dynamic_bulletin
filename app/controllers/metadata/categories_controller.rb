@@ -10,9 +10,17 @@ class Metadata::CategoriesController < Metadata::ApplicationController
   end
 
   def create
-    @category = Category.create(category_params)
+    @category = Category.new(category_params)
 
-    respond_with @category, location: -> { [:metadata, @category.parent.present? ? @category.parent : @category]}
+    if @category.save
+      render partial: 'children', locals: { category: @category.parent } and return if request.xhr?
+
+      render :show and return
+    else
+      render :new and return
+    end
+
+    #respond_with @category, location: -> { [:metadata, @category.parent.present? ? @category.parent : @category]}
   end
 
   def edit

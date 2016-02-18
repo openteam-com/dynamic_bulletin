@@ -5,7 +5,7 @@ class Metadata::ApplicationController < ApplicationController
 
   before_action :authenticate_user!
 
-  layout 'metadata'
+  layout :resolve_layout
 
   def current_ability
     Ability.new(current_user, :metadata)
@@ -13,5 +13,9 @@ class Metadata::ApplicationController < ApplicationController
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, :alert => exception.message
+  end
+
+  def resolve_layout
+    request.xhr? ? false : 'metadata'
   end
 end

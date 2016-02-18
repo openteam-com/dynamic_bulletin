@@ -35,3 +35,19 @@
 
     true
   true
+
+@init_handle_ajax_new_category_form = ->
+  $('.js-categories').on 'ajax:success', (evt, response)->
+    $('.js-dialog').html(response).dialog()
+
+    return
+
+  $('.js-dialog').on 'ajax:success', (evt, response)->
+    if $(response).find('.help-block').length
+      $(this).html(response).dialog()
+    else
+      $(this).dialog('close')
+      $('.js-children').html(response)
+
+    return
+  return
