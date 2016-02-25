@@ -22,7 +22,7 @@ class My::AdvertsController < My::ApplicationController
   end
 
   def create
-    @advert = @category.adverts.create!(advert_params)
+    @advert = @category.adverts.create(advert_params)
 
     respond_with @advert, location: -> { [:my, @advert] }
   end
