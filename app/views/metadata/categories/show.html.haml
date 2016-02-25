@@ -15,13 +15,13 @@
       - @category.properties.each do |property|
         %li.js-sortable-item{data: { id: property.id  }}= "#{link_to property, metadata_category_property_path(@category, property)} | #{link_to 'Редактировать', edit_metadata_category_property_path(@category, property)} | #{link_to 'Удалить аттрибут', metadata_category_property_path(@category, property), method: :delete, data: { confirm: 'Вы уверены?' }} (#{property.kind_text}) <span class='glyphicon glyphicon-resize-vertical js-handle-sortable sortable' aria-hidden='true'></span>".html_safe
 
-    %h4='Вложенные категории'
-    =link_to 'Добавить вложенную категорию', new_metadata_category_category_path(@category, parent_id: params[:id])
+    .categories.js-categories
+      %h4='Вложенные категории'
+      =link_to 'Добавить вложенную категорию', new_metadata_category_category_path(@category, parent_id: params[:id]), remote: true
 
-    - if @category.children
-      %ul
-      - @category.children.each do |child|
-        %li= link_to child, metadata_category_category_path(@category, child)
+      - if @category.children.present?
+        %ul.js-children
+          = render partial: 'children', locals: { category: @category }
 
   .col-xs-6
     %h4='Добавление нового аттрибута'
@@ -29,3 +29,5 @@
       = f.input :kind, as: :select, collection: Property.kind.options, include_blank: true, selected: nil, input_html: { class: 'js-properties-types' }
 
       = f.submit 'Добавить', class: 'btn btn-success'
+
+.dialog.js-dialog

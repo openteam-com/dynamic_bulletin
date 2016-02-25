@@ -15,7 +15,6 @@ group :default do
   gem 'haml'
   gem 'jbuilder', '~> 2.0'
   gem 'jquery-rails'
-  gem 'jquery-ui-sass-rails'
   gem 'nested_form'
   gem 'openteam-commons'
   gem 'pg'
@@ -50,4 +49,9 @@ end
 
 group :production do
   gem 'openteam-capistrano',    '~> 1.0.9'
+end
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-jquery-ui-bootstrap'
+  gem 'rails-assets-jquery-ui'
 end

@@ -3,7 +3,6 @@ class My::AdvertsController < My::ApplicationController
 
   before_action :find_category, only: [:new, :create]
   before_action :find_advert, only: [:show, :edit, :update, :destroy]
-  #after_action :initialize_breadcrumbs, only: :new
 
   def index
     @adverts = current_user.adverts
@@ -48,7 +47,6 @@ class My::AdvertsController < My::ApplicationController
   def get_category_children
     if request.xhr?
       array = []
-
       HierarchListItem.find(params[:parent_id]).children.each do |child|
         h = {}
         h[:id] = child.id
