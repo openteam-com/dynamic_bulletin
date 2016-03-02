@@ -21,9 +21,19 @@ class My::AdvertsController < My::ApplicationController
   end
 
   def create
-    @advert = @category.adverts.create(advert_params)
+    #@advert = @category.adverts.create!(advert_params)
+    #raise params.inspect
+    @advert = @category.adverts.new(advert_params)
 
-    respond_with @advert, location: -> { [:my, @advert] }
+    if @advert.save
+      #render partial: 'children', locals: { category: @category.parent } and return if request.xhr?
+      respond_with @advert, location: -> { [:my, @advert] }
+      #render :show and return
+    else
+      @advert.valid?
+        render :new and return
+    end
+    #respond_with @advert, location: -> { [:my, @advert] }
   end
 
   def edit
