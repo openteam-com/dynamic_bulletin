@@ -6,9 +6,26 @@ ru:
     new: Добавить категорию
     choose: Выберите категорию
 
+  errors:
+    format: "%{message}"
+
   activerecord:
     errors:
+      messages:
+        record_invalid: 'Заполните поля'
       models:
+        value:
+          attributes:
+            string_value:
+              blank: "Введите значение"
+            integer_value:
+              blank: "Заполните значение"
+            list_item:
+              blank: "Выберите значение"
+            hierarch_list_item:
+              blank: "Выберите значение"
+            list_items:
+              blank: "Выберите значения"
         list_item:
           attributes:
             title:

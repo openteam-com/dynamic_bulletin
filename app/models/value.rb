@@ -13,8 +13,9 @@ class Value < ActiveRecord::Base
   validates_presence_of :integer_value, if: :property_necessarily_set_for_integer?
   validates_presence_of :list_item, if: :property_necessarily_set_for_limited_list?
   validates_presence_of :hierarch_list_item, if: :property_necessarily_set_for_hierarch_limited_list?
+  validates_presence_of :list_items, if: :property_necessarily_set_for_unlimited_list?
   #validates_presence_of :list_items#,
-  validate :presence_of_list_items
+  #validate :presence_of_list_items
 
   validates_uniqueness_of :property_id, scope: :advert_id
 
@@ -56,9 +57,9 @@ class Value < ActiveRecord::Base
     property.necessarily && property.kind == 'hierarch_limited_list'
   end
 
-  def presence_of_list_items
-    errors.add(:list_items, 'ola') if list_items.empty?
-  end
+  #def presence_of_list_items
+    #errors.add(:list_items, 'ola') if list_items.empty?
+  #end
 end
 
 # == Schema Information
