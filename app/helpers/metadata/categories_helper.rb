@@ -16,4 +16,14 @@ module Metadata::CategoriesHelper
 
     content.html_safe
   end
+
+  def define_remote(params)
+    if params[:remote].present?
+      params[:remote] == 'true' ? true : false
+
+      return
+    end
+
+    true
+  end
 end

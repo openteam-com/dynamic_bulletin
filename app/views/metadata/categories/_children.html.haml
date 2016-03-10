@@ -1,2 +1,2 @@
 - category.children.each do |child|
-  %li= link_to child, metadata_category_category_path(category, child)
+  %li= "#{link_to child, metadata_category_category_path(category, child)} | #{link_to 'Редактировать', edit_metadata_category_category_path(category, child), remote: true} | #{link_to 'Удалить', metadata_category_category_path(category, child), remote: true, method: :delete}".html_safe
