@@ -17,11 +17,10 @@
 
     .categories.js-categories
       %h4='Вложенные категории'
-      =link_to 'Добавить вложенную категорию', new_metadata_category_category_path(@category, parent_id: params[:id]), remote: true
+      =link_to 'Добавить вложенную категорию', new_metadata_category_category_path(@category, parent_id: @category), remote: true
 
-      - if @category.children.present?
-        %ul.js-children
-          = render partial: 'children', locals: { category: @category }
+      %ul.js-children
+        = render partial: 'children', locals: { category: @category }
 
   .col-xs-6
     %h4='Добавление нового аттрибута'

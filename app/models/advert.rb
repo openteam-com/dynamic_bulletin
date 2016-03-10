@@ -22,7 +22,6 @@ class Advert < ActiveRecord::Base
         values << property.values.new unless values.select {|v| v.property == property}.any?
       end
     end
-    #set_presences_validate
   end
 
   searchable include: [:values] do
