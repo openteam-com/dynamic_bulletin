@@ -7,7 +7,6 @@ class Metadata::CategoriesController < Metadata::ApplicationController
 
   def new
     @category = Category.new
-    #render partial: 'children', locals: { category: @category.parent } and return if request.xhr?
   end
 
   def create

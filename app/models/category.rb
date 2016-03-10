@@ -1,6 +1,9 @@
 class Category < ActiveRecord::Base
   has_many :adverts, dependent: :destroy
-  has_many :properties, dependent: :destroy
+
+  has_many :category_properties, dependent: :destroy
+  has_many :properties, through: :category_properties
+  has_many :old_properties, foreign_key: 'category_id', class_name: 'Property'
 
   validates_presence_of :title
 
