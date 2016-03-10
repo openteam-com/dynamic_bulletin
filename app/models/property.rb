@@ -14,6 +14,9 @@ class Property < ActiveRecord::Base
   has_many :list_items, dependent: :destroy
   has_many :hierarch_list_items, dependent: :destroy
 
+  has_many :category_properties, dependent: :destroy
+  has_many :categories, through: :category_properties
+
   validates_presence_of :title
 
   accepts_nested_attributes_for :list_items, allow_destroy: true
