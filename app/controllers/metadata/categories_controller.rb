@@ -1,8 +1,12 @@
 class Metadata::CategoriesController < Metadata::ApplicationController
-  before_action :find_category, only: [:show, :edit, :update, :destroy]
+  before_action :find_category, only: [:add_parent_params, :show, :edit, :update, :destroy]
 
   def index
     @categories = Category.roots.ordered
+  end
+
+  def add_parent_params
+    @properties = @category.ancestors.map(&:properties).flatten
   end
 
   def new
@@ -59,10 +63,11 @@ class Metadata::CategoriesController < Metadata::ApplicationController
   private
   def category_params
     #raise params.inspect
-    params.require(:category).permit(:title, :parent_id)
+    params.require(:category).permit(:title, :parent_id, property_ids: [])
   end
 
   def find_category
+    #raise params.inspect
     @category = Category.find(params[:id])
   end
 end

@@ -16,12 +16,9 @@ class Advert < ActiveRecord::Base
   private
   def build_empty_values
     return unless category
-
-    category.path.each do |category|
       category.properties.each do |property|
         values << property.values.new unless values.select {|v| v.property == property}.any?
       end
-    end
   end
 
   searchable include: [:values] do

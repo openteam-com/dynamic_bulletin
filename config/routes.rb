@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   namespace :metadata do
     resources :categories do
       resources :categories
+      get 'add_parent_params'
       get 'update_property_position', on: :collection
 
       resources :properties do

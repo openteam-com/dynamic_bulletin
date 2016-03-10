@@ -1,4 +1,3 @@
--#= raise params.inspect
 = simple_nested_form_for [:metadata, @category], remote: define_remote(params) do |f|
   = f.input :title
   = f.input :parent_id, input_html: { value: params[:parent_id] }, as: :hidden if params[:parent_id]
