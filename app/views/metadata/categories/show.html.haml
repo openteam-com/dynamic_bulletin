@@ -1,4 +1,3 @@
-= render partial: 'parent', collection: [@category.ancestors], as: :parents
 
 .row
   .col-xs-9
@@ -14,6 +13,8 @@
     %ul.js-sortable-wrapper{data: { path: update_property_position_metadata_categories_path  }}
       - @category.properties.each do |property|
         %li.js-sortable-item{data: { id: property.id  }}= "#{link_to property, metadata_category_property_path(@category, property)} | #{link_to 'Редактировать', edit_metadata_category_property_path(@category, property)} | #{link_to 'Удалить аттрибут', metadata_category_property_path(@category, property), method: :delete, data: { confirm: 'Вы уверены?' }} (#{property.kind_text}) <span class='glyphicon glyphicon-resize-vertical js-handle-sortable sortable' aria-hidden='true'></span>".html_safe
+    =link_to 'Добавить родительский атрибут', metadata_category_add_parent_params_path(@category, id: @category)
+
 
     .categories.js-categories
       %h4='Вложенные категории'

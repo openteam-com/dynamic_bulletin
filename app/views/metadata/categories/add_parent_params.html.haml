@@ -1,0 +1,5 @@
+= simple_nested_form_for [:metadata, @category] do |f|
+  = f.input :property_ids,
+    as: :check_boxes,
+    collection: @properties
+  = f.submit
