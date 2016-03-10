@@ -4,3 +4,10 @@ app:
 
 solr:
   url:
+
+mail:
+  address:
+  port:
+  domain:
+  login:
+  password:
