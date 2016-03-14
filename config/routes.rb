@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       get 'update_property_position', on: :collection
 
       resources :properties do
+        resources :category_properties
         resources :list_items
         resources :hierarch_list_items do
           resources :hierarch_list_items

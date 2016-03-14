@@ -6,7 +6,7 @@ class Metadata::CategoriesController < Metadata::ApplicationController
   end
 
   def add_parent_params
-    @properties = @category.ancestors.map(&:properties).flatten
+    @properties = (@category.ancestors.map(&:properties).flatten + @category.properties).uniq
   end
 
   def new
@@ -42,14 +42,13 @@ class Metadata::CategoriesController < Metadata::ApplicationController
   end
 
   def destroy
-    if @category.destroy
-      if @category.parent.present?
-        @parent = @category.parent
+      @parent = @category.parent
+      @category.destroy
+      unless @parent.nil?
         render partial: 'children', locals: { category: @parent } and return if request.xhr?
       else
-        respond_with @category, location: -> { metadata_categories_path }
+        redirect_to location: -> { metadata_categories_path }
       end
-    end
   end
 
   def update_property_position
@@ -62,12 +61,10 @@ class Metadata::CategoriesController < Metadata::ApplicationController
 
   private
   def category_params
-    #raise params.inspect
     params.require(:category).permit(:title, :parent_id, property_ids: [])
   end
 
   def find_category
-    #raise params.inspect
     @category = Category.find(params[:id])
   end
 end

@@ -1,12 +1,14 @@
 = simple_nested_form_for [:metadata, @category, @property] do |f|
   = f.input :kind, :as => :hidden
+  = f.simple_fields_for @category_property do |cat_pro|
+    -#= raise cat_pro.object.inspect
+    = cat_pro.input :necessarily
+    = cat_pro.input :category_id, :input_html => { :value => @category.id }, :as => :hidden
+    - unless @property.kind == 'string' || @property.kind == 'integer'
+      = cat_pro.input :show_on_public
+      = cat_pro.input :show_as, include_blank: false
+  %hr
   = f.input :title
-  = f.input :necessarily
-
-  - unless @property.kind == 'string' || @property.kind == 'integer'
-    = f.input :show_on_public
-    = f.input :show_as, include_blank: false
-
   = render :partial => "metadata/properties_fields/#{@property.kind}_fields", locals: {:f => f}
 
   = f.submit

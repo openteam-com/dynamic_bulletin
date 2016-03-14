@@ -1,0 +1,2 @@
+module Metadata::CategoryPropertiesHelper
+end

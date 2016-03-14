@@ -16,7 +16,8 @@ class Category < ActiveRecord::Base
   scope :ordered, -> {order('title')}
 
   def all_properties
-    #path.map(&:properties).map(&:with_public).map(&:filterable).flatten
+
+    category_properties.where(:show_on_public => :true).map(&:property).flatten
   end
 end
 
