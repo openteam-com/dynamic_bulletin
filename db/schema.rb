@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160310044950) do
+ActiveRecord::Schema.define(version: 20160313073221) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,9 @@ ActiveRecord::Schema.define(version: 20160310044950) do
     t.integer  "property_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "show_on_public", default: true
+    t.boolean  "necessarily",    default: false
+    t.string   "show_as",        default: "check_boxes"
   end
 
   create_table "hierarch_list_items", force: :cascade do |t|
@@ -78,16 +81,10 @@ ActiveRecord::Schema.define(version: 20160310044950) do
   create_table "properties", force: :cascade do |t|
     t.string   "kind"
     t.string   "title"
-    t.integer  "category_id"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer  "row_order"
-    t.boolean  "show_on_public", default: true
-    t.string   "show_as",        default: "check_boxes"
-    t.boolean  "necessarily",    default: false
   end
-
-  add_index "properties", ["category_id"], name: "index_properties_on_category_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -134,7 +131,6 @@ ActiveRecord::Schema.define(version: 20160310044950) do
   add_foreign_key "adverts", "categories"
   add_foreign_key "hierarch_list_items", "properties"
   add_foreign_key "list_items", "properties"
-  add_foreign_key "properties", "categories"
   add_foreign_key "values", "adverts"
   add_foreign_key "values", "properties"
 end
