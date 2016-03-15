@@ -13,8 +13,6 @@
 class CategoriesController < ApplicationController
   include Breadcrumbs
 
-  after_action :initialize_breadcrumbs
-
   def index
     @categories = Category.all
   end
@@ -33,10 +31,11 @@ class CategoriesController < ApplicationController
       end.results
     end
 
-    breadcrumbs_create(@category)
+    initialize_breadcrumbs
   end
 
   def initialize_breadcrumbs
-    breadcrumbs_create(@category) rescue nil
+    breadcrumbs_create(@category)
+    add_breadcrumb  @category
   end
 end
