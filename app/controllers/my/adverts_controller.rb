@@ -35,7 +35,6 @@ class My::AdvertsController < My::ApplicationController
   end
 
   def show
-    initialize_breadcrumbs
   end
 
   def update
@@ -87,8 +86,8 @@ class My::AdvertsController < My::ApplicationController
   end
 
   def initialize_breadcrumbs
-    breadcrumbs_create(@category)
-    add_breadcrumb @category, category_path(@category)
+    breadcrumbs_create(@advert.category)
+    add_breadcrumb @advert.category, category_path(@advert.category)
     add_breadcrumb @advert
   end
 end

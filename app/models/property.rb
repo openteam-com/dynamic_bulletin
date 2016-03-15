@@ -7,8 +7,6 @@ class Property < ActiveRecord::Base
 
   default_scope { by_position }
 
-  #belongs_to :category
-
   has_many :values, dependent: :destroy
   has_many :list_items, dependent: :destroy
   has_many :hierarch_list_items, dependent: :destroy

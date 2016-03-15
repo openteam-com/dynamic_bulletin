@@ -24,10 +24,8 @@ class CategoriesController < ApplicationController
       @adverts = @category.adverts
     else
       @adverts = @category.adverts.search do
-        any_of do
-          with :list_item_ids, params.try(:[], 'search').try(:[], 'list_items')
-          with :hierarch_list_item_ids, params.try(:[], 'search').try(:[], 'hierarch_list_items')
-        end
+        with :list_item_ids, params.try(:[], 'search').try(:[], 'list_items')
+        with :hierarch_list_item_ids, params.try(:[], 'search').try(:[], 'hierarch_list_items')
       end.results
     end
 
