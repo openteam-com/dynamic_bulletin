@@ -33,3 +33,4 @@ dump.rdb
 /contest_templates
 *.swp
 *~
+/solr

@@ -16,8 +16,16 @@ class Category < ActiveRecord::Base
   scope :ordered, -> {order('title')}
 
   def all_properties
+    properties = []
+    catpro = category_properties.where(:show_on_public => :true)
+    catpro.each do |cp|
+      if ["limited_list", "unlimited_list", "hierarch_limited_list"].include? cp.property.kind
+        properties << cp.property
+      end
+    end
+    #raise properties.inspeCt
+    properties
 
-    category_properties.where(:show_on_public => :true).map(&:property).flatten
   end
 end
 
