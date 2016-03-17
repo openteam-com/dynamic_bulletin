@@ -5,10 +5,6 @@ class Metadata::CategoriesController < Metadata::ApplicationController
     @categories = Category.roots.ordered
   end
 
-  def add_parent_params
-    @properties = (@category.ancestors.map(&:properties).flatten + @category.properties).uniq
-  end
-
   def new
     @category = Category.new
   end
@@ -22,7 +18,7 @@ class Metadata::CategoriesController < Metadata::ApplicationController
       end
       render :show and return
     else
-      render :new and return
+      render :new, :locals => {:parent_id => @category.parent} and return
     end
   end
 

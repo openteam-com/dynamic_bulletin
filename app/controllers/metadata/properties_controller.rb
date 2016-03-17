@@ -12,6 +12,7 @@ class Metadata::PropertiesController < Metadata::ApplicationController
     @property = Property.create property_params
 
     respond_with @property, location: -> { new_metadata_category_property_category_property_path(@category, @property, :params => category_property_params) }
+
   end
 
   def edit
