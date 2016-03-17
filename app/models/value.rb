@@ -35,30 +35,11 @@ class Value < ActiveRecord::Base
     end
   end
 
-  #Property.kind.values
-  def property_necessarily_set_for_string?
-    CategoryProperty.where(:property_id => property, :category_id => category_id).first.necessarily && property.kind == 'string'
+  Property.kind.values.each do |value|
+    define_method "property_necessarily_set_for_#{value}?" do
+      CategoryProperty.find_by(property_id: property, category_id: category_id).necessarily && property.kind == value
+    end
   end
-
-  def property_necessarily_set_for_integer?
-    CategoryProperty.where(:property_id => property, :category_id => category_id).first.necessarily && property.kind == 'integer'
-  end
-
-  def property_necessarily_set_for_limited_list?
-    CategoryProperty.where(:property_id => property, :category_id => category_id).first.necessarily  && property.kind == 'limited_list'
-  end
-
-  def property_necessarily_set_for_unlimited_list?
-    CategoryProperty.where(:property_id => property, :category_id => category_id).first.necessarily  && property.kind == 'unlimited_list'
-  end
-
-  def property_necessarily_set_for_hierarch_limited_list?
-    CategoryProperty.where(:property_id => property, :category_id => category_id).first.necessarily  && property.kind == 'hierarch_limited_list'
-  end
-
-  #def presence_of_list_items
-    #errors.add(:list_items, 'ola') if list_items.empty?
-  #end
 end
 
 # == Schema Information
