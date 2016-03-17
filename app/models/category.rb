@@ -23,9 +23,7 @@ class Category < ActiveRecord::Base
         properties << cp.property
       end
     end
-    #raise properties.inspeCt
     properties
-
   end
 end
 
