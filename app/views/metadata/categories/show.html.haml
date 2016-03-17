@@ -12,9 +12,14 @@
 .row
   .col-xs-6
     %h4='Аттрибуты'
-    %ul.js-sortable-wrapper{data: { path: update_property_position_metadata_categories_path  }}
-      - @category.properties.each do |property|
-        %li.js-sortable-item{data: { id: property.id  }}= "#{link_to property, metadata_category_property_path(@category, property)} | #{link_to 'Редактировать', edit_metadata_category_property_path(@category, property) } | #{link_to 'Удалить аттрибут', metadata_category_property_path(@category, property), method: :delete, data: { confirm: 'Вы уверены?' }} (#{property.kind_text}) <span class='glyphicon glyphicon-resize-vertical js-handle-sortable sortable' aria-hidden='true'></span>".html_safe
+    %ul.js-sortable-wrapper{data: { path: update_category_property_position_metadata_categories_path  }}
+      - if !@category.parent.nil?
+        - @category.properties.each do |property|
+          %li.js-sortable-item{data: { id: @category.category_properties.where(:property_id => property.id).first.id }}= "#{link_to property, metadata_category_property_path(@category, property)} | #{link_to 'Редактировать', edit_metadata_category_property_path(@category, property) } | #{link_to 'Удалить аттрибут', metadata_category_property_path(@category, property), method: :delete, data: { confirm: 'Вы уверены?' }} (#{property.kind_text}) <span class='glyphicon glyphicon-resize-vertical js-handle-sortable sortable' aria-hidden='true'></span>".html_safe
+      - else
+        - @category.properties.each do |property|
+          %li.js-sortable-item{data: { id: @category.category_properties.where(:property_id => property.id).first.id }}= "#{link_to property, metadata_category_property_path(@category, property)} | #{link_to 'Редактировать', edit_metadata_category_property_path(@category, property) } | #{link_to 'Удалить аттрибут', metadata_category_property_path(@category, property), method: :delete, data: { confirm: 'Вы уверены?' }} (#{property.kind_text})".html_safe
+
     =link_to 'Управление атрибутами', metadata_category_add_parent_params_path(@category, id: @category)
 
 

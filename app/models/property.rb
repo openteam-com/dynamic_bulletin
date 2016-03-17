@@ -1,11 +1,5 @@
 class Property < ActiveRecord::Base
-  #include RankedModel
-  #ranks :row_order, with_same: :category_id
 
-  scope :by_position, -> { order('row_order') }
-  scope :filterable, -> { where(kind: [:limited_list, :unlimited_list, :hierarch_limited_list]) }
-
-  default_scope { by_position }
 
   has_many :values, dependent: :destroy
   has_many :list_items, dependent: :destroy

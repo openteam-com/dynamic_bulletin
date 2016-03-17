@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     resources :categories do
       resources :categories
       get 'add_parent_params'
-      get 'update_property_position', on: :collection
+      get 'update_category_property_position', on: :collection
 
       resources :properties do
         resources :category_properties

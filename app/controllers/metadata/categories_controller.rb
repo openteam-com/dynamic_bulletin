@@ -51,9 +51,9 @@ class Metadata::CategoriesController < Metadata::ApplicationController
       end
   end
 
-  def update_property_position
+  def update_category_property_position
     if request.xhr?
-      Property.find(params[:id]).update_attribute :row_order_position, params[:row_order]
+      CategoryProperty.find(params[:id]).update_attribute :row_order_position, params[:row_order]
 
       render nothing: true and return
     end
