@@ -1,0 +1,7 @@
+- @category_properties = (@category.ancestors.map(&:category_properties).flatten + @category.category_properties).uniq
+= simple_nested_form_for [:metadata, @category] do |f|
+  = f.input :property_ids,
+    as: :check_boxes,
+    collection: @category_properties.map(&:property).flatten.uniq,
+    :label_method => lambda { |item| "#{item}  (#{@category_properties.select{|cp| cp.property == item}.first.category.title})".html_safe }
+  = f.submit

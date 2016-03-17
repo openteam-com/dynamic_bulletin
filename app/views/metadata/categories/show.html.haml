@@ -19,8 +19,8 @@
       - else
         - @category.properties.each do |property|
           %li.js-sortable-item{data: { id: @category.category_properties.where(:property_id => property.id).first.id }}= "#{link_to property, metadata_category_property_path(@category, property)} | #{link_to 'Редактировать', edit_metadata_category_property_path(@category, property) } | #{link_to 'Удалить аттрибут', metadata_category_property_path(@category, property), method: :delete, data: { confirm: 'Вы уверены?' }} (#{property.kind_text})".html_safe
-
-    =link_to 'Управление атрибутами', metadata_category_add_parent_params_path(@category, id: @category)
+    - unless @category.has_children?
+      =link_to 'Управление атрибутами', metadata_category_parent_params_path(@category, id: @category)
 
 
     .categories.js-categories
