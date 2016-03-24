@@ -1,5 +1,6 @@
 = simple_nested_form_for [:metadata, @category], remote: define_remote(params) do |f|
   = f.input :title
-  = f.input :parent_id, input_html: { value: params[:parent_id] }, as: :hidden if params[:parent_id]
-
+  = f.input :parent_id, input_html: { value: params[:parent_id]}, as: :hidden  if params[:parent_id]
+  = f.input :parent_id, input_html: { value: params[:category][:parent_id]}, as: :hidden  if params[:category]
+  = f.input :parent_id, input_html: { value: params[:category_id]}, as: :hidden  if params[:category_id]
   = f.submit

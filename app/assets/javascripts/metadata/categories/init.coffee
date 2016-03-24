@@ -36,16 +36,35 @@
   true
 
 @init_handle_ajax_new_category_form = ->
-  $('.js-categories').on 'ajax:success', (evt, response)->
-    $('.js-dialog').append response
-
+  $('.js-link-to-add').on 'ajax:success', (evt, response)->
+    $('.js-dialog-to-add').append response
     return
 
-  $('.js-dialog').on 'ajax:success', (evt, response)->
+  $('.js-dialog-to-add').on 'ajax:success', (evt, response)->
     if $(response).find('.help-block').length
       $(this).html(response)
     else
-      $(this).empty()
       $('.js-children').html(response)
+      $(this).empty()
+    return
+
+@init_handle_ajax_edit_category_form = ->
+  $(document).on 'ajax:success', '.js-link-to-edit', (evt, response)->
+    child_id = $(this).data('id')
+    $('.js-child[data-id="' + child_id  + '"]').html response
+    $('.js-child[data-id="' + child_id  + '"]').addClass "editing"
+    return
+
+  $(document).on 'ajax:success', '.editing', (evt, response)->
+    if $(response).find('.help-block').length
+      $(this).html(response)
+    else
+      $('.js-children').html(response)
+      $(this).removeClass "editing"
+    return
+
+@init_handle_ajax_destroy_category = ->
+  $(document).on 'ajax:success', '.js-link-to-destroy', (evt, response)->
+    $('.js-children').html(response)
     return
   return

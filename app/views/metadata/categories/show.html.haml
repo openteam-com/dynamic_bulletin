@@ -7,7 +7,7 @@
     %h2= @category
 
   .col-xs-3
-    %p= "#{link_to 'Редактировать', edit_metadata_category_path(@category)} | #{link_to 'Удалить', metadata_category_path(@category), method: :delete, data: { confirm: 'Вы уверены?' }} | #{link_to 'Вернуться', metadata_categories_path}".html_safe
+    %p= "#{link_to 'Редактировать', edit_metadata_category_path(@category, remote: false)} | #{link_to 'Удалить', metadata_category_path(@category), method: :delete, data: { confirm: 'Вы уверены?' }} | #{link_to 'Вернуться', metadata_categories_path}".html_safe
 
 .row
   .col-xs-6
@@ -25,10 +25,14 @@
 
     .categories.js-categories
       %h4='Вложенные категории'
-      =link_to 'Добавить вложенную категорию', new_metadata_category_category_path(@category, parent_id: @category), remote: true
 
       %ul.js-children
         = render partial: 'children', locals: { category: @category }
+      .dialog.js-dialog-to-add
+      .js-link-to-edit
+      .js-link-to-destroy
+      .js-link-to-add
+        =link_to 'Добавить вложенную категорию', new_metadata_category_category_path(@category, parent_id: params[:id]), remote: true
 
   .col-xs-6
     %h4='Добавление нового аттрибута'
@@ -37,4 +41,3 @@
 
       = f.submit 'Добавить', class: 'btn btn-success'
 
-.dialog.js-dialog
