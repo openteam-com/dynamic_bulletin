@@ -1,6 +1,4 @@
 class Property < ActiveRecord::Base
-
-
   has_many :values, dependent: :destroy
   has_many :list_items, dependent: :destroy
   has_many :hierarch_list_items, dependent: :destroy
@@ -24,14 +22,9 @@ end
 #
 # Table name: properties
 #
-#  id             :integer          not null, primary key
-#  kind           :string
-#  title          :string
-#  category_id    :integer
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  row_order      :integer
-#  show_on_public :boolean          default(TRUE)
-#  show_as        :string           default("check_boxes")
-#  necessarily    :boolean          default(FALSE)
+#  id         :integer          not null, primary key
+#  kind       :string
+#  title      :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
