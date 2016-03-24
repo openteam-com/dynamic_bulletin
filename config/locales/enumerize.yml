@@ -4,6 +4,7 @@ ru:
       kind:
         integer: 'Числовое значение'
         string: 'Строковое значение'
+        float: 'Числовое значение с точкой'
         limited_list: 'Ограниченный список'
         hierarch_limited_list: 'Дерево значений'
         unlimited_list: 'Список с выбором значений'

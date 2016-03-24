@@ -12,6 +12,7 @@ class Value < ActiveRecord::Base
 
   validates_presence_of :string_value, if: :property_necessarily_set_for_string?
   validates_presence_of :integer_value, if: :property_necessarily_set_for_integer?
+  validates_presence_of :float_value, if: :property_necessarily_set_for_float?
   validates_presence_of :list_item, if: :property_necessarily_set_for_limited_list?
   validates_presence_of :hierarch_list_item, if: :property_necessarily_set_for_hierarch_limited_list?
   validates_presence_of :list_items, if: :property_necessarily_set_for_unlimited_list?
@@ -22,6 +23,8 @@ class Value < ActiveRecord::Base
     case property.kind.to_sym
     when :string
       string_value
+    when :float
+      float_value
     when :integer
       integer_value
     when :limited_list
@@ -55,4 +58,5 @@ end
 #  list_item_id          :integer
 #  integer_value         :integer
 #  hierarch_list_item_id :integer
+#  float_value           :float
 #
