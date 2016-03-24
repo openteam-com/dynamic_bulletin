@@ -1,5 +1,6 @@
 class Value < ActiveRecord::Base
   attr_accessor :hierarch_list_item_parent_id
+  attr_accessor :category_id
 
   belongs_to :advert
   belongs_to :property
@@ -14,8 +15,6 @@ class Value < ActiveRecord::Base
   validates_presence_of :list_item, if: :property_necessarily_set_for_limited_list?
   validates_presence_of :hierarch_list_item, if: :property_necessarily_set_for_hierarch_limited_list?
   validates_presence_of :list_items, if: :property_necessarily_set_for_unlimited_list?
-  #validates_presence_of :list_items#,
-  #validate :presence_of_list_items
 
   validates_uniqueness_of :property_id, scope: :advert_id
 
@@ -36,30 +35,11 @@ class Value < ActiveRecord::Base
     end
   end
 
-  #Property.kind.values
-  def property_necessarily_set_for_string?
-    property.necessarily && property.kind == 'string'
+  Property.kind.values.each do |value|
+    define_method "property_necessarily_set_for_#{value}?" do
+      CategoryProperty.find_by(property_id: property, category_id: category_id).necessarily && property.kind == value
+    end
   end
-
-  def property_necessarily_set_for_integer?
-    property.necessarily && property.kind == 'integer'
-  end
-
-  def property_necessarily_set_for_limited_list?
-    property.necessarily && property.kind == 'limited_list'
-  end
-
-  def property_necessarily_set_for_unlimited_list?
-    property.necessarily && property.kind == 'unlimited_list'
-  end
-
-  def property_necessarily_set_for_hierarch_limited_list?
-    property.necessarily && property.kind == 'hierarch_limited_list'
-  end
-
-  #def presence_of_list_items
-    #errors.add(:list_items, 'ola') if list_items.empty?
-  #end
 end
 
 # == Schema Information

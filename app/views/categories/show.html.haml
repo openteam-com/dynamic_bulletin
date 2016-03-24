@@ -13,8 +13,6 @@
                 %li
                   - @category.all_properties.each do |property|
                     %h3= property
-                    -#= raise property.inspect
-
                     - if property.kind.to_s != 'hierarch_limited_list'
                       = f.input :list_items,
                         as: :check_boxes,

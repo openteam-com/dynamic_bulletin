@@ -1,5 +1,7 @@
 %h2 Справочник значений
+
 = f.simple_fields_for :list_items do |item_form|
-  = item_form.input :title
-  = item_form.link_to_remove 'Удалить'
-= f.link_to_add 'Добавить', :list_items
+  = item_form.input :title, input_html: { disabled: can_change_property_fields?(@category, @property) ? false : true }
+  = item_form.link_to_remove 'Удалить' if can_change_property_fields?(@category, @property)
+
+= f.link_to_add 'Добавить', :list_items if can_change_property_fields?(@category, @property)

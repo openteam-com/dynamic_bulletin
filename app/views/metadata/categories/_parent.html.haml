@@ -4,10 +4,3 @@
       .col-xs-9
         %p= link_to category, metadata_category_path(category)
 
-    .row
-      .col-xs-6
-        %h4='Аттрибуты'
-        %ul
-        - category.properties.each do |property|
-          %li= "#{link_to property, edit_metadata_category_property_path(category, property)}".html_safe
-    %hr

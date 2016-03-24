@@ -1,5 +1,5 @@
 class Metadata::CategoriesController < Metadata::ApplicationController
-  before_action :find_category, only: [:show, :edit, :update, :destroy]
+  before_action :find_category, only: [:add_parent_params, :show, :edit, :update, :destroy]
 
   def index
     @categories = Category.roots.ordered
@@ -11,16 +11,15 @@ class Metadata::CategoriesController < Metadata::ApplicationController
 
   def create
     @category = Category.new(category_params)
-
     if @category.save
-      render partial: 'children', locals: { category: @category.parent } and return if request.xhr?
-
+      if !@category.parent.nil?
+        render partial: 'children', locals: { category: @category.parent } and return if request.xhr?
+        @category = @category.parent
+      end
       render :show and return
     else
-      render :new and return
+      render :new, :locals => {:parent_id => @category.parent} and return
     end
-
-    #respond_with @category, location: -> { [:metadata, @category.parent.present? ? @category.parent : @category]}
   end
 
   def edit
@@ -30,20 +29,27 @@ class Metadata::CategoriesController < Metadata::ApplicationController
   end
 
   def update
-    @category.update(category_params)
-
-    respond_with @category, location: -> { metadata_category_path(@category)  }
+    if @category.update(category_params)
+      render partial: 'children', locals: { category: @category.parent } and return if request.xhr?
+      render :show and return
+    else
+      render :edit and return
+    end
   end
 
   def destroy
-    @category.destroy
-
-    respond_with @category, location: -> { metadata_categories_path }
+      @parent = @category.parent
+      @category.destroy
+      unless @parent.nil?
+        render partial: 'children', locals: { category: @parent } and return if request.xhr?
+      else
+        redirect_to location: -> { metadata_categories_path }
+      end
   end
 
-  def update_property_position
+  def update_category_property_position
     if request.xhr?
-      Property.find(params[:id]).update_attribute :row_order_position, params[:row_order]
+      CategoryProperty.find(params[:id]).update_attribute :row_order_position, params[:row_order]
 
       render nothing: true and return
     end
@@ -51,7 +57,7 @@ class Metadata::CategoriesController < Metadata::ApplicationController
 
   private
   def category_params
-    params.require(:category).permit(:title, :parent_id)
+    params.require(:category).permit(:title, :parent_id, property_ids: [])
   end
 
   def find_category

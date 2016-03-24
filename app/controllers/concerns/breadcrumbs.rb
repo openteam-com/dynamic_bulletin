@@ -13,7 +13,5 @@ module Breadcrumbs
     bread.reverse!.each do |b|
       add_breadcrumb b, category_path(b)
     end
-
-    add_breadcrumb entity
   end
 end

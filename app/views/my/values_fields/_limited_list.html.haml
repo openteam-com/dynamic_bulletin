@@ -2,8 +2,8 @@
 
 = f.input :list_item_id,
   label: f.object.property.title,
-  label_html: f.object.errors.size != 0 ? {:class => "label-error"} : {:class => ""},
-  error: false,
-  as: :select,
-  collection: f.object.property.list_items,
-  input_html: f.object.errors.size != 0 ? { class: "select-error" } : {:class => ""}
+    label_html: f.object.errors.size != 0 ? {:class => "label-error"} : {:class => ""},
+    error: false,
+    as: property_show_as(f.object, @advert.category.id),
+    collection: f.object.property.list_items,
+    input_html: f.object.errors.size != 0 ? { class: "select-error" } : {:class => ""}

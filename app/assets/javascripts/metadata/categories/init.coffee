@@ -14,7 +14,6 @@
       item_id = ui.item.data('id')
       ui.item.effect('highlight', 1500)
       position = ui.item.index()
-
       $.ajax
         type: 'get'
         url: path
@@ -38,16 +37,15 @@
 
 @init_handle_ajax_new_category_form = ->
   $('.js-categories').on 'ajax:success', (evt, response)->
-    $('.js-dialog').html(response).dialog()
+    $('.js-dialog').append response
 
     return
 
   $('.js-dialog').on 'ajax:success', (evt, response)->
     if $(response).find('.help-block').length
-      $(this).html(response).dialog()
+      $(this).html(response)
     else
-      $(this).dialog('close')
+      $(this).empty()
       $('.js-children').html(response)
-
     return
   return

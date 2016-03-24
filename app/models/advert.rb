@@ -10,19 +10,15 @@ class Advert < ActiveRecord::Base
   alias_attribute :to_s, :title
 
   def title
-    values.first.value.presence || description
+    values.first.value || description
   end
 
   private
   def build_empty_values
     return unless category
-
-    category.path.each do |category|
       category.properties.each do |property|
         values << property.values.new unless values.select {|v| v.property == property}.any?
       end
-    end
-    #set_presences_validate
   end
 
   searchable include: [:values] do
