@@ -5,7 +5,7 @@
     = cat_pro.input :category_id, :input_html => { :value => @category.id }, :as => :hidden
     - unless @category.has_children?
       = cat_pro.input :necessarily
-      - unless @property.kind == 'string' || @property.kind == 'integer'
+      - unless @property.kind == 'string' || @property.kind == 'integer' || @property.kind == 'float'
         = cat_pro.input :show_on_public
         = cat_pro.input :show_as, include_blank: false
 

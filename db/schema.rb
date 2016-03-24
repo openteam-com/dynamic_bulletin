@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160315081637) do
+ActiveRecord::Schema.define(version: 20160324024109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 20160315081637) do
     t.integer  "list_item_id"
     t.integer  "integer_value"
     t.integer  "hierarch_list_item_id"
+    t.float    "float_value"
   end
 
   add_index "values", ["advert_id"], name: "index_values_on_advert_id", using: :btree
