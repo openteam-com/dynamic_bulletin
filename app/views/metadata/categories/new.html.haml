@@ -1,2 +1,3 @@
 = render partial: 'form'
-%p= link_to 'Отмена', metadata_categories_path
+- if params[:remote] == 'false'
+  %p= link_to 'Отмена', metadata_categories_path

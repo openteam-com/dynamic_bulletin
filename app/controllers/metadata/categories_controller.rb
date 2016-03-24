@@ -1,5 +1,5 @@
 class Metadata::CategoriesController < Metadata::ApplicationController
-  before_action :find_category, only: [:add_parent_params, :show, :edit, :update, :destroy]
+  before_action :find_category, only: [:show, :edit, :destroy]
 
   def index
     @categories = Category.roots.ordered
@@ -12,13 +12,10 @@ class Metadata::CategoriesController < Metadata::ApplicationController
   def create
     @category = Category.new(category_params)
     if @category.save
-      if !@category.parent.nil?
-        render partial: 'children', locals: { category: @category.parent } and return if request.xhr?
-        @category = @category.parent
-      end
-      render :show and return
+      render partial: 'children', locals: { category: @category.parent } and return if request.xhr?
+      redirect_to metadata_category_path(@category)
     else
-      render :new, :locals => {:parent_id => @category.parent} and return
+      render :new and return
     end
   end
 
@@ -31,20 +28,21 @@ class Metadata::CategoriesController < Metadata::ApplicationController
   def update
     if @category.update(category_params)
       render partial: 'children', locals: { category: @category.parent } and return if request.xhr?
-      render :show and return
+      redirect_to metadata_category_path(@category)
     else
       render :edit and return
     end
   end
 
   def destroy
+    if @category.parent
       @parent = @category.parent
       @category.destroy
-      unless @parent.nil?
-        render partial: 'children', locals: { category: @parent } and return if request.xhr?
-      else
-        redirect_to location: -> { metadata_categories_path }
-      end
+      render partial: 'children', locals: { category: @parent } and return if request.xhr?
+    else
+      @category.destroy
+      redirect_to metadata_categories_path
+    end
   end
 
   def update_category_property_position
