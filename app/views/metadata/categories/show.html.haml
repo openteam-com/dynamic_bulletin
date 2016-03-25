@@ -28,11 +28,16 @@
 
       %ul.js-children
         = render partial: 'children', locals: { category: @category }
+
       .dialog.js-dialog-to-add
       .js-link-to-edit
       .js-link-to-destroy
       .js-link-to-add
         =link_to 'Добавить вложенную категорию', new_metadata_category_category_path(@category, parent_id: params[:id]), remote: true
+      %hr
+      .js-link-to-add-existed
+        =link_to 'Добавить существующую категорию', metadata_category_add_existed_path(@category)
+
 
   .col-xs-6
     %h4='Добавление нового аттрибута'

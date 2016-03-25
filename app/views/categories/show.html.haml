@@ -2,7 +2,7 @@
 
 %h3= @category
 
-- unless @category.children.present?
+- unless @category.inserted.present?
   .row
     .col-xs-12
       = simple_form_for :search, url: category_path(@category), method: :get do |f|
@@ -29,8 +29,8 @@
 
         = f.submit 'Search'
 
-- if @category.children.present?
-  - @category.children.each do |child|
+- if @category.inserted.present?
+  - @category.inserted.each do |child|
     = link_to child, category_path(child)
 - else
   %ul
