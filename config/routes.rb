@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   namespace :metadata do
     resources :categories do
+      get 'add_existed'
+      get 'remove_link'
       resources :categories
       get 'parent_params'
       get 'update_category_property_position', on: :collection

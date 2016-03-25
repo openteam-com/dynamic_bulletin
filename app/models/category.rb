@@ -1,6 +1,8 @@
 class Category < ActiveRecord::Base
-  has_many :adverts, dependent: :destroy
+  belongs_to :link, foreign_key: "connect_with_id", class_name: 'Category'
 
+  has_many :links, foreign_key: "connect_with_id", class_name: 'Category'
+  has_many :adverts, dependent: :destroy
   has_many :category_properties, dependent: :destroy
   has_many :properties, through: :category_properties
   has_many :old_properties, foreign_key: 'category_id', class_name: 'Property'
@@ -14,6 +16,8 @@ class Category < ActiveRecord::Base
   alias_attribute :to_s, :title
 
   scope :ordered, -> {order('title')}
+  scope :not_connected, -> {where(:connect_with_id == nil)}
+  scope :connected, -> {where(:connect_with_id != nil)}
 
   def all_properties
     properties = []
@@ -25,6 +29,11 @@ class Category < ActiveRecord::Base
     end
     properties
   end
+
+  def inserted
+    links.flatten + children.flatten
+  end
+
 end
 
 # == Schema Information
