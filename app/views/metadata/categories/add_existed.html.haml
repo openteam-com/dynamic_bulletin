@@ -5,13 +5,16 @@
     = simple_nested_form_for [:metadata, @category] do |f|
       %ul
         - @categories.each do |category|
-          - if category != @category
-            %li
-              = f.input :link_ids, as: :check_boxes, collection: [category], label: false
-              - if category.link.present?
-                = "(Прикреплён к #{category.link})"
-              %span.glyphicon.glyphicon-plus.js-handle-hidden
-              = render partial: 'recursive_children', locals: { :f => f, :category => category, :current_category => @category }
+          %li
+            = f.input :link_ids,
+              as: :check_boxes,
+              collection: [category],
+              :disabled => (category != @category && !@category.children.try(:include?, category) && !@category.ancestors.try(:include?, category) && !@category.link.try(:ancestors).try(:include?, category) && category != @category.link) ? false : true,
+              label: false
+            - if category.link.present?
+              = "(Прикреплён к #{category.link})"
+            %span.glyphicon.glyphicon-plus.js-handle-hidden
+            = render partial: 'recursive_children', locals: { :f => f, :category => category, :current_category => @category }
 
       = f.submit
 
