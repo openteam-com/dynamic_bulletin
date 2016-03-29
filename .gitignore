@@ -34,3 +34,4 @@ dump.rdb
 *.swp
 *~
 /solr
+*.swn

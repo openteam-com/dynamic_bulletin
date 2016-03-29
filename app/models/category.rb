@@ -20,14 +20,13 @@ class Category < ActiveRecord::Base
   scope :connected, -> {where(:connect_with_id != nil)}
 
   def all_properties
-    properties = []
-    catpro = category_properties.where(:show_on_public => :true)
-    catpro.each do |cp|
-      if ["limited_list", "unlimited_list", "hierarch_limited_list"].include? cp.property.kind
-        properties << cp.property
+    array = []
+    properties.each do |property|
+      if ["limited_list", "unlimited_list", "hierarch_limited_list"].include? property.kind
+        array << property
       end
     end
-    properties
+    array
   end
 
   def inserted
