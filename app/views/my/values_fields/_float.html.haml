@@ -1,1 +1,5 @@
-= f.input :float_value, error: false, label: f.object.property.title
+= f.input :float_value,
+  input_html: f.object.errors.size != 0 ? { class: "input-error"} : { class: "" },
+  label_html: f.object.errors.size != 0 ? { class: "label-error"} : { class: "" },
+  error: false,
+  label: f.object.property.title

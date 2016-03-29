@@ -19,11 +19,13 @@ ru:
             string_value:
               blank: "Введите значение"
             integer_value:
-              blank: "Заполните значение"
+              blank: "Заполните поле"
+            float_value:
+              blank: "Заполните поле"
             list_item:
               blank: "Выберите значение"
             hierarch_list_item:
-              blank: "Выберите значение"
+              blank: "Выберите значения"
             list_items:
               blank: "Выберите значения"
         list_item:

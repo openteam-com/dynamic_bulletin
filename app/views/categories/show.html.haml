@@ -26,7 +26,9 @@
                       - property.hierarch_list_items.each do |parent|
                         = parent
                         = f.input :hierarch_list_items,
-                          as: :check_boxes,
+                          as: property.category_properties.where(:category_id => @category.id).first.show_as,
+                          label: false,
+                          input_html: { multiple: true },
                           collection: parent.children,
                           selected: params.try(:[], 'search').try(:[], 'hierarch_list_items').to_a.compact,
                           checked: params.try(:[], 'search').try(:[], 'hierarch_list_items').to_a.compact
