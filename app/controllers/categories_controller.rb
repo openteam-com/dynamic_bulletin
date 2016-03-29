@@ -19,13 +19,14 @@ class CategoriesController < ApplicationController
 
   def show
     @category = Category.find(params[:id])
-
     unless params[:utf8]
       @adverts = @category.adverts
     else
       @adverts = @category.adverts.search do
-        with :list_item_ids, params.try(:[], 'search').try(:[], 'list_items')
-        with :hierarch_list_item_ids, params.try(:[], 'search').try(:[], 'hierarch_list_items')
+        any_of do
+          with :list_item_ids, params.try(:[], 'search').try(:[], 'list_items')
+          with :hierarch_list_item_ids, params.try(:[], 'search').try(:[], 'hierarch_list_items')
+        end
       end.results
     end
 

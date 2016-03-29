@@ -10,21 +10,25 @@
           %ul
             - if @category.all_properties.any?
               .col-xs-2
-                %li
-                  - @category.all_properties.each do |property|
-                    %h3= property
+                - @category.all_properties.each do |property|
+                  %li
+                    %h4= property
                     - if property.kind.to_s != 'hierarch_limited_list'
                       = f.input :list_items,
-                        as: :check_boxes,
+                        label: false,
+                        as: property.category_properties.where(:category_id => @category.id).first.show_as,
+                        input_html: { multiple: true },
                         collection: property.list_items,
-                        checked: params.try(:[], 'search').try(:[], 'list_items').to_a.compact
+                        checked: params.try(:[], 'search').try(:[], 'list_items').to_a.compact,
+                        selected: params.try(:[], 'search').try(:[], 'list_items').to_a.compact
 
-                    - if property.kind.to_s == 'hierarch_limited_list'
+                    - else
                       - property.hierarch_list_items.each do |parent|
                         = parent
                         = f.input :hierarch_list_items,
                           as: :check_boxes,
                           collection: parent.children,
+                          selected: params.try(:[], 'search').try(:[], 'hierarch_list_items').to_a.compact,
                           checked: params.try(:[], 'search').try(:[], 'hierarch_list_items').to_a.compact
 
         = f.submit 'Search'
