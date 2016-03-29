@@ -2,7 +2,7 @@
 -#= raise f.object.hierarch_list_item.inspect
 - parent_class = ['js-get-list-items-parent']
 - unless f.object.errors.blank?
-  - parent_class << 'select-error'
+  - parent_class << 'input-error'
 
 = f.input :hierarch_list_item_parent_id,
   label: f.object.property.title,
@@ -10,17 +10,19 @@
   as: :select,
   collection: f.object.property.hierarch_list_items,
   input_html: { class: parent_class },
-  :selected => params[:action] == 'edit' && !f.object.hierarch_list_item.nil? ? f.object.hierarch_list_item.parent.id : nil,
+  :selected => !f.object.hierarch_list_item.nil? ? f.object.hierarch_list_item.parent.id : nil,
   :include_blank => true
+
 - children_class = ['js-get-list-items-children']
 - unless f.object.errors.blank?
-  - children_class << 'select-error'
-- unless params[:action] == 'edit' && f.object.hierarch_list_item != nil
+  - children_class << 'input-error'
+- if f.object.hierarch_list_item == nil
   - children_class << 'hidden'
+
 = f.input :hierarch_list_item_id,
   label: false,
   as: :select,
   :include_blank => true,
-  collection: params[:action] == 'edit' && f.object.hierarch_list_item != nil ? f.object.hierarch_list_item.parent.children : [1, 2],
+  collection: f.object.hierarch_list_item != nil ? f.object.hierarch_list_item.parent.children : [1, 2],
   input_html:{ class: children_class },
-  :selected => params[:action] == 'edit' && !f.object.hierarch_list_item.nil? ? f.object.hierarch_list_item.id : nil
+  :selected => !f.object.hierarch_list_item.nil? ? f.object.hierarch_list_item.id : nil
