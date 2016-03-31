@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       get 'remove_link'
       resources :categories
       get 'parent_params'
-      get 'update_category_property_position', on: :collection
+      put 'update_category_property_position', on: :collection
 
       resources :properties do
         resources :category_properties
