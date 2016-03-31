@@ -27,7 +27,7 @@ class My::AdvertsController < My::ApplicationController
       respond_with @advert, location: -> { [:my, @advert] }
     else
       @advert.valid?
-        render :new and return
+      render :new and return
     end
   end
 
