@@ -1,5 +1,5 @@
 = simple_nested_form_for [:metadata, @category, @property] do |f|
-  = f.input :kind, :as => :hidden
+  = f.input :kind
   = f.simple_fields_for @category_property do |cat_pro|
     = cat_pro.input :category_id, :input_html => { :value => @category.id }, :as => :hidden
     = cat_pro.input :necessarily
