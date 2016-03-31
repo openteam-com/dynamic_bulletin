@@ -1,6 +1,6 @@
 = simple_form_for [:my, @advert] do |f|
   = f.input :category_id, as: :hidden
-  = f.input :user_id, as: :hidden
+  = f.input :user_id, input_html: { value: current_user.id }, as: :hidden
 
   = f.simple_fields_for :values do |value_form|
     = value_form.input :property_id, as: :hidden
