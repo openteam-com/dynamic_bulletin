@@ -14,15 +14,15 @@
       item_id = ui.item.data('id')
       ui.item.effect('highlight', 1500)
       position = ui.item.index()
-      console.log item_id
       $.ajax
         type: 'put'
         url: path
         dataType: 'json'
         data: {
-          category_property_id: item_id
+          id: item_id,
           row_order: position
         }
+
       return
     true
   true
