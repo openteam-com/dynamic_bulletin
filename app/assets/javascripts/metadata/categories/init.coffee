@@ -14,6 +14,7 @@
       item_id = ui.item.data('id')
       ui.item.effect('highlight', 1500)
       position = ui.item.index()
+      console.log ui.item.index()
       $.ajax
         type: 'get'
         url: path

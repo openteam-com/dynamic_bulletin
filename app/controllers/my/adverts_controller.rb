@@ -10,8 +10,8 @@ class My::AdvertsController < My::ApplicationController
 
   def new
     if @category
-      if @category.children.present?
-        @categories = @category.children
+      if @category.inserted.present?
+        @categories = @category.inserted
       else
         @advert = @category.adverts.build
       end

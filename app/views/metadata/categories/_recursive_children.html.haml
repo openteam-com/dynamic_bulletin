@@ -1,0 +1,14 @@
+%ul.js-can-hidden.can-hidden
+  - category.children.each do |child|
+    %li
+      = f.input :link_ids,
+        as: :check_boxes,
+        collection: [child],
+        :disabled => (child != current_category && !current_category.children.try(:include?, child) && !current_category.try(:ancestors).try(:include?, child) && !current_category.try(:link).try(:ancestors).try(:include?, child) && child != current_category.link) ? false : true,
+        label: false
+      - if child.link.present?
+        = "(Прикреплён к #{ child.link })"
+      - if child.children.present?
+        %span.glyphicon.glyphicon-plus.js-handle-hidden
+        = render partial: 'recursive_children', locals: { :f => f, :category => child, :current_category => current_category }
+

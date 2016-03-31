@@ -34,6 +34,16 @@ class Metadata::CategoriesController < Metadata::ApplicationController
     end
   end
 
+  def add_existed
+    @category = Category.find(params[:category_id])
+    @categories = Category.roots.ordered
+  end
+
+  def remove_link
+    Category.find(params[:category_id]).update_column(:connect_with_id,  nil)
+    render partial: 'children', locals: { category: Category.find(params[:parent_id]) } and return
+  end
+
   def destroy
     if @category.parent
       @parent = @category.parent
@@ -46,16 +56,13 @@ class Metadata::CategoriesController < Metadata::ApplicationController
   end
 
   def update_category_property_position
-    if request.xhr?
-      CategoryProperty.find(params[:id]).update_attribute :row_order_position, params[:row_order]
-
-      render nothing: true and return
-    end
+    CategoryProperty.find(params[:id]).update_attribute(:row_order_position, params[:row_order])
+    render nothing: true and return
   end
 
   private
   def category_params
-    params.require(:category).permit(:title, :parent_id, property_ids: [])
+    params.require(:category).permit(:title, :parent_id, property_ids: [], link_ids: [])
   end
 
   def find_category

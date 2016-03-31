@@ -8,7 +8,7 @@
       = cat_pro.input :show_as,
         as: :select,
         collection: [:check_boxes, :radio_buttons, :select],
-        selected: @property.kind == 'limited_list' ? :select : :check_boxes,
+        selected: @property.kind == 'limited_list' || @property.kind == 'hierarch_limited_list' ? :select : :check_boxes,
         include_blank: false
 
   %hr
