@@ -1,5 +1,4 @@
 %h4= 'Категории'
 - @categories.each do |category|
-  - unless category.parent.present?
-    = link_to category, category_path(category)
-    = '|'
+  = link_to category, category_path(category)
+  = '|'

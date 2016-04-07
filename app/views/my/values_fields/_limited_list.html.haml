@@ -4,6 +4,6 @@
   label: f.object.property.title,
     label_html: f.object.errors.size != 0 ? {:class => "label-error"} : {:class => ""},
     error: false,
-    as: property_show_as(f.object, @advert.category.id),
+    as: :select,
     collection: f.object.property.list_items,
-    input_html: f.object.errors.size != 0 ? { class: "input-error" } : {:class => ""}
+    input_html: { class: f.object.errors.size.zero? ? nil : "input-error" }

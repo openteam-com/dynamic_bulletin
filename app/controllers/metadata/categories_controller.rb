@@ -13,7 +13,8 @@ class Metadata::CategoriesController < Metadata::ApplicationController
     @category = Category.new(category_params)
     if @category.save
       render partial: 'children', locals: { category: @category.parent } and return if request.xhr?
-      redirect_to metadata_category_path(@category)
+
+      respond_with @category, location: -> { [:metadata, @category] }
     else
       render :new and return
     end
@@ -28,7 +29,8 @@ class Metadata::CategoriesController < Metadata::ApplicationController
   def update
     if @category.update(category_params)
       render partial: 'children', locals: { category: @category.parent } and return if request.xhr?
-      redirect_to metadata_category_path(@category)
+
+      respond_with @category, location: -> { [:metadata, @category] }
     else
       render :edit and return
     end
@@ -41,6 +43,7 @@ class Metadata::CategoriesController < Metadata::ApplicationController
 
   def remove_link
     Category.find(params[:category_id]).update_column(:connect_with_id,  nil)
+
     render partial: 'children', locals: { category: Category.find(params[:parent_id]) } and return
   end
 
@@ -57,6 +60,7 @@ class Metadata::CategoriesController < Metadata::ApplicationController
 
   def update_category_property_position
     CategoryProperty.find(params[:category_property_id]).update_attribute :row_order_position, params[:row_order]
+
     render nothing: true and return
   end
 
