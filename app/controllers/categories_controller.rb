@@ -18,6 +18,7 @@ class CategoriesController < ApplicationController
   end
 
   def show
+    #raise params.inspect
     @category = Category.find(params[:id])
     unless params[:utf8]
       @adverts = @category.adverts

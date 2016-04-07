@@ -46,7 +46,7 @@ class Metadata::PropertiesController < Metadata::ApplicationController
   def category_property_params
     params.
       require(:property).require(:category_property).
-      permit(:show_on_public, :show_as, :necessarily, :category_id)
+      permit(:show_on_public, :show_as, :necessarily, :category_id, :show_on_filter_as)
   end
 
   def find_category

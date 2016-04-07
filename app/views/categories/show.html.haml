@@ -16,7 +16,7 @@
                     - if property.kind.to_s != 'hierarch_limited_list'
                       = f.input :list_items,
                         label: false,
-                        as: property.category_properties.where(:category_id => @category.id).first.show_as,
+                        as: property.category_properties.where(:category_id => @category.id).first.show_on_filter_as,
                         input_html: { multiple: true },
                         collection: property.list_items,
                         checked: params.try(:[], 'search').try(:[], 'list_items').to_a.compact,
