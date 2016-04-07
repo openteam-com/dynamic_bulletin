@@ -11,3 +11,6 @@ mail:
   domain:
   login:
   password:
+
+importers:
+  auto_importer_json_link:
