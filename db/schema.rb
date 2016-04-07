@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160324072710) do
+ActiveRecord::Schema.define(version: 20160407025137) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,10 +42,11 @@ ActiveRecord::Schema.define(version: 20160324072710) do
     t.integer  "property_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "show_on_public", default: true
-    t.boolean  "necessarily",    default: false
-    t.string   "show_as",        default: "check_boxes"
+    t.boolean  "show_on_public",    default: true
+    t.boolean  "necessarily",       default: false
+    t.string   "show_as",           default: "check_boxes"
     t.integer  "row_order"
+    t.string   "show_on_filter_as"
   end
 
   create_table "hierarch_list_items", force: :cascade do |t|
