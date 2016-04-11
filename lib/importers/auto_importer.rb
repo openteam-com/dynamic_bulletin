@@ -1,7 +1,7 @@
 require 'progress_bar'
-require_relative '../parsers/trucks.rb'
+
 class AutoImporter
-  attr_reader :data, :type
+  attr_reader :data, :type, :property
 
   def initialize(type = 'cars')
     @type = type
@@ -12,33 +12,25 @@ class AutoImporter
   def select_type
     case type
     when 'cars'
-      RestClient::Request.execute(method: :get, url: Settings['importers.auto_importer_json_link']) do |response, request, result, &block|
-        @data = JSON.load response
-      end
+      @data = JSON.load CarsParser.new(url: Settings['importers.cars_url']).do_parse
+      @property = Property.find_or_create_by!(id: 88, title: 'Марка и модель')
+
     when 'trucks'
-      @data = JSON.load TruckParser.new(url: "http://trucks.auto.ru/trucks/").do_parse
+      @data = JSON.load TrucksParser.new(url: Settings['importers.trucks_url']).do_parse
+      @property = Property.find_or_create_by!(id: 114, title: 'Марка и модель')
     end
   end
 
   def do_import
-    case type
-    when 'cars', 'trucks'
-      pb = ProgressBar.new data.count
-      if type == 'cars'
-        property_id = 88
-      else
-        property_id = 114
+    pb = ProgressBar.new data.count
+    data.each do |mark, models|
+      parent = property.hierarch_list_items.find_or_create_by title: mark
+
+      models.each do |model|
+        parent.children.find_or_create_by title: model
       end
 
-      data.each do |mark, models|
-        parent = HierarchListItem.find_or_create_by title: mark, property_id: property_id
-
-        models.each do |model|
-          parent.children.find_or_create_by title: model
-        end
-
-        pb.increment!
-      end
+      pb.increment!
     end
   end
 end
