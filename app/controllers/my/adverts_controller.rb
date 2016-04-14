@@ -71,6 +71,7 @@ class My::AdvertsController < My::ApplicationController
       permit(:description, :category_id, :user_id,
              values_attributes: [:string_value, :integer_value, :float_value,
                                  :property_id, :id,
+                                 :boolean_value,
                                  :list_item_id,
                                  :hierarch_list_item_id,
                                  :category_id,

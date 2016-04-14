@@ -1,0 +1,6 @@
+= f.input :boolean_value,
+  as: :boolean,
+  error: false,
+  input_html: f.object.errors.size != 0 ? { class: "input-error"} : { class: "" },
+  label_html: f.object.errors.size != 0 ? { class: "label-error"} : { class: "" },
+  label: f.object.property.title

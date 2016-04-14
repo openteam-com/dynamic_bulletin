@@ -59,4 +59,5 @@ end
 #  integer_value         :integer
 #  hierarch_list_item_id :integer
 #  float_value           :float
+#  boolean_value         :boolean
 #
