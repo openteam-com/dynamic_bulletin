@@ -13,4 +13,5 @@ mail:
   password:
 
 importers:
-  auto_importer_json_link:
+  cars_url:
+  trucks_url:
