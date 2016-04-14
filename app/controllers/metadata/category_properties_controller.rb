@@ -17,7 +17,6 @@ class Metadata::CategoryPropertiesController < ApplicationController
                               :show_as => params[:show_as],
                               :show_on_public => params[:show_on_public],
                               :show_on_filter_as => params[:show_on_filter_as])
-    redirect_to metadata_category_path(@category)
 
     redirect_to metadata_category_path(@category)
   end
