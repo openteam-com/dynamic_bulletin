@@ -10,14 +10,14 @@ class Value < ActiveRecord::Base
   has_many :list_item_values
   has_many :list_items, through: :list_item_values
 
-  validates_presence_of :string_value, if: :property_necessarily_set_for_string?
-  validates_presence_of :integer_value, if: :property_necessarily_set_for_integer?
-  validates_presence_of :float_value, if: :property_necessarily_set_for_float?
-  validates_presence_of :list_item, if: :property_necessarily_set_for_limited_list?
-  validates_presence_of :hierarch_list_item, if: :property_necessarily_set_for_hierarch_limited_list?
-  validates_presence_of :list_items, if: :property_necessarily_set_for_unlimited_list?
+  #validates_presence_of :string_value, if: :property_necessarily_set_for_string?
+  #validates_presence_of :integer_value, if: :property_necessarily_set_for_integer?
+  #validates_presence_of :float_value, if: :property_necessarily_set_for_float?
+  #validates_presence_of :list_item, if: :property_necessarily_set_for_limited_list?
+  #validates_presence_of :hierarch_list_item, if: :property_necessarily_set_for_hierarch_limited_list?
+  #validates_presence_of :list_items, if: :property_necessarily_set_for_unlimited_list?
 
-  validates_uniqueness_of :property_id, scope: :advert_id
+  #validates_uniqueness_of :property_id, scope: :advert_id
 
   def value
     case property.kind.to_sym
@@ -38,11 +38,11 @@ class Value < ActiveRecord::Base
     end
   end
 
-  Property.kind.values.each do |value|
-    define_method "property_necessarily_set_for_#{value}?" do
-      CategoryProperty.find_by(property_id: property, category_id: category_id).necessarily && property.kind == value
-    end
-  end
+  #Property.kind.values.each do |value|
+    #define_method "property_necessarily_set_for_#{value}?" do
+      #CategoryProperty.find_by(property_id: property, category_id: category_id).necessarily && property.kind == value
+    #end
+  #end
 end
 
 # == Schema Information

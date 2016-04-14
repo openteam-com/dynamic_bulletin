@@ -26,6 +26,13 @@ ActiveRecord::Schema.define(version: 20160414043755) do
 
   add_index "adverts", ["category_id"], name: "index_adverts_on_category_id", using: :btree
 
+  create_table "avito_data", force: :cascade do |t|
+    t.text     "data"
+    t.integer  "rest_app_category_id"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
   create_table "categories", force: :cascade do |t|
     t.string   "title"
     t.datetime "created_at",                  null: false

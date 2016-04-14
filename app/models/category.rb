@@ -19,6 +19,10 @@ class Category < ActiveRecord::Base
   scope :not_connected, -> {where(:connect_with_id == nil)}
   scope :connected, -> {where(:connect_with_id != nil)}
 
+  #searchable  do
+    #text :title
+  #end
+
   def all_properties
     [].tap do |array|
       properties.each do |property|
