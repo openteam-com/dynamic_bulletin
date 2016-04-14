@@ -20,6 +20,7 @@ module DynamicBulletin
                               #{config.root}/lib/importers
                               #{config.root}/lib/parsers
                               #{config.root}/lib/parsers/auto
+                              #{config.root}/lib/parsers/avito
                               #{config.root}/lib/tasks/*
                               ]
   end
