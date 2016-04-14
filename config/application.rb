@@ -18,6 +18,7 @@ module DynamicBulletin
                               #{config.root}/lib
                               #{config.root}/lib/searchers
                               #{config.root}/lib/importers
+                              #{config.root}/lib/importers/avito
                               #{config.root}/lib/parsers
                               #{config.root}/lib/parsers/auto
                               #{config.root}/lib/parsers/avito
