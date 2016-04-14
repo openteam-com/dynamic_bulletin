@@ -16,7 +16,7 @@ class Property < ActiveRecord::Base
 
   extend Enumerize
   enumerize :kind,
-    in: [:string, :integer, :float, :limited_list, :unlimited_list, :hierarch_limited_list]
+    in: [:string, :integer, :float, :boolean, :limited_list, :unlimited_list, :hierarch_limited_list]
 end
 
 # == Schema Information
