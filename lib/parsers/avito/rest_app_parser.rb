@@ -29,7 +29,7 @@ class RestAppParser
   def url_with_payload
     # 24 - Квартиры
     # 657310 - Томская область
-    url + "?login=bvm@ai-factory.com" +
+    url + "?login=systemofadown.2013@yandex.ru" +
       "&token=#{token}" +
       "&category_id=#{category_id}" +
       "&region_id=657310" +
