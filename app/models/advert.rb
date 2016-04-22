@@ -2,7 +2,7 @@ class Advert < ActiveRecord::Base
   belongs_to :category
   belongs_to :user
 
-  has_many :values, dependent: :destroy
+  has_many :values, dependent: :delete_all
   accepts_nested_attributes_for :values
 
   after_initialize :build_empty_values, if: :new_record?
