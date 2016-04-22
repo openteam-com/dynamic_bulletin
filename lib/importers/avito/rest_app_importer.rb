@@ -27,7 +27,6 @@ module Avito
               self_category = Category.find(17) if arr[0] < 92
               finded_age = nil
               max = 0
-              puts self_category.title
               property = self_category.properties.where('title ilike ?', '%возраст%').first
               property.list_items.each do |list_item|
                 arr2 = list_item.title.split[-2]#размер одежды на доске
@@ -42,7 +41,6 @@ module Avito
               end
             end
           end
-
 
           advert = self_category.adverts.new(description: adv['description'])
           advert.save
@@ -114,36 +112,40 @@ module Avito
       if adv["params"][1]["value"] == "Обувь"
         property = self_category.properties.where('title ilike ?', "%размер%").first
         size = property.list_items.where('title ilike ?', "%#{adv["params"][2].try(:[],"value")}%").first
-        property.values.create list_item_id: size.id, advert_id: advert.id if size.present?
+        property.values.create list_item_ids: size.id, advert_id: advert.id if size.present?
       else
+        property = self_category.properties.where('title ilike ?', "%возраст%").first
         if self_category.id != 17#не новорожденные
+          property.values.create list_item_id: finded_age.id, advert_id: advert.id if !finded_age.nil?
           property = self_category.properties.where('title ilike ?', "%предмет одежды%").first
           type = property.list_items.where('title ilike ?', "%#{adv["params"][1]["value"]}%").first
           property.values.create list_item_id: type.id, advert_id: advert.id if type.present?
+        else
+          property.values.create list_item_ids: finded_age.id, advert_id: advert.id if !finded_age.nil?
         end
-        property = self_category.properties.where('title ilike ?', "%возраст%").first
-        property.values.create list_item_id: finded_age.id, advert_id: advert.id if finded_age.present?
       end
 
+      season = nil
+      desc_adv = adv['description'].mb_chars.downcase.to_s
+      title_adv = adv['title'].mb_chars.downcase.to_s
       property = self_category.properties.where('title ilike ?', "%по сезону%").first
-      if !adv['title'].mb_chars.downcase.to_s["зим"].nil?
+      if desc_or_title_inc?(desc_adv, title_adv, ["зим"])
         season = property.list_items.where(:title => "Зимняя").first
-      elsif !adv['title'].mb_chars.downcase.to_s["весн"].nil?  && !adv['title'].mb_chars.downcase.to_s["осен"].nil?
+      elsif desc_or_title_inc?(desc_adv, title_adv, ["демисез", "д/с", "весна-осень", "осень-весна"])
         season = property.list_items.where(:title => "Демисезонная").first
-      elsif !adv['title'].mb_chars.downcase.to_s["летн"].nil? || !adv['title'].mb_chars.downcase.to_s["лето"].nil?
+      elsif desc_or_title_inc?(desc_adv, title_adv, ["летн", "лето"])
         season = property.list_items.where(:title => "Лентняя и домашняя").first
       end
-      property.values.create list_item_id: season.id, advert_id: advert.id if season.present?
+      property.values.create list_item_id: season.id, advert_id: advert.id if !season.nil?
+    end
 
-
-      puts self_category.title
-      puts self_category.id
-      puts adv["params"]
-      puts size.try(:title)
-      puts type.try(:title)
-      puts season.try(:title)
-      puts finded_age.try(:title)
-
+    def desc_or_title_inc?(d, t, arr)
+      arr.each do |sub|
+        if !d[sub].nil? || !t[sub].nil?
+          return true
+        end
+      end
+      false
     end
   end
 
