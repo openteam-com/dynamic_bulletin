@@ -10,17 +10,53 @@ module Avito
         self_category = Category.find(categories_hash.self_category_id)
 
         info['data'].each do |adv|
+
+          if info.rest_app_category_id == 29
+            case adv["params"][0]["value"]
+            when "Для девочек"
+              self_category = Category.find(adv["params"][1]["value"] == "Обувь" ? 19 : 16)
+            when "Для мальчиков"
+              self_category = Category.find(adv["params"][1]["value"] == "Обувь" ? 18 : 15)
+            end
+            if adv["params"][2].present?
+              arr = adv["params"][2]["value"].split.first.split('-').map(&:to_i)#размер одежды на авито
+            end
+            if arr.try(:size) == 2 && (self_category.id == 16 || self_category.id == 15)
+              arr = arr[0]..arr[1]
+              arr = arr.to_a
+              self_category = Category.find(17) if arr[0] < 92
+              finded_age = nil
+              max = 0
+              puts self_category.title
+              property = self_category.properties.where('title ilike ?', '%возраст%').first
+              property.list_items.each do |list_item|
+                arr2 = list_item.title.split[-2]#размер одежды на доске
+                arr2 = arr2.slice(1, arr2.size).split('-').map(&:to_i)
+                arr2 = arr2[0]..arr2[1]
+                arr2 = arr2.to_a
+                mult_arr =  arr & arr2
+                if mult_arr.size > max
+                  max = mult_arr.size
+                  finded_age = list_item
+                end
+              end
+            end
+          end
+
+
           advert = self_category.adverts.new(description: adv['description'])
           advert.save
 
           price = self_category.
             properties.
             where('title ilike ? OR title ilike ?', '%цена%', '%стоимость%').first
-
           price.values.create integer_value: adv['price'], advert_id: advert.id if price.present?
 
           if info.rest_app_category_id == 9
             CarValues.new(self_category, adv, advert)
+          end
+          if info.rest_app_category_id == 29
+            ChildValues.new(self_category, adv, advert, finded_age)
           end
         end
         bar.increment!
@@ -32,18 +68,18 @@ module Avito
     def initialize(self_category, adv, advert)
       # массив параметров автомобиля
       mark, model, volume, transmission, year, body_type = adv['title'].squish.split(' ')
-      
+
       mark_and_model = self_category.properties.where('title ilike ?', '%марка и модель%').first
       if volume.to_f == 0.0
         m1, m2, m3, volume, transmission, year, body_type = adv['title'].squish.split(' ')
         finded_mark = mark_and_model.hierarch_list_items.where('title ilike ?', "%#{m1}%").first
-	if finded_mark.present?
-	  mark = m1
-	  model = m2 + ' ' +  m3
-	else
-	  mark = m1 + ' ' + m2
-	  model = m3
-	end
+        if finded_mark.present?
+          mark = m1
+          model = m2 + ' ' +  m3
+        else
+          mark = m1 + ' ' + m2
+          model = m3
+        end
       end
       unless mark == 'Другая'
         finded_mark = mark_and_model.hierarch_list_items.where('title ilike ?', "%#{mark}%").first
@@ -73,6 +109,44 @@ module Avito
     end
   end
 
+  class ChildValues
+    def initialize(self_category, adv, advert, finded_age)
+      if adv["params"][1]["value"] == "Обувь"
+        property = self_category.properties.where('title ilike ?', "%размер%").first
+        size = property.list_items.where('title ilike ?', "%#{adv["params"][2].try(:[],"value")}%").first
+        property.values.create list_item_id: size.id, advert_id: advert.id if size.present?
+      else
+        if self_category.id != 17#не новорожденные
+          property = self_category.properties.where('title ilike ?', "%предмет одежды%").first
+          type = property.list_items.where('title ilike ?', "%#{adv["params"][1]["value"]}%").first
+          property.values.create list_item_id: type.id, advert_id: advert.id if type.present?
+        end
+        property = self_category.properties.where('title ilike ?', "%возраст%").first
+        property.values.create list_item_id: finded_age.id, advert_id: advert.id if finded_age.present?
+      end
+
+      property = self_category.properties.where('title ilike ?', "%по сезону%").first
+      if !adv['title'].mb_chars.downcase.to_s["зим"].nil?
+        season = property.list_items.where(:title => "Зимняя").first
+      elsif !adv['title'].mb_chars.downcase.to_s["весн"].nil?  && !adv['title'].mb_chars.downcase.to_s["осен"].nil?
+        season = property.list_items.where(:title => "Демисезонная").first
+      elsif !adv['title'].mb_chars.downcase.to_s["летн"].nil? || !adv['title'].mb_chars.downcase.to_s["лето"].nil?
+        season = property.list_items.where(:title => "Лентняя и домашняя").first
+      end
+      property.values.create list_item_id: season.id, advert_id: advert.id if season.present?
+
+
+      puts self_category.title
+      puts self_category.id
+      puts adv["params"]
+      puts size.try(:title)
+      puts type.try(:title)
+      puts season.try(:title)
+      puts finded_age.try(:title)
+
+    end
+  end
+
   class ComparisonCategories
     attr_reader :rest_app_category
 
@@ -99,6 +173,11 @@ module Avito
           rest_app_category_id: 24,
           root_category_id: 338,
           self_category_id: 339
+        },
+        {
+          rest_app_category_id: 29,
+          root_category_id: 5,
+          self_category_id: 6
         }
       ]
     end
