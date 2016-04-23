@@ -11,7 +11,8 @@ module Avito
 
         info['data'].each do |adv|
 
-          if info.rest_app_category_id == 29
+          case info.rest_app_category_id #поиск вложенной категории - вынести?
+          when 29
             case adv["params"][0]["value"]
             when "Для девочек"
               self_category = Category.find(adv["params"][1]["value"] == "Обувь" ? 19 : 16)
@@ -40,6 +41,17 @@ module Avito
                 end
               end
             end
+          when 24
+            case adv["params"][0]["value"]
+            when "Продам"
+              self_category = Category.find(adv["params"][1]["value"] == "Вторичка" ? 344 : 345)
+            when "Сдам"
+              self_category = Category.find(adv["params"][1]["value"] == "Посуточно" ? 347 : 346)
+            when "Куплю"
+              self_category = Category.find(348)
+            when "Сниму"
+              self_category = Category.find(adv["params"][1]["value"] == "Посуточно" ? 351 : 350)
+            end
           end
 
           advert = self_category.adverts.new(description: adv['description'])
@@ -50,11 +62,13 @@ module Avito
             where('title ilike ? OR title ilike ?', '%цена%', '%стоимость%').first
           price.values.create integer_value: adv['price'], advert_id: advert.id if price.present?
 
-          if info.rest_app_category_id == 9
+          case info.rest_app_category_id
+          when 9
             CarValues.new(self_category, adv, advert)
-          end
-          if info.rest_app_category_id == 29
+          when 29
             ChildValues.new(self_category, adv, advert, finded_age)
+          when 24
+            ApartmentValues.new(self_category, adv, advert)
           end
         end
         bar.increment!
@@ -146,6 +160,47 @@ module Avito
         end
       end
       false
+    end
+  end
+
+  class ApartmentValues
+    def initialize(self_category, adv, advert)
+      title_parse = adv['title'].split(',')
+      if ["Вторичка ", "Новостройка", "На длительный срок", "Посуточно"].include? self_category.title #пробел во вторичке
+        property = self_category.properties.where(:title => "Тип дома").first
+        find_type = property.list_items.where('title ilike ?', "%#{adv["params"].find {|i| i["name"] == "Тип дома"}["value"]}%").first if !property.nil?
+        property.values.create list_item_ids: find_type.id, advert_id: advert.id if !find_type.nil?
+
+        if title_parse.count > 1
+          area = title_parse[1].split[0].to_f
+          floor, all_floor = title_parse[2].split[0].split('/')
+
+          property = self_category.properties.where(:title => "Площадь").first
+          property.values.create float_value: area, advert_id: advert.id
+
+          property = self_category.properties.where(:title => "Этаж").first
+          find_value = property.list_items.where('title ilike ?', "%#{floor}%").first
+          property.values.create list_item_id: find_value.id, advert_id: advert.id
+
+          property = self_category.properties.where(:title => "Этажей в доме").first
+          find_value = property.list_items.where('title ilike ?', "%#{all_floor}%").first
+          property.values.create list_item_id: find_value.id, advert_id: advert.id
+        end
+      end
+
+      rooms = title_parse[0].split[0].split('-')[0] if title_parse.count > 1
+      property = self_category.properties.where(:title => "Количество комнат").first
+      if rooms.to_i != 0
+        find_value = property.list_items.where('title ilike ?', "%#{rooms}%").first
+      elsif rooms.to_i > 9
+        find_value = property.list_items.where(:title => '> 9').first
+      elsif !adv['title'].mb_chars.downcase.to_s["студи"].nil?
+        find_value = property.list_items.where(:title => 'Студия').first
+      else
+        rooms = adv['title'].split.find {|i| i["-к"]}.split('-')[0]
+        find_value = property.list_items.where('title ilike ?', "%#{rooms}%").first
+      end
+      property.values.create list_item_id: find_value.id, advert_id: advert.id if !find_value.nil?
     end
   end
 
