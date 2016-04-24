@@ -52,6 +52,14 @@ module Avito
             when "Сниму"
               self_category = Category.find(adv["params"][1]["value"] == "Посуточно" ? 351 : 350)
             end
+          when 27
+            if adv["params"][0]["value"] == "Аксессуары"
+              self_category = Category.find(42) #"Другие" из данных нельзя узнать какие именно аксессуары
+            elsif adv["params"][0]["value"] == "Женская одежда"
+              self_category = Category.find(adv["params"][1]["value"] == "Обувь" ? 40 : 38)
+            else
+              self_category = Category.find(adv["params"][1]["value"] == "Обувь" ? 41 : 530)
+            end
           end
 
           advert = self_category.adverts.new(description: adv['description'])
@@ -69,6 +77,8 @@ module Avito
             ChildValues.new(self_category, adv, advert, finded_age)
           when 24
             ApartmentValues.new(self_category, adv, advert)
+          when 27
+            ClothesValues.new(self_category, adv, advert)
           end
         end
         bar.increment!
@@ -204,6 +214,41 @@ module Avito
     end
   end
 
+  class ClothesValues
+    def initialize(self_category, adv, advert)
+      if self_category.parent.title == "Одежда"
+        if !adv["params"][2].nil? && adv["params"][2]["name"] == "Размер"
+          property = self_category.properties.where('title ilike ?', "%размер%").first
+          size = adv["params"][2]["value"].split[0].split("–")
+          if size.count == 2
+            size = size[0] + "-" + size[1]
+          else
+            size = "Без размера"
+          end
+          find_size = property.list_items.where('title ilike ?', "%#{size}%").first
+          if self_category.title == "Для мужчин"
+            property.values.create list_item_id: find_size.id, advert_id: advert.id
+          else
+            property.values.create list_item_ids: find_size.id, advert_id: advert.id
+          end
+        end
+        property = self_category.properties.where('title ilike ?', "%предмет%").first
+        adv["params"][1]["value"] = "Футболки" if adv["params"][1]["value"] == "Трикотаж и футболки"
+        find_value = property.list_items.where('title ilike ?', "%#{adv["params"][1]["value"]}%").first
+        if self_category.title == "Для мужчин"
+          property.values.create list_item_id: find_value.id, advert_id: advert.id
+        else
+          property.values.create list_item_ids: find_value.id, advert_id: advert.id
+        end
+      elsif self_category.parent.title == "Обувь"
+        property = self_category.properties.where('title ilike ?', "%размер%").first
+        find_value = property.list_items.where('title ilike ?', "%#{adv["params"][2]["value"]}%").first
+        property.values.create list_item_id:  find_value.id, advert_id: advert.id
+      end
+    end
+  end
+
+
   class ComparisonCategories
     attr_reader :rest_app_category
 
@@ -235,6 +280,11 @@ module Avito
           rest_app_category_id: 29,
           root_category_id: 5,
           self_category_id: 6
+        },
+        {
+          rest_app_category_id: 27,
+          root_category_id: 35,
+          self_category_id: 35
         }
       ]
     end
