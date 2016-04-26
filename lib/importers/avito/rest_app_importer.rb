@@ -15,17 +15,17 @@ module Avito
           when 29
             case adv["params"][0]["value"]
             when "Для девочек"
-              self_category = Category.find(adv["params"][1]["value"] == "Обувь" ? 19 : 16)
+              self_category = Category.find(adv["params"][1]["value"] == "Обувь" ? categories_hash.girls.shoes : categories_hash.girls.clothes)
             when "Для мальчиков"
-              self_category = Category.find(adv["params"][1]["value"] == "Обувь" ? 18 : 15)
+              self_category = Category.find(adv["params"][1]["value"] == "Обувь" ? categories_hash.boys.shoes : categories_hash.boys.clothes)
             end
             if adv["params"][2].present?
               arr = adv["params"][2]["value"].split.first.split('-').map(&:to_i)#размер одежды на авито
             end
-            if arr.try(:size) == 2 && (self_category.id == 16 || self_category.id == 15)
+            if arr.try(:size) == 2 && (self_category.parent.title == "Детская одежда")
               arr = arr[0]..arr[1]
               arr = arr.to_a
-              self_category = Category.find(17) if arr[0] < 92
+              self_category = Category.find(categories_hash.newborns) if arr[0] < 92
               finded_age = nil
               max = 0
               property = self_category.properties.where('title ilike ?', '%возраст%').first
@@ -44,21 +44,46 @@ module Avito
           when 24
             case adv["params"][0]["value"]
             when "Продам"
-              self_category = Category.find(adv["params"][1]["value"] == "Вторичка" ? 344 : 345)
+              self_category = Category.find(adv["params"][1]["value"] == "Вторичка" ? categories_hash.selling.resale : categories_hash.selling.new_building)
             when "Сдам"
-              self_category = Category.find(adv["params"][1]["value"] == "Посуточно" ? 347 : 346)
+              self_category = Category.find(adv["params"][1]["value"] == "Посуточно" ? categories_hash.for_rent.daily : categories_hash.for_rent.for_a_long_time)
             when "Куплю"
-              self_category = Category.find(348)
+              self_category = Category.find(categories_hash.buy.resale)
             when "Сниму"
-              self_category = Category.find(adv["params"][1]["value"] == "Посуточно" ? 351 : 350)
+              self_category = Category.find(adv["params"][1]["value"] == "Посуточно" ? categories_hash.take_off.daily : categories_hash.take_off.for_a_long_time)
             end
           when 27
             if adv["params"][0]["value"] == "Аксессуары"
-              self_category = Category.find(42) #"Другие" из данных нельзя узнать какие именно аксессуары
+              self_category = Category.find(categories_hash.accessories.other) #"Другие" из данных нельзя узнать какие именно аксессуары
             elsif adv["params"][0]["value"] == "Женская одежда"
-              self_category = Category.find(adv["params"][1]["value"] == "Обувь" ? 40 : 38)
+              self_category = Category.find(adv["params"][1]["value"] == "Обувь" ? categories_hash.woman.shoes : categories_hash.woman.clothes)
             else
-              self_category = Category.find(adv["params"][1]["value"] == "Обувь" ? 41 : 530)
+              self_category = Category.find(adv["params"][1]["value"] == "Обувь" ? categories_hash.man.shoes : categories_hash.man.clothes)
+            end
+          when 114
+            self_category.children.each do |category|
+              title_self = adv["params"][0]["value"].gsub("ё","е")
+              title_finded = category.title.gsub("ё", "е")
+              if title_finded.split(' и ').count > 1
+                title_finded = title_finded.split(' и ').map(&:strip)
+                title_finded = title_finded[0] + ' ' + title_finded[1]
+              elsif title_finded.split(',').count > 1
+                title_finded = title_finded.split(',').map(&:strip)
+                title_finded = title_finded[0] + ' ' + title_finded[1]
+              end
+              title_finded = title_finded.mb_chars.downcase.to_s.strip
+              if title_self.split(' и ').count > 1
+                title_self = title_self.split(' и ').map(&:strip)
+                title_self = title_self[0] + ' ' + title_self[1]
+              elsif title_self.split(',').count > 1
+                title_self = title_self.split(',').map(&:strip)
+                title_self = title_self[0] + ' ' + title_self[1]
+              end
+              title_self = title_self.mb_chars.downcase.to_s.strip
+              if (title_self <=> title_finded) == 0
+                self_category = category
+                break
+              end
             end
           end
 
@@ -67,7 +92,7 @@ module Avito
 
           price = self_category.
             properties.
-            where('title ilike ? OR title ilike ?', '%цена%', '%стоимость%').first
+            where('title ilike ? OR title ilike ? OR title ilike ?', '%цена%', '%стоимость%', '%плата%').first
           price.values.create integer_value: adv['price'], advert_id: advert.id if price.present?
 
           case info.rest_app_category_id
@@ -79,176 +104,15 @@ module Avito
             ApartmentValues.new(self_category, adv, advert)
           when 27
             ClothesValues.new(self_category, adv, advert)
+          when 114
+            self_category = Category.find(categories_hash.self_category_id)
           end
+
         end
         bar.increment!
       end
     end
   end
-
-  class CarValues
-    def initialize(self_category, adv, advert)
-      # массив параметров автомобиля
-      mark, model, volume, transmission, year, body_type = adv['title'].squish.split(' ')
-
-      mark_and_model = self_category.properties.where('title ilike ?', '%марка и модель%').first
-      if volume.to_f == 0.0
-        m1, m2, m3, volume, transmission, year, body_type = adv['title'].squish.split(' ')
-        finded_mark = mark_and_model.hierarch_list_items.where('title ilike ?', "%#{m1}%").first
-        if finded_mark.present?
-          mark = m1
-          model = m2 + ' ' +  m3
-        else
-          mark = m1 + ' ' + m2
-          model = m3
-        end
-      end
-      unless mark == 'Другая'
-        finded_mark = mark_and_model.hierarch_list_items.where('title ilike ?', "%#{mark}%").first
-        finded_model = finded_mark.children.where('title ilike ?', "%#{model}%").first
-        mark_and_model.values.create hierarch_list_item_id: finded_model.id, advert_id: advert.id if finded_model.present?
-      end
-      create_list_item("объем", volume, self_category, advert)
-      create_list_item("коробка передач", transmission, self_category, advert)
-      create_list_item("год выпуска", year, self_category, advert)
-      create_list_item("тип кузова", body_type, self_category, advert)
-      create_list_item("пробег", adv["params"].find{|p| p["name"] == "Пробег, км"}.try(:[], "value"), self_category, advert)
-      create_list_item("цвет", adv["params"].find{|p| p["name"] == "Цвет"}["value"], self_category, advert)
-      create_list_item("Количество дверей", adv["params"].find{|p| p["name"] == "Количество дверей"}.try(:[], "value"), self_category, advert)
-      create_list_item("вид топлива", adv["params"].find{|p| p["name"] == "Тип двигателя"}["value"], self_category, advert)
-      create_list_item("привод",adv["params"].find{|p| p["name"] == "Привод"}["value"] , self_category, advert)
-      create_list_item("руль", adv["params"].find{|p| p["name"] == "Руль"}["value"], self_category, advert)
-
-      property = self_category.properties.where('title ilike ?', "%мощность двигателя%").first
-      property.values.create integer_value: adv["params"].find{|p| p["name"] == "Мощность двигателя, л.с."}["value"].to_i, advert_id: advert.id
-
-    end
-
-    def create_list_item(name_property, value, self_category, advert)
-      property = self_category.properties.where('title ilike ?', "%#{name_property}%").first
-      finded_value = property.list_items.where('title ilike ?', "%#{value}%").first
-      property.values.create list_item_id: finded_value.id, advert_id: advert.id if finded_value.present?
-    end
-  end
-
-  class ChildValues
-    def initialize(self_category, adv, advert, finded_age)
-      if adv["params"][1]["value"] == "Обувь"
-        property = self_category.properties.where('title ilike ?', "%размер%").first
-        size = property.list_items.where('title ilike ?', "%#{adv["params"][2].try(:[],"value")}%").first
-        property.values.create list_item_ids: size.id, advert_id: advert.id if size.present?
-      else
-        property = self_category.properties.where('title ilike ?', "%возраст%").first
-        if self_category.id != 17#не новорожденные
-          property.values.create list_item_id: finded_age.id, advert_id: advert.id if !finded_age.nil?
-          property = self_category.properties.where('title ilike ?', "%предмет одежды%").first
-          type = property.list_items.where('title ilike ?', "%#{adv["params"][1]["value"]}%").first
-          property.values.create list_item_id: type.id, advert_id: advert.id if type.present?
-        else
-          property.values.create list_item_ids: finded_age.id, advert_id: advert.id if !finded_age.nil?
-        end
-      end
-
-      season = nil
-      desc_adv = adv['description'].mb_chars.downcase.to_s
-      title_adv = adv['title'].mb_chars.downcase.to_s
-      property = self_category.properties.where('title ilike ?', "%по сезону%").first
-      if desc_or_title_inc?(desc_adv, title_adv, ["зим"])
-        season = property.list_items.where(:title => "Зимняя").first
-      elsif desc_or_title_inc?(desc_adv, title_adv, ["демисез", "д/с", "весна-осень", "осень-весна"])
-        season = property.list_items.where(:title => "Демисезонная").first
-      elsif desc_or_title_inc?(desc_adv, title_adv, ["летн", "лето"])
-        season = property.list_items.where(:title => "Лентняя и домашняя").first
-      end
-      property.values.create list_item_id: season.id, advert_id: advert.id if !season.nil?
-    end
-
-    def desc_or_title_inc?(d, t, arr)
-      arr.each do |sub|
-        if !d[sub].nil? || !t[sub].nil?
-          return true
-        end
-      end
-      false
-    end
-  end
-
-  class ApartmentValues
-    def initialize(self_category, adv, advert)
-      title_parse = adv['title'].split(',')
-      if ["Вторичка ", "Новостройка", "На длительный срок", "Посуточно"].include? self_category.title #пробел во вторичке
-        property = self_category.properties.where(:title => "Тип дома").first
-        find_type = property.list_items.where('title ilike ?', "%#{adv["params"].find {|i| i["name"] == "Тип дома"}["value"]}%").first if !property.nil?
-        property.values.create list_item_ids: find_type.id, advert_id: advert.id if !find_type.nil?
-
-        if title_parse.count > 1
-          area = title_parse[1].split[0].to_f
-          floor, all_floor = title_parse[2].split[0].split('/')
-
-          property = self_category.properties.where(:title => "Площадь").first
-          property.values.create float_value: area, advert_id: advert.id
-
-          property = self_category.properties.where(:title => "Этаж").first
-          find_value = property.list_items.where('title ilike ?', "%#{floor}%").first
-          property.values.create list_item_id: find_value.id, advert_id: advert.id
-
-          property = self_category.properties.where(:title => "Этажей в доме").first
-          find_value = property.list_items.where('title ilike ?', "%#{all_floor}%").first
-          property.values.create list_item_id: find_value.id, advert_id: advert.id
-        end
-      end
-
-      rooms = title_parse[0].split[0].split('-')[0] if title_parse.count > 1
-      property = self_category.properties.where(:title => "Количество комнат").first
-      if rooms.to_i != 0
-        find_value = property.list_items.where('title ilike ?', "%#{rooms}%").first
-      elsif rooms.to_i > 9
-        find_value = property.list_items.where(:title => '> 9').first
-      elsif !adv['title'].mb_chars.downcase.to_s["студи"].nil?
-        find_value = property.list_items.where(:title => 'Студия').first
-      else
-        rooms = adv['title'].split.find {|i| i["-к"]}.split('-')[0]
-        find_value = property.list_items.where('title ilike ?', "%#{rooms}%").first
-      end
-      property.values.create list_item_id: find_value.id, advert_id: advert.id if !find_value.nil?
-    end
-  end
-
-  class ClothesValues
-    def initialize(self_category, adv, advert)
-      if self_category.parent.title == "Одежда"
-        if !adv["params"][2].nil? && adv["params"][2]["name"] == "Размер"
-          property = self_category.properties.where('title ilike ?', "%размер%").first
-          size = adv["params"][2]["value"].split[0].split("–")
-          if size.count == 2
-            size = size[0] + "-" + size[1]
-          else
-            size = "Без размера"
-          end
-          find_size = property.list_items.where('title ilike ?', "%#{size}%").first
-          if self_category.title == "Для мужчин"
-            property.values.create list_item_id: find_size.id, advert_id: advert.id
-          else
-            property.values.create list_item_ids: find_size.id, advert_id: advert.id
-          end
-        end
-        property = self_category.properties.where('title ilike ?', "%предмет%").first
-        adv["params"][1]["value"] = "Футболки" if adv["params"][1]["value"] == "Трикотаж и футболки"
-        find_value = property.list_items.where('title ilike ?', "%#{adv["params"][1]["value"]}%").first
-        if self_category.title == "Для мужчин"
-          property.values.create list_item_id: find_value.id, advert_id: advert.id
-        else
-          property.values.create list_item_ids: find_value.id, advert_id: advert.id
-        end
-      elsif self_category.parent.title == "Обувь"
-        property = self_category.properties.where('title ilike ?', "%размер%").first
-        find_value = property.list_items.where('title ilike ?', "%#{adv["params"][2]["value"]}%").first
-        property.values.create list_item_id:  find_value.id, advert_id: advert.id
-      end
-    end
-  end
-
-
   class ComparisonCategories
     attr_reader :rest_app_category
 
@@ -269,22 +133,34 @@ module Avito
           self_category_id: 305
         },
         {
-
-        },
-        {
           rest_app_category_id: 24,
           root_category_id: 338,
-          self_category_id: 339
-        },
-        {
-          rest_app_category_id: 29,
-          root_category_id: 5,
-          self_category_id: 6
+          self_category_id: 339,
+          selling: {resale: 344, new_building: 345},
+          for_rent: {daily: 347, for_a_long_time: 346},
+          buy: {resale: 348, new_building: 349},
+          take_off: {daily: 351, for_a_long_time: 350}
         },
         {
           rest_app_category_id: 27,
           root_category_id: 35,
-          self_category_id: 35
+          self_category_id: 35,
+          accessories: {other: 534},
+          woman: {shoes: 40, clothes: 38},
+          man: {shoes: 41, clothes: 530}
+        },
+        {
+          rest_app_category_id: 29,
+          root_category_id: 5,
+          self_category_id: 6,
+          girls: {shoes: 19, clothes: 16},
+          boys: {shoes: 18, clothes: 15},
+          newborns: 17
+        },
+        {
+          rest_app_category_id: 114,
+          root_category_id: 175,
+          self_category_id: 223
         }
       ]
     end
