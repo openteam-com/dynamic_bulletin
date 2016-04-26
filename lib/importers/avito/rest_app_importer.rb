@@ -60,8 +60,7 @@ module Avito
             else
               self_category = Category.find(adv["params"][1]["value"] == "Обувь" ? categories_hash.man.shoes : categories_hash.man.clothes)
             end
-          when 115
-          when 114
+          when 114, 115
             self_category.children.each do |category|
               title_self = adv["params"][0]["value"].gsub("ё","е")
               title_finded = category.title.gsub("ё", "е")
@@ -86,30 +85,37 @@ module Avito
                 break
               end
             end
-          when 111
-            case adv["params"][0]["value"]
+          when 111, 112
+            type_activity = adv["params"].find {|i| i["name"] == "Сфера деятельности"}["value"]
+            case type_activity
             when "Административная работа"
-              adv["params"][0]["value"] = "Высший менеджмент, руководители"
+              type_activity = "Высший менеджмент, руководители"
+            when "Госслужба, НКО"
+              type_activity = "Государственные службы, НКО"
+            when "Управление персоналом"
+              type_activity = "Высший менеджмент, руководители"
             when "Транспорт, логистика"
-              adv["params"][0]["value"] = "Логистика"
+              type_activity = "Логистика"
             when "IT, интернет, телеком"
-              adv["params"][0]["value"] = "ИТ и Интернет"
+              type_activity = "ИТ и Интернет"
             when "Туризм, рестораны"
-              adv["params"][0]["value"] = "Рестораны"
+              type_activity = "Рестораны"
             when "Производство, сырьё, с/х"
-              adv["params"][0]["value"] = "Сельское хозяйство"
+              type_activity = "Сельское хозяйство"
             when "Консультирование"
-              adv["params"][0]["value"] = "Сфера услуг"
+              type_activity = "Сфера услуг"
             when "Автомобильный бизнес"
-              adv["params"][0]["value"] = "Транспорт"
+              type_activity = "Транспорт"
             when "Фитнес, салоны красоты"
-              adv["params"][0]["value"] = "Спорт, красота, здоровье"
+              type_activity = "Спорт, красота, здоровье"
             when "Без опыта, студенты"
-              adv["params"][0]["value"] = "Рабочий персонал"
+              type_activity = "Рабочий персонал"
             when "ЖКХ, эксплуатация"
-              adv["params"][0]["value"] = "Государственные службы"
+              type_activity = "Государственные службы"
+            when "Банки, инвестиции"
+              type_activity = "Банки"
             end
-            self_category = self_category.children.where('title ilike ?', "%#{adv["params"][0]["value"]}%").first
+            self_category = self_category.children.where('title ilike ?', "%#{type_activity}%").first
           end
 
           advert = self_category.adverts.new(description: adv['description'])
@@ -129,10 +135,13 @@ module Avito
             ApartmentValues.new(self_category, adv, advert)
           when 27
             ClothesValues.new(self_category, adv, advert)
-          when 114
+          when 114, 115
             self_category = Category.find(categories_hash.self_category_id)
           when 111
             JobValues.new(self_category, adv, advert)
+            self_category = Category.find(categories_hash.self_category_id)
+          when 112
+            ResumeValues.new(self_category, adv, advert)
             self_category = Category.find(categories_hash.self_category_id)
           end
 
@@ -199,6 +208,11 @@ module Avito
           rest_app_category_id: 111,
           root_category_id: 459,
           self_category_id: 460
+        },
+        {
+          rest_app_category_id: 112,
+          root_category_id: 459,
+          self_category_id: 461
         }
 
       ]

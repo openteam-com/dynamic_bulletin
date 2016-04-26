@@ -6,7 +6,6 @@ module Avito
       finded_graphic = property.list_items.where("title ilike ?", "%#{adv["params"][1]["value"].split[0]}%").first
       property.values.create list_item_ids: finded_graphic.id, advert_id: advert.id if !finded_graphic.nil?
 
-      puts advert
       if adv["params"][1]["value"] == "Вахтовый метод"
         property = self_category.properties.where('title ilike ?', "%тип занятости%").first
         finded_type = property.list_items.where('title ilike ?', "%вахтов%").first
