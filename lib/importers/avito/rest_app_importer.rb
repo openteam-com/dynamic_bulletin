@@ -60,6 +60,7 @@ module Avito
             else
               self_category = Category.find(adv["params"][1]["value"] == "Обувь" ? categories_hash.man.shoes : categories_hash.man.clothes)
             end
+          when 115
           when 114
             self_category.children.each do |category|
               title_self = adv["params"][0]["value"].gsub("ё","е")
@@ -161,7 +162,13 @@ module Avito
           rest_app_category_id: 114,
           root_category_id: 175,
           self_category_id: 223
+        },
+        {
+          rest_app_category_id: 115,
+          root_category_id: 175,
+          self_category_id: 199
         }
+
       ]
     end
   end
