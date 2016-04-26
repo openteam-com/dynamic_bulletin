@@ -86,6 +86,30 @@ module Avito
                 break
               end
             end
+          when 111
+            case adv["params"][0]["value"]
+            when "Административная работа"
+              adv["params"][0]["value"] = "Высший менеджмент, руководители"
+            when "Транспорт, логистика"
+              adv["params"][0]["value"] = "Логистика"
+            when "IT, интернет, телеком"
+              adv["params"][0]["value"] = "ИТ и Интернет"
+            when "Туризм, рестораны"
+              adv["params"][0]["value"] = "Рестораны"
+            when "Производство, сырьё, с/х"
+              adv["params"][0]["value"] = "Сельское хозяйство"
+            when "Консультирование"
+              adv["params"][0]["value"] = "Сфера услуг"
+            when "Автомобильный бизнес"
+              adv["params"][0]["value"] = "Транспорт"
+            when "Фитнес, салоны красоты"
+              adv["params"][0]["value"] = "Спорт, красота, здоровье"
+            when "Без опыта, студенты"
+              adv["params"][0]["value"] = "Рабочий персонал"
+            when "ЖКХ, эксплуатация"
+              adv["params"][0]["value"] = "Государственные службы"
+            end
+            self_category = self_category.children.where('title ilike ?', "%#{adv["params"][0]["value"]}%").first
           end
 
           advert = self_category.adverts.new(description: adv['description'])
@@ -106,6 +130,9 @@ module Avito
           when 27
             ClothesValues.new(self_category, adv, advert)
           when 114
+            self_category = Category.find(categories_hash.self_category_id)
+          when 111
+            JobValues.new(self_category, adv, advert)
             self_category = Category.find(categories_hash.self_category_id)
           end
 
@@ -167,6 +194,11 @@ module Avito
           rest_app_category_id: 115,
           root_category_id: 175,
           self_category_id: 199
+        },
+        {
+          rest_app_category_id: 111,
+          root_category_id: 459,
+          self_category_id: 460
         }
 
       ]

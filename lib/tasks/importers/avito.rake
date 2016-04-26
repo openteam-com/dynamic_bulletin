@@ -6,7 +6,7 @@ namespace :avito do
     #categories = [9, 10, 11, 14, 19, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 36, 38, 39, 40, 42, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 96, 97, 98, 99, 101, 102, 105, 106, 111, 112, 114, 115, 116]
     #categories = [9, 24, 27, 29]
 
-    categories = [115]
+    categories = [111]
     bar = ProgressBar.new categories.size
     categories.each do |category_id|
       date_from = DateTime.new 2016, 03, 01
