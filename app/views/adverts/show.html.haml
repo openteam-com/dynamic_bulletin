@@ -2,4 +2,6 @@
 
 - @advert.values.each do |value|
   = render partial: "common/values/#{value.property.kind}", locals: {:value => value}
+- @advert.images.each do |i|
+  = render partial: "common/values/image", locals: {:image => i}
 %p= @advert.description

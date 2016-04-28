@@ -1,5 +1,6 @@
 module Avito
   class RestAppImporter
+    require "open-uri"
     def parse
       bar = ProgressBar.new AvitoDatum.all.size
       AvitoDatum.find_each do |info|
@@ -125,6 +126,22 @@ module Avito
             properties.
             where('title ilike ? OR title ilike ? OR title ilike ?', '%цена%', '%стоимость%', '%плата%').first
           price.values.create integer_value: adv['price'], advert_id: advert.id if price.present?
+
+          adv["images"].split(',').map(&:strip).each do |url|
+            extname = File.extname(url)
+            basename = File.basename(url, extname)
+            file = Tempfile.new([basename, extname])
+            file.binmode
+            begin
+              open(URI.parse(url)) do |data|
+                file.write data.read
+              end
+            rescue OpenURI::HTTPError => ex
+            end
+            image = advert.images.new
+            image.image = file
+            image.save
+          end
 
           case info.rest_app_category_id
           when 9

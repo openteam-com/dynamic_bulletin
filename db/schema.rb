@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160414052808) do
+ActiveRecord::Schema.define(version: 20160428091719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,16 @@ ActiveRecord::Schema.define(version: 20160414052808) do
   end
 
   add_index "hierarch_list_items", ["property_id"], name: "index_hierarch_list_items_on_property_id", using: :btree
+
+  create_table "images", force: :cascade do |t|
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.integer  "advert_id"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+  end
 
   create_table "list_item_values", force: :cascade do |t|
     t.integer "list_item_id"
@@ -141,6 +151,7 @@ ActiveRecord::Schema.define(version: 20160414052808) do
 
   add_foreign_key "adverts", "categories"
   add_foreign_key "hierarch_list_items", "properties"
+  add_foreign_key "images", "adverts"
   add_foreign_key "list_items", "properties"
   add_foreign_key "values", "adverts"
   add_foreign_key "values", "properties"
