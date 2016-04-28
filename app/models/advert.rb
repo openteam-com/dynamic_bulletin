@@ -30,6 +30,8 @@ class Advert < ActiveRecord::Base
     integer :hierarch_list_item_ids, multiple: true do
       values.map(&:hierarch_list_item).compact.map(&:id)
     end
+
+    integer(:category_id) { category.id }
   end
 end
 
