@@ -24,6 +24,7 @@ group :default do
   gem 'ranked-model'
   gem 'responders'
   gem 'rest-client'
+  gem 'paperclip'
   gem 'simple_form'
   gem 'sunspot_rails'
   gem 'sunspot_solr'
