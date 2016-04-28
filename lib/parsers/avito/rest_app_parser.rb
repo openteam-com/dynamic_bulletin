@@ -1,11 +1,12 @@
 require 'uri'
 
 class RestAppParser
-  attr_reader :url, :data, :token, :date_from, :category_id
+  attr_reader :url, :data, :token, :date_from, :category_id, :login
 
   def initialize(params = {})
     @url = Settings['importers.rest_app_url']
     @token = Settings['importers.rest_app_token']
+    @login = Settings['importers.rest_app_login']
     @date_from = params[:date_from]
     @category_id = params[:category_id]
   end
@@ -29,7 +30,7 @@ class RestAppParser
   def url_with_payload
     # 24 - Квартиры
     # 657310 - Томская область
-    url + "?login=systemofadown.2013@yandex.ru" +
+    url + "?login=#{login}" +
       "&token=#{token}" +
       "&category_id=#{category_id}" +
       "&region_id=657310" +
