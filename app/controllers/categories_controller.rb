@@ -35,7 +35,8 @@ class CategoriesController < ApplicationController
   def adverts_search_params
     {
       list_items: params[:search].try(:[], :list_items),
-      hierarch_list_items: params[:search].try(:[], :hierarch_list_items)
+      hierarch_list_items: params[:search].try(:[], :hierarch_list_items),
+      category_id: @category.id
     }
   end
 end
