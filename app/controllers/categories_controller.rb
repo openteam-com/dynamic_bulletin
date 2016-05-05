@@ -19,7 +19,6 @@ class CategoriesController < ApplicationController
   end
 
   def show
-    #raise params.inspect
     @category = Category.find(params[:id])
     @adverts = Searchers::AdvertsSearcher.new(adverts_search_params).collection
 
@@ -36,7 +35,8 @@ class CategoriesController < ApplicationController
     {
       list_items: params[:search].try(:[], :list_items),
       hierarch_list_items: params[:search].try(:[], :hierarch_list_items),
-      category_id: @category.id
+      category_id: @category.id,
+      page: params[:page]
     }
   end
 end
