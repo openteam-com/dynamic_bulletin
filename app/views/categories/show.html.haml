@@ -40,5 +40,7 @@
     = link_to child, category_path(child)
 - else
   %ul
+  = will_paginate @adverts
   - @adverts.each do |advert|
     %li= link_to advert.title, advert_path(advert)
+  = will_paginate @adverts

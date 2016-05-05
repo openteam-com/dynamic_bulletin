@@ -10,7 +10,7 @@ module Searchers
           with :hierarch_list_item_ids, search_params.hierarch_list_items if search_params.hierarch_list_items
         end
 
-        paginate page: 1, per_page: 1_000_000
+        paginate page: search_params.page, per_page: 15
       end
     end
   end

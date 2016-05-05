@@ -55,6 +55,8 @@ GEM
     bootstrap-sass (3.3.6)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
+    bootstrap-will_paginate (0.0.10)
+      will_paginate
     breadcrumbs_on_rails (2.3.1)
     builder (3.2.2)
     byebug (8.2.2)
@@ -327,6 +329,7 @@ GEM
       sprockets-rails (>= 2.0, < 4.0)
     whenever (0.9.4)
       chronic (>= 0.6.3)
+    will_paginate (3.0.7)
 
 PLATFORMS
   ruby
@@ -336,6 +339,7 @@ DEPENDENCIES
   annotate
   awesome_print
   bootstrap-sass
+  bootstrap-will_paginate (= 0.0.10)
   breadcrumbs_on_rails
   byebug
   cancancan
@@ -376,6 +380,7 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   unicorn
   web-console (~> 2.0)
+  will_paginate (= 3.0.7)
 
 BUNDLED WITH
    1.11.2

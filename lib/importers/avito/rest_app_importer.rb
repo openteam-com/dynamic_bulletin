@@ -130,7 +130,6 @@ module Avito
 
           adv["images"].split(',').map(&:strip).each do |url|
             extname = File.extname(url)
-            puts extname
             next if extname != ".jpg"
             basename = File.basename(url, extname)
             file = Tempfile.new([basename, extname])
