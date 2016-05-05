@@ -22,6 +22,4 @@ class AdvertsController < ApplicationController
     add_breadcrumb @advert.category, category_path(@advert.category)
     add_breadcrumb @advert
   end
-
-
 end

@@ -15,7 +15,8 @@ class Property < ActiveRecord::Base
   alias_attribute :to_s, :title
 
   extend Enumerize
-  enumerize :kind, in: [:string, :integer, :float, :limited_list, :unlimited_list, :hierarch_limited_list]
+  enumerize :kind,
+    in: [:string, :integer, :float, :boolean, :limited_list, :unlimited_list, :hierarch_limited_list]
 end
 
 # == Schema Information

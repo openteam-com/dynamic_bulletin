@@ -4,10 +4,7 @@
 .DS_Store
 .sass-cache/
 /.bundle
-/bin
 /config/database.yml
-/config/database_tomsk.yml
-/config/database_sevastopol.yml
 /config/deploy.yml
 /config/sape.yml
 /config/secrets.yml
@@ -27,6 +24,7 @@
 /solr/pids
 /tmp
 clear_logs.rb
+segments_1
 erd.pdf
 dump.rdb
 .idea

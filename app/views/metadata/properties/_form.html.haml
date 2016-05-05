@@ -3,12 +3,17 @@
   = f.simple_fields_for @category_property do |cat_pro|
     = cat_pro.input :category_id, :input_html => { :value => @category.id }, :as => :hidden
     = cat_pro.input :necessarily
+    = cat_pro.input :show_on_filter_as,
+      as: :select,
+      collection: [:check_boxes, :input, :select, :range, :multiselect, :radio_buttons],
+      include_blank: false
+
     - unless @property.kind == 'string' || @property.kind == 'integer' || @property.kind == 'float'
       = cat_pro.input :show_on_public
       = cat_pro.input :show_as,
         as: :select,
         collection: [:check_boxes, :radio_buttons, :select],
-        selected: @property.kind == 'limited_list' || @property.kind == 'hierarch_limited_list' ? :select : :check_boxes,
+        selected: params[:action] == 'new' && (@property.kind == 'limited_list' || @property.kind == 'hierarch_limited_list') ? :select : @category_property.show_as,
         include_blank: false
 
   %hr

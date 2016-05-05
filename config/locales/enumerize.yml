@@ -8,3 +8,4 @@ ru:
         limited_list: 'Ограниченный список'
         hierarch_limited_list: 'Дерево значений'
         unlimited_list: 'Список с выбором значений'
+        boolean: 'Булевое значение'

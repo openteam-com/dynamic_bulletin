@@ -11,8 +11,8 @@ class Metadata::PropertiesController < Metadata::ApplicationController
   def create
     @property = Property.create property_params
 
-    respond_with @property, location: -> { new_metadata_category_property_category_property_path(@category, @property, :params => category_property_params) }
-
+    respond_with @property,
+      location: -> { new_metadata_category_property_category_property_path(@category, @property, :params => category_property_params) }
   end
 
   def edit
@@ -21,7 +21,8 @@ class Metadata::PropertiesController < Metadata::ApplicationController
   def update
     @property.update(property_params)
 
-    respond_with @property, location: -> { edit_metadata_category_property_category_property_path(@category, @property, @category_property, :params => category_property_params) }
+    respond_with @property,
+      location: -> { edit_metadata_category_property_category_property_path(@category, @property, @category_property, :params => category_property_params) }
   end
 
   def destroy
@@ -46,7 +47,7 @@ class Metadata::PropertiesController < Metadata::ApplicationController
   def category_property_params
     params.
       require(:property).require(:category_property).
-      permit(:show_on_public, :show_as, :necessarily, :category_id)
+      permit(:show_on_public, :show_as, :necessarily, :category_id, :show_on_filter_as)
   end
 
   def find_category
@@ -56,5 +57,4 @@ class Metadata::PropertiesController < Metadata::ApplicationController
   def find_category_property
     @category_property = CategoryProperty.where(:category_id => @category, :property_id => @property).first
   end
-
 end

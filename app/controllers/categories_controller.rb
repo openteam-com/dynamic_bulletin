@@ -2,33 +2,26 @@
 #
 # Table name: categories
 #
-#  id             :integer          not null, primary key
-#  title          :string
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  ancestry       :string
-#  ancestry_depth :integer          default(0)
+#  id              :integer          not null, primary key
+#  title           :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  ancestry        :string
+#  ancestry_depth  :integer          default(0)
+#  connect_with_id :integer
 #
 
 class CategoriesController < ApplicationController
   include Breadcrumbs
 
   def index
-    @categories = Category.all
+    @categories = Category.roots
   end
 
   def show
+    #raise params.inspect
     @category = Category.find(params[:id])
-    unless params[:utf8]
-      @adverts = @category.adverts
-    else
-      @adverts = @category.adverts.search do
-        any_of do
-          with :list_item_ids, params[:search][:list_items] if params[:search][:list_items].present?
-          with :hierarch_list_item_ids, params[:search][:hierarch_list_items] if params[:search][:hierarch_list_items].present?
-        end
-      end.results
-    end
+    @adverts = Searchers::AdvertsSearcher.new(adverts_search_params).collection
 
     initialize_breadcrumbs
   end
@@ -36,5 +29,14 @@ class CategoriesController < ApplicationController
   def initialize_breadcrumbs
     breadcrumbs_create(@category)
     add_breadcrumb  @category
+  end
+
+  private
+  def adverts_search_params
+    {
+      list_items: params[:search].try(:[], :list_items),
+      hierarch_list_items: params[:search].try(:[], :hierarch_list_items),
+      category_id: @category.id
+    }
   end
 end

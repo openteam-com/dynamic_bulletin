@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160324072710) do
+ActiveRecord::Schema.define(version: 20160428091719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,13 @@ ActiveRecord::Schema.define(version: 20160324072710) do
   end
 
   add_index "adverts", ["category_id"], name: "index_adverts_on_category_id", using: :btree
+
+  create_table "avito_data", force: :cascade do |t|
+    t.text     "data"
+    t.integer  "rest_app_category_id"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
 
   create_table "categories", force: :cascade do |t|
     t.string   "title"
@@ -42,10 +49,11 @@ ActiveRecord::Schema.define(version: 20160324072710) do
     t.integer  "property_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "show_on_public", default: true
-    t.boolean  "necessarily",    default: false
-    t.string   "show_as",        default: "check_boxes"
+    t.boolean  "show_on_public",    default: true
+    t.boolean  "necessarily",       default: false
+    t.string   "show_as",           default: "check_boxes"
     t.integer  "row_order"
+    t.string   "show_on_filter_as"
   end
 
   create_table "hierarch_list_items", force: :cascade do |t|
@@ -57,6 +65,16 @@ ActiveRecord::Schema.define(version: 20160324072710) do
   end
 
   add_index "hierarch_list_items", ["property_id"], name: "index_hierarch_list_items_on_property_id", using: :btree
+
+  create_table "images", force: :cascade do |t|
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.integer  "advert_id"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+  end
 
   create_table "list_item_values", force: :cascade do |t|
     t.integer "list_item_id"
@@ -124,6 +142,7 @@ ActiveRecord::Schema.define(version: 20160324072710) do
     t.integer  "integer_value"
     t.integer  "hierarch_list_item_id"
     t.float    "float_value"
+    t.boolean  "boolean_value"
   end
 
   add_index "values", ["advert_id"], name: "index_values_on_advert_id", using: :btree
@@ -132,6 +151,7 @@ ActiveRecord::Schema.define(version: 20160324072710) do
 
   add_foreign_key "adverts", "categories"
   add_foreign_key "hierarch_list_items", "properties"
+  add_foreign_key "images", "adverts"
   add_foreign_key "list_items", "properties"
   add_foreign_key "values", "adverts"
   add_foreign_key "values", "properties"

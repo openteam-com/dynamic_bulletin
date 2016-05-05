@@ -11,3 +11,7 @@ mail:
   domain:
   login:
   password:
+
+importers:
+  cars_url:
+  trucks_url:
