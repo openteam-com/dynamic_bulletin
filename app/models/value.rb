@@ -16,6 +16,7 @@ class Value < ActiveRecord::Base
   #validates_presence_of :list_item, if: :property_necessarily_set_for_limited_list?
   #validates_presence_of :hierarch_list_item, if: :property_necessarily_set_for_hierarch_limited_list?
   #validates_presence_of :list_items, if: :property_necessarily_set_for_unlimited_list?
+  #validates :list_items, :uniqueness => true
 
   #validates_uniqueness_of :property_id, scope: :advert_id
 
