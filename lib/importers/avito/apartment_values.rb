@@ -6,7 +6,6 @@ module Avito
         property = self_category.properties.where(:title => "Тип дома").first
         find_type = property.list_items.where('title ilike ?', "%#{adv["params"].find {|i| i["name"] == "Тип дома"}["value"]}%").first if !property.nil?
         property.values.create list_item_ids: find_type.id, advert_id: advert.id if !find_type.nil?
-
         if title_parse.count > 1
           area = title_parse[1].split[0].to_f
           floor, all_floor = title_parse[2].split[0].split('/')
@@ -23,7 +22,6 @@ module Avito
           property.values.create list_item_id: find_value.id, advert_id: advert.id
         end
       end
-
       rooms = title_parse[0].split[0].split('-')[0] if title_parse.count > 1
       property = self_category.properties.where(:title => "Количество комнат").first
       if rooms.to_i != 0
@@ -39,5 +37,4 @@ module Avito
       property.values.create list_item_id: find_value.id, advert_id: advert.id if !find_value.nil?
     end
   end
-
 end

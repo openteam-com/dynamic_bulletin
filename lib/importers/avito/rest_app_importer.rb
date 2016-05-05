@@ -1,6 +1,7 @@
 module Avito
   class RestAppImporter
     require "open-uri"
+    #require "resolv-replace.rb"
     def parse
       bar = ProgressBar.new AvitoDatum.all.size
       AvitoDatum.find_each do |info|
@@ -129,6 +130,8 @@ module Avito
 
           adv["images"].split(',').map(&:strip).each do |url|
             extname = File.extname(url)
+            puts extname
+            next if extname != ".jpg"
             basename = File.basename(url, extname)
             file = Tempfile.new([basename, extname])
             file.binmode
