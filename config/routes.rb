@@ -30,7 +30,9 @@ Rails.application.routes.draw do
     root to: 'adverts#index'
   end
 
-  resources :categories
+  resources :categories do
+    get 'get_hierarch_children', on: :collection
+  end
 
   resources :adverts
   root to: 'categories#index'

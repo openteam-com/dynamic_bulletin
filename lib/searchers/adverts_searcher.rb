@@ -1,6 +1,5 @@
 module Searchers
   class AdvertsSearcher < Searcher
-
     private
     def search
       Advert.search do
@@ -10,7 +9,7 @@ module Searchers
           with :hierarch_list_item_ids, search_params.hierarch_list_items if search_params.hierarch_list_items
         end
 
-        paginate page: search_params.page, per_page: 15
+        paginate page: search_params.page, per_page: 30
       end
     end
   end

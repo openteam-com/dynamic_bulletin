@@ -10,8 +10,6 @@
         parent_id: selected_item
       }
 
-
-
       success: (data) ->
         console.log data
         children = item.parent().next().find('.js-get-list-items-children')

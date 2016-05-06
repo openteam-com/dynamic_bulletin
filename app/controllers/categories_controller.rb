@@ -30,11 +30,26 @@ class CategoriesController < ApplicationController
     add_breadcrumb  @category
   end
 
+  def get_hierarch_children
+    if request.xhr?
+      array = []
+      HierarchListItem.find(params[:parent_id]).children.each do |child|
+        h = {}
+        h[:id] = child.id
+        h[:title] = child.title
+
+        array << h
+      end
+      render text: array.to_json and return
+    end
+  end
+
   private
   def adverts_search_params
+    #raise params.inspect
     {
-      list_items: params[:search].try(:[], :list_items),
-      hierarch_list_items: params[:search].try(:[], :hierarch_list_items),
+      list_items: params.try(:[], :list_items),
+      hierarch_list_items: params.try(:[], :hierarch_list_items),
       category_id: @category.id,
       page: params[:page]
     }

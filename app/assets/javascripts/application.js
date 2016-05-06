@@ -3,3 +3,4 @@
 //= require bootstrap-sprockets
 //= require turbolinks
 //= require main
+//= get_hierarch_children

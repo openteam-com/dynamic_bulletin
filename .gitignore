@@ -16,6 +16,7 @@
 /log/sunspot-solr-development.log*
 /public/assets
 /public/faye
+/public/system
 /public/cache
 /public/sitemap.xml
 /public/yandex

@@ -1,7 +1,7 @@
 %p= render_breadcrumbs
 
 %h3= @category
-
+- hierarch_counter = 0
 - unless @category.inserted.present?
   .row
     .col-xs-12
@@ -16,22 +16,28 @@
                     - if property.kind.to_s != 'hierarch_limited_list'
                       = f.input :list_items,
                         label: false,
+                        input_html: {name: 'list_items[]'},
                         as: property.category_properties.where(:category_id => @category.id).first.show_on_filter_as,
-                        input_html: { multiple: true },
                         collection: property.list_items,
-                        checked: params.try(:[], 'search').try(:[], 'list_items').to_a.compact,
-                        selected: params.try(:[], 'search').try(:[], 'list_items').to_a.compact
+                        checked: params.try(:[], 'list_items'),
+                        selected: params.try(:[], 'list_items'),
+                        include_blank: true
 
                     - else
-                      - property.hierarch_list_items.each do |parent|
-                        = parent
-                        = f.input :hierarch_list_items,
-                          as: property.category_properties.where(:category_id => @category.id).first.show_as,
-                          label: false,
-                          input_html: { multiple: true },
-                          collection: parent.children,
-                          selected: params.try(:[], 'search').try(:[], 'hierarch_list_items').to_a.compact,
-                          checked: params.try(:[], 'search').try(:[], 'hierarch_list_items').to_a.compact
+                      - parent = params.try(:[], 'hierarch_list_item_parents')
+                      = f.input :hierarch_list_item_parents,
+                        label: false,
+                        input_html: {class: 'js-get-list-items-parent', name: 'hierarch_list_item_parents[]'},
+                        collection: property.hierarch_list_items,
+                        selected: parent,
+                        :include_blank => true
+
+                      = f.input :hierarch_list_items,
+                        input_html: {class: 'js-get-list-items-children', name: 'hierarch_list_items[]'},
+                        label: false,
+                        collection: params[:hierarch_list_items].try(:[], hierarch_counter) ? HierarchListItem.find(params.try(:[], 'hierarch_list_items')[hierarch_counter]).parent.children : [],
+                        selected: params.try(:[], 'hierarch_list_items')
+                      - hierarch_counter+=1 #вот здесь некрасиво, нужно было грамотно иер.листы раскидать
 
         = f.submit 'Search'
 
@@ -40,7 +46,7 @@
     = link_to child, category_path(child)
 - else
   %ul
-  = will_paginate @adverts
+  = paginate @adverts
   - @adverts.each do |advert|
     %li= link_to advert.title, advert_path(advert)
-  = will_paginate @adverts
+  = paginate @adverts
