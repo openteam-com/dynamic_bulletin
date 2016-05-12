@@ -3,11 +3,6 @@
   = f.simple_fields_for @category_property do |cat_pro|
     = cat_pro.input :category_id, :input_html => { :value => @category.id }, :as => :hidden
     = cat_pro.input :necessarily
-    = cat_pro.input :show_on_filter_as,
-      as: :select,
-      collection: [:check_boxes, :input, :select, :range, :multiselect, :radio_buttons],
-      include_blank: false
-
     - unless @property.kind == 'string' || @property.kind == 'integer' || @property.kind == 'float'
       = cat_pro.input :show_on_public
       = cat_pro.input :show_as,
@@ -17,6 +12,11 @@
         include_blank: false
 
   %hr
+  = f.input :show_on_filter_as,
+    as: :select,
+    collection: @collection_for_filter,
+    include_blank: false,
+    input_html: {disabled: (can_change_property_fields?(@category, @property)) ? false : true}
   = f.input :title, input_html: { disabled: (can_change_property_fields?(@category, @property)) ? false : true }
   = render :partial => "metadata/properties_fields/#{@property.kind}_fields", locals: { f: f }
 

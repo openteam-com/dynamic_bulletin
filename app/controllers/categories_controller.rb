@@ -46,7 +46,6 @@ class CategoriesController < ApplicationController
 
   private
   def adverts_search_params
-    #raise params.inspect
     {
       list_items: params.try(:[], :list_items),
       hierarch_list_items: params.try(:[], :hierarch_list_items),

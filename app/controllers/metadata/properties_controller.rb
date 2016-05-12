@@ -6,7 +6,28 @@ class Metadata::PropertiesController < Metadata::ApplicationController
   def new
     @property = Property.new property_params
     @category_property = CategoryProperty.new
+    @collection_for_filter = determinate_collection_for_filter
   end
+
+  def determinate_collection_for_filter
+    case @property.kind.to_s
+    when "string"
+      []
+    when "limited_list"
+      [:select, :range, :multiselect, :radio_buttons, :boolean, :range_buttons, :range_select]
+    when "unlimited_list"
+      [:select, :range, :multiselect, :radio_buttons, :boolean, :range_buttons, :range_select]
+    when "hierarch_limited_list"
+      [:boolean]
+    when "integer"
+      [:check_boxes, :range, :range_buttons, :range_select]
+    when "float"
+      [:check_boxes, :range, :range_buttons, :range_select]
+    when "boolean"
+      [:boolean]
+    end
+  end
+
 
   def create
     @property = Property.create property_params
@@ -16,6 +37,7 @@ class Metadata::PropertiesController < Metadata::ApplicationController
   end
 
   def edit
+    @collection_for_filter = determinate_collection_for_filter
   end
 
   def update
@@ -39,7 +61,7 @@ class Metadata::PropertiesController < Metadata::ApplicationController
   def property_params
     params.
       require(:property).
-      permit(:title, :kind, :category_id,
+      permit(:title, :kind, :category_id, :show_on_filter_as,
              hierarch_list_items_attributes: [:id, :title, :_destroy],
              list_items_attributes: [:id, :title, :_destroy])
   end
@@ -47,7 +69,7 @@ class Metadata::PropertiesController < Metadata::ApplicationController
   def category_property_params
     params.
       require(:property).require(:category_property).
-      permit(:show_on_public, :show_as, :necessarily, :category_id, :show_on_filter_as)
+      permit(:show_on_public, :show_as, :necessarily, :category_id)
   end
 
   def find_category
