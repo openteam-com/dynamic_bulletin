@@ -1,7 +1,7 @@
+require 'open-uri'
+
 module Avito
   class RestAppImporter
-    require "open-uri"
-    #require "resolv-replace.rb"
     def parse
       bar = ProgressBar.new AvitoDatum.all.size
       AvitoDatum.find_each do |info|
@@ -12,19 +12,20 @@ module Avito
         self_category = Category.find(categories_hash.self_category_id)
 
         info['data'].each do |adv|
-
           case info.rest_app_category_id #поиск вложенной категории - вынести?
           when 29
-            case adv["params"][0]["value"]
-            when "Для девочек"
-              self_category = Category.find(adv["params"][1]["value"] == "Обувь" ? categories_hash.girls.shoes : categories_hash.girls.clothes)
-            when "Для мальчиков"
-              self_category = Category.find(adv["params"][1]["value"] == "Обувь" ? categories_hash.boys.shoes : categories_hash.boys.clothes)
+            case adv['params'][0]['value']
+            when 'Для девочек'
+              self_category = Category.find(adv['params'][1]['value'] == 'Обувь' ? categories_hash.girls.shoes : categories_hash.girls.clothes)
+            when 'Для мальчиков'
+              self_category = Category.find(adv['params'][1]['value'] == 'Обувь' ? categories_hash.boys.shoes : categories_hash.boys.clothes)
             end
-            if adv["params"][2].present?
-              arr = adv["params"][2]["value"].split.first.split('-').map(&:to_i)#размер одежды на авито
+
+            if adv['params'][2].present?
+              arr = adv['params'][2]['value'].split.first.split('-').map(&:to_i)#размер одежды на авито
             end
-            if arr.try(:size) == 2 && (self_category.parent.title == "Детская одежда")
+
+            if arr.try(:size) == 2 && (self_category.parent.title == 'Детская одежда')
               arr = arr[0]..arr[1]
               arr = arr.to_a
               self_category = Category.find(categories_hash.newborns) if arr[0] < 92
@@ -44,28 +45,28 @@ module Avito
               end
             end
           when 24
-            case adv["params"][0]["value"]
-            when "Продам"
-              self_category = Category.find(adv["params"][1]["value"] == "Вторичка" ? categories_hash.selling.resale : categories_hash.selling.new_building)
-            when "Сдам"
-              self_category = Category.find(adv["params"][1]["value"] == "Посуточно" ? categories_hash.for_rent.daily : categories_hash.for_rent.for_a_long_time)
-            when "Куплю"
+            case adv['params'][0]['value']
+            when 'Продам'
+              self_category = Category.find(adv['params'][1]['value'] == 'Вторичка' ? categories_hash.selling.resale : categories_hash.selling.new_building)
+            when 'Сдам'
+              self_category = Category.find(adv['params'][1]['value'] == 'Посуточно' ? categories_hash.for_rent.daily : categories_hash.for_rent.for_a_long_time)
+            when 'Куплю'
               self_category = Category.find(categories_hash.buy.resale)
-            when "Сниму"
-              self_category = Category.find(adv["params"][1]["value"] == "Посуточно" ? categories_hash.take_off.daily : categories_hash.take_off.for_a_long_time)
+            when 'Сниму'
+              self_category = Category.find(adv['params'][1]['value'] == 'Посуточно' ? categories_hash.take_off.daily : categories_hash.take_off.for_a_long_time)
             end
           when 27
-            if adv["params"][0]["value"] == "Аксессуары"
-              self_category = Category.find(categories_hash.accessories.other) #"Другие" из данных нельзя узнать какие именно аксессуары
-            elsif adv["params"][0]["value"] == "Женская одежда"
-              self_category = Category.find(adv["params"][1]["value"] == "Обувь" ? categories_hash.woman.shoes : categories_hash.woman.clothes)
+            if adv['params'][0]['value'] == 'Аксессуары'
+              self_category = Category.find(categories_hash.accessories.other) #'Другие' из данных нельзя узнать какие именно аксессуары
+            elsif adv['params'][0]['value'] == 'Женская одежда'
+              self_category = Category.find(adv['params'][1]['value'] == 'Обувь' ? categories_hash.woman.shoes : categories_hash.woman.clothes)
             else
-              self_category = Category.find(adv["params"][1]["value"] == "Обувь" ? categories_hash.man.shoes : categories_hash.man.clothes)
+              self_category = Category.find(adv['params'][1]['value'] == 'Обувь' ? categories_hash.man.shoes : categories_hash.man.clothes)
             end
           when 114, 115
             self_category.children.each do |category|
-              title_self = adv["params"][0]["value"].gsub("ё","е")
-              title_finded = category.title.gsub("ё", "е")
+              title_self = adv['params'][0]['value'].gsub('ё','е')
+              title_finded = category.title.gsub('ё', 'е')
               if title_finded.split(' и ').count > 1
                 title_finded = title_finded.split(' и ').map(&:strip)
                 title_finded = title_finded[0] + ' ' + title_finded[1]
@@ -88,34 +89,34 @@ module Avito
               end
             end
           when 111, 112
-            type_activity = adv["params"].find {|i| i["name"] == "Сфера деятельности"}["value"]
+            type_activity = adv['params'].find {|i| i['name'] == 'Сфера деятельности'}['value']
             case type_activity
-            when "Административная работа"
-              type_activity = "Высший менеджмент, руководители"
-            when "Госслужба, НКО"
-              type_activity = "Государственные службы, НКО"
-            when "Управление персоналом"
-              type_activity = "Высший менеджмент, руководители"
-            when "Транспорт, логистика"
-              type_activity = "Логистика"
-            when "IT, интернет, телеком"
-              type_activity = "ИТ и Интернет"
-            when "Туризм, рестораны"
-              type_activity = "Рестораны"
-            when "Производство, сырьё, с/х"
-              type_activity = "Сельское хозяйство"
-            when "Консультирование"
-              type_activity = "Сфера услуг"
-            when "Автомобильный бизнес"
-              type_activity = "Транспорт"
-            when "Фитнес, салоны красоты"
-              type_activity = "Спорт, красота, здоровье"
-            when "Без опыта, студенты"
-              type_activity = "Рабочий персонал"
-            when "ЖКХ, эксплуатация"
-              type_activity = "Государственные службы"
-            when "Банки, инвестиции"
-              type_activity = "Банки"
+            when 'Административная работа'
+              type_activity = 'Высший менеджмент, руководители'
+            when 'Госслужба, НКО'
+              type_activity = 'Государственные службы, НКО'
+            when 'Управление персоналом'
+              type_activity = 'Высший менеджмент, руководители'
+            when 'Транспорт, логистика'
+              type_activity = 'Логистика'
+            when 'IT, интернет, телеком'
+              type_activity = 'ИТ и Интернет'
+            when 'Туризм, рестораны'
+              type_activity = 'Рестораны'
+            when 'Производство, сырьё, с/х'
+              type_activity = 'Сельское хозяйство'
+            when 'Консультирование'
+              type_activity = 'Сфера услуг'
+            when 'Автомобильный бизнес'
+              type_activity = 'Транспорт'
+            when 'Фитнес, салоны красоты'
+              type_activity = 'Спорт, красота, здоровье'
+            when 'Без опыта, студенты'
+              type_activity = 'Рабочий персонал'
+            when 'ЖКХ, эксплуатация'
+              type_activity = 'Государственные службы'
+            when 'Банки, инвестиции'
+              type_activity = 'Банки'
             end
             self_category = self_category.children.where('title ilike ?', "%#{type_activity}%").first
           end
@@ -128,18 +129,21 @@ module Avito
             where('title ilike ? OR title ilike ? OR title ilike ?', '%цена%', '%стоимость%', '%плата%').first
           price.values.create integer_value: adv['price'], advert_id: advert.id if price.present?
 
-          adv["images"].split(',').map(&:strip).each do |url|
+          adv['images'].split(',').map(&:strip).each do |url|
             extname = File.extname(url)
-            next if extname != ".jpg"
+            next if extname != '.jpg'
             basename = File.basename(url, extname)
             file = Tempfile.new([basename, extname])
             file.binmode
+
             begin
               open(URI.parse(url)) do |data|
                 file.write data.read
               end
             rescue OpenURI::HTTPError => ex
+              puts ex.inspect
             end
+
             image = advert.images.new
             image.image = file
             image.save
@@ -165,10 +169,12 @@ module Avito
           end
 
         end
+
         bar.increment!
       end
     end
   end
+
   class ComparisonCategories
     attr_reader :rest_app_category
 
