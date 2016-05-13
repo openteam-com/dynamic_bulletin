@@ -1,6 +1,42 @@
 module Avito
   class ChildValues
-    def initialize(self_category, adv, advert, finded_age)
+    attr_reader :advert
+
+    def initialize(self_category, adv)
+      categories_hash = collection
+      categories_hash = Hashie::Mash.new categories_hash
+      case adv['params'][0]['value']
+      when 'Для девочек'
+        self_category = Category.find(adv['params'][1]['value'] == 'Обувь' ? categories_hash.girls.shoes : categories_hash.girls.clothes)
+      when 'Для мальчиков'
+        self_category = Category.find(adv['params'][1]['value'] == 'Обувь' ? categories_hash.boys.shoes : categories_hash.boys.clothes)
+      end
+
+      if adv['params'][2].present?
+        arr = adv['params'][2]['value'].split.first.split('-').map(&:to_i)#размер одежды на авито
+      end
+      if arr.try(:size) == 2 && (self_category.parent.title == 'Детская одежда')
+        arr = arr[0]..arr[1]
+        arr = arr.to_a
+        self_category = Category.find(categories_hash.newborns) if arr[0] < 92
+        finded_age = nil
+        max = 0
+        property = self_category.properties.where('title ilike ?', '%возраст%').first
+        property.list_items.each do |list_item|
+          arr2 = list_item.title.split[-2]#размер одежды на доске
+          arr2 = arr2.slice(1, arr2.size).split('-').map(&:to_i)
+          arr2 = arr2[0]..arr2[1]
+          arr2 = arr2.to_a
+          mult_arr =  arr & arr2
+          if mult_arr.size > max
+            max = mult_arr.size
+            finded_age = list_item
+          end
+        end
+      end
+      @advert = self_category.adverts.new(description: adv['description'])
+      advert.save
+
       if adv["params"][1]["value"] == "Обувь"
         property = self_category.properties.where('title ilike ?', "%размер%").first
         size = property.list_items.where('title ilike ?', "%#{adv["params"][2].try(:[],"value")}%").first
@@ -31,6 +67,10 @@ module Avito
       property.values.create list_item_id: season.id, advert_id: advert.id if !season.nil?
     end
 
+    def return_advert
+      advert
+    end
+
     def desc_or_title_inc?(d, t, arr)
       arr.each do |sub|
         if !d[sub].nil? || !t[sub].nil?
@@ -38,6 +78,17 @@ module Avito
         end
       end
       false
+    end
+
+    def collection
+      {
+        rest_app_category_id: 29,
+        root_category_id: 5,
+        self_category_id: 6,
+        girls: {shoes: 19, clothes: 16},
+        boys: {shoes: 18, clothes: 15},
+        newborns: 17
+      }
     end
   end
 end

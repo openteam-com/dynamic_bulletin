@@ -10,12 +10,10 @@ namespace :avito do
     categories.each do |category_id|
       date_from = DateTime.new 2016, 03, 05
 
-      2.times do
+      5.times do
         RestAppParser.new(date_from: date_from.strftime('%Y-%m-%d'), category_id: category_id).parse!
-
         date_from += 1.day
       end
-
       bar.increment!
     end
   end

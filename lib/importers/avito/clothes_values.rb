@@ -1,6 +1,21 @@
 module Avito
   class ClothesValues
-    def initialize(self_category, adv, advert)
+    attr_reader :advert
+
+    def initialize(self_category, adv)
+      categories_hash = collection
+      categories_hash = Hashie::Mash.new categories_hash
+      if adv['params'][0]['value'] == 'Аксессуары'
+        self_category = Category.find(categories_hash.accessories.other) #'Другие' из данных нельзя узнать какие именно аксессуары
+      elsif adv['params'][0]['value'] == 'Женская одежда'
+        self_category = Category.find(adv['params'][1]['value'] == 'Обувь' ? categories_hash.woman.shoes : categories_hash.woman.clothes)
+      else
+        self_category = Category.find(adv['params'][1]['value'] == 'Обувь' ? categories_hash.man.shoes : categories_hash.man.clothes)
+      end
+
+      @advert = self_category.adverts.new(description: adv['description'])
+      advert.save
+
       if self_category.parent.title == "Одежда"
         if !adv["params"][2].nil? && adv["params"][2]["name"] == "Размер"
           property = self_category.properties.where('title ilike ?', "%размер%").first
@@ -32,7 +47,20 @@ module Avito
         property.values.create list_item_id:  find_value.id, advert_id: advert.id if !find_value.nil?
       end
     end
+
+    def return_advert
+      advert
+    end
+
+    def collection
+      {
+        rest_app_category_id: 27,
+        root_category_id: 35,
+        self_category_id: 35,
+        accessories: {other: 534},
+        woman: {shoes: 40, clothes: 38},
+        man: {shoes: 41, clothes: 530}
+      }
+    end
   end
-
-
 end

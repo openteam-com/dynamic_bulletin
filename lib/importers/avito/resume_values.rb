@@ -1,6 +1,8 @@
 module Avito
   class ResumeValues
-    def initialize(self_category, adv, advert)
+    attr_reader :advert
+
+    def initialize(self_category, adv)
       property = self_category.properties.where('title ilike ?', "%график%").first
       graphic = adv["params"].find {|i| i["name"] == "График работы"}["value"].split[0]
       finded_graphic = property.list_items.where("title ilike ?", "%#{graphic}%").first if !property.nil?
@@ -20,6 +22,13 @@ module Avito
       property = self_category.properties.where('title ilike ?', "%стаж%").first
       finded_stage = property.list_items.where("title ilike ?", "%#{stage}%").first if !property.nil?
       property.values.create list_item_id: finded_stage.id, advert_id: advert.id if !finded_stage.nil?
+
+      @advert = self_category.adverts.new(description: adv['description'])
+      advert.save
+    end
+
+    def return_advert
+      advert
     end
   end
 end

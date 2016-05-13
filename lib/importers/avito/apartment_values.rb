@@ -1,6 +1,23 @@
 module Avito
   class ApartmentValues
-    def initialize(self_category, adv, advert)
+    attr_reader :advert
+
+    def initialize(self_category, adv)
+      categories_hash = collection
+      categories_hash = Hashie::Mash.new categories_hash
+      case adv['params'][0]['value']
+      when 'Продам'
+        self_category = Category.find(adv['params'][1]['value'] == 'Вторичка' ? categories_hash.selling.resale : categories_hash.selling.new_building)
+      when 'Сдам'
+        self_category = Category.find(adv['params'][1]['value'] == 'Посуточно' ? categories_hash.for_rent.daily : categories_hash.for_rent.for_a_long_time)
+      when 'Куплю'
+        self_category = Category.find(categories_hash.buy.resale)
+      when 'Сниму'
+        self_category = Category.find(adv['params'][1]['value'] == 'Посуточно' ? categories_hash.take_off.daily : categories_hash.take_off.for_a_long_time)
+      end
+      @advert = self_category.adverts.new(description: adv['description'])
+      advert.save
+
       title_parse = adv['title'].split(',')
       if ["Вторичка ", "Новостройка", "На длительный срок", "Посуточно"].include? self_category.title #пробел во вторичке
         property = self_category.properties.where(:title => "Тип дома").first
@@ -35,6 +52,22 @@ module Avito
         find_value = property.list_items.where('title ilike ?', "%#{rooms}%").first
       end
       property.values.create list_item_id: find_value.id, advert_id: advert.id if !find_value.nil?
+    end
+
+    def return_advert
+      advert
+    end
+
+    def collection
+      {
+        rest_app_category_id: 24,
+        root_category_id: 338,
+        self_category_id: 339,
+        selling: {resale: 344, new_building: 345},
+        for_rent: {daily: 347, for_a_long_time: 346},
+        buy: {resale: 348, new_building: 349},
+        take_off: {daily: 351, for_a_long_time: 350}
+      }
     end
   end
 end

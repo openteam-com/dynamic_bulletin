@@ -1,9 +1,11 @@
 module Avito
   class CarValues
-    def initialize(self_category, adv, advert)
-      # массив параметров автомобиля
-      mark, model, volume, transmission, year, body_type = adv['title'].squish.split(' ')
+    attr_reader :advert
 
+    def initialize(self_category, adv)
+      @advert = self_category.adverts.new(description: adv['description'])
+      advert.save
+      mark, model, volume, transmission, year, body_type = adv['title'].squish.split(' ')
       mark_and_model = self_category.properties.where('title ilike ?', '%марка и модель%').first
       if volume.to_f == 0.0
         m1, m2, m3, volume, transmission, year, body_type = adv['title'].squish.split(' ')
@@ -34,7 +36,10 @@ module Avito
 
       property = self_category.properties.where('title ilike ?', "%мощность двигателя%").first
       property.values.create integer_value: adv["params"].find{|p| p["name"] == "Мощность двигателя, л.с."}["value"].to_i, advert_id: advert.id
+    end
 
+    def return_advert
+      advert
     end
 
     def create_list_item(name_property, value, self_category, advert)

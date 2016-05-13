@@ -18,7 +18,7 @@
                         label: false,
                         input_html: {name: 'list_items[]'},
                         as: property.show_on_filter_as,
-                        multiple: property.show_filter_as == :multiselect ? true : false,
+                        multiple: property.show_on_filter_as == :multiselect ? true : false,
                         collection: property.list_items,
                         checked: params.try(:[], 'list_items'),
                         selected: params.try(:[], 'list_items'),
@@ -44,7 +44,7 @@
 
 - if @category.inserted.present?
   - @category.inserted.each do |child|
-    = link_to child, category_path(child)
+    = link_to child.title + ' (' + child.subtree.map(&:adverts).flatten.size.to_s + ')', category_path(child)
 - else
   %ul
   = paginate @adverts
