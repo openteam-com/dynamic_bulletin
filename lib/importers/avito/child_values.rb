@@ -3,8 +3,7 @@ module Avito
     attr_reader :advert
 
     def initialize(self_category, adv)
-      categories_hash = collection
-      categories_hash = Hashie::Mash.new categories_hash
+      categories_hash = Hashie::Mash.new collection
       case adv['params'][0]['value']
       when 'Для девочек'
         self_category = Category.find(adv['params'][1]['value'] == 'Обувь' ? categories_hash.girls.shoes : categories_hash.girls.clothes)

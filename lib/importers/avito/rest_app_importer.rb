@@ -53,6 +53,7 @@ module Avito
             image.image = file
             image.save
           end
+          advert.update_column(:title, adv['title'])
         end
 
         bar.increment!

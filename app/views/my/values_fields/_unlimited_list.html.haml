@@ -2,4 +2,5 @@
   label: f.object.property.title,
   label_html: f.object.errors.size != 0 ? {:class => "label-error"} : {:class => ""},
   as: property_show_as(f.object, @advert.category.id),
-  collection: f.object.property.list_items
+  collection: f.object.property.list_items,
+  include_blank: true

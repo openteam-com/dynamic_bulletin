@@ -3,8 +3,7 @@ module Avito
     attr_reader :advert
 
     def initialize(self_category, adv)
-      categories_hash = collection
-      categories_hash = Hashie::Mash.new categories_hash
+      categories_hash = Hashie::Mash.new collection
       if adv['params'][0]['value'] == 'Аксессуары'
         self_category = Category.find(categories_hash.accessories.other) #'Другие' из данных нельзя узнать какие именно аксессуары
       elsif adv['params'][0]['value'] == 'Женская одежда'
