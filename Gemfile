@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 group :default do
   gem 'kaminari'
+  gem 'redis-rails'
   gem 'ancestry'
   gem 'bootstrap-sass'
   gem 'breadcrumbs_on_rails'

@@ -12,7 +12,7 @@ class Advert < ActiveRecord::Base
   alias_attribute :to_s, :title
 
   def title
-    read_attribute(:title)
+    $redis.get(id)
   end
 
   def set_title
@@ -36,7 +36,7 @@ class Advert < ActiveRecord::Base
       end
     end
     string_title = read_attribute(:description) if string_title == ''
-    update_column(:title, string_title.strip.chomp(','))
+    $redis.set(id, string_title.strip.chomp(','))
   end
 
   def get_value(property_title, need_prefix)
