@@ -3,8 +3,10 @@
   %head
     %title='Динамическая доска объявлений'
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = stylesheet_link_tag '//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css'
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
+
 
   %body
     = render partial: 'navbar'

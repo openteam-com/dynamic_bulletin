@@ -3,4 +3,5 @@
 //= require bootstrap-sprockets
 //= require turbolinks
 //= require main
-//= get_hierarch_children
+//= require bootstrap-slider
+//= require simple_form_extension

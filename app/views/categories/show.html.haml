@@ -13,7 +13,17 @@
                 - @category.all_properties.each do |property|
                   %li
                     %h4= property
-                    - if property.kind.to_s != 'hierarch_limited_list'
+                    - if property.show_on_filter_as == 'range'
+                      = f.input :range_values,
+                        label: false,
+                        input_html: {class: 'js-slider', name: "properties[#{property.id}]",
+                          data: {min: min_value(property),
+                          value: value(property.id, params['properties']),
+                          max: max_value(property),
+                          ticks: ticks_value(property),
+                          ticks_labels: ticks_value(property)}}
+
+                    - elsif property.kind.to_s != 'hierarch_limited_list'
                       = f.input :list_items,
                         label: false,
                         input_html: {name: 'list_items[]'},

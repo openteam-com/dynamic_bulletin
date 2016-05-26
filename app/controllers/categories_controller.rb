@@ -22,6 +22,10 @@ class CategoriesController < ApplicationController
     @category = Category.find(params[:id])
     @adverts = Searchers::AdvertsSearcher.new(adverts_search_params).collection
 
+
+
+
+    #raise adverts_search_params.inspect
     initialize_breadcrumbs
   end
 
@@ -46,8 +50,21 @@ class CategoriesController < ApplicationController
 
   private
   def adverts_search_params
+    param_lists = params.try(:[], :list_items)
+    property_values = params.try(:[], :properties)
+
+    if !property_values.nil?
+      elems = []
+      property_values.each do |p|
+        values = p[1].split(',').map(&:to_i)
+        elems << @category.properties.find(p[0].to_i).list_items.select {|l| l.title.to_i >= values[0] && l.title.to_i <= values[1]}.map(&:id).map(&:to_s) if values.size == 2
+      end
+      param_lists << elems
+      param_lists = param_lists.flatten
+    end
+
     {
-      list_items: params.try(:[], :list_items),
+      list_items: param_lists,
       hierarch_list_items: params.try(:[], :hierarch_list_items),
       category_id: @category.id,
       page: params[:page]

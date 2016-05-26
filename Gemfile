@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
 group :default do
+  gem 'bootstrap-slider-rails'
+  gem 'simple_form_extension'
   gem 'kaminari'
   gem 'redis-rails'
   gem 'ancestry'
@@ -60,3 +62,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-jquery-ui-bootstrap'
   gem 'rails-assets-jquery-ui'
 end
+
+
+gem 'redactor-rails', github: 'glyph-fr/redactor-rails'
