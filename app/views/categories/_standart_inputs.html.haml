@@ -1,0 +1,12 @@
+- property.update_attribute(:show_on_filter_as, 'select') if property.show_on_filter_as.nil?
+= f.input :list_items,
+  label: false,
+  input_html: {name: 'list_items[]'},
+  as: property.show_on_filter_as,
+  multiple: property.show_on_filter_as == :multiselect ? true : false,
+  collection: property.list_items,
+  checked: params.try(:[], 'list_items'),
+  selected: params.try(:[], 'list_items'),
+  include_blank: true
+
+

@@ -50,13 +50,39 @@ class CategoriesController < ApplicationController
 
   private
   def adverts_search_params
+    #raise params.inspect
     param_lists = params.try(:[], :list_items)
-    property_values = params.try(:[], :properties)
+    ranges_values = params.try(:[], :ranges)
+    ranges_select_values = params.try(:[], :ranges_select)
 
-    if !property_values.nil?
+    if !ranges_values.nil?
       elems = []
-      property_values.each do |p|
+      ranges_values.each do |p|
         values = p[1].split(',').map(&:to_i)
+        elems << @category.properties.find(p[0].to_i).list_items.select {|l| l.title.to_i >= values[0] && l.title.to_i <= values[1]}.map(&:id).map(&:to_s) if values.size == 2
+      end
+      param_lists << elems
+      param_lists = param_lists.flatten
+    end
+
+    if !ranges_select_values.nil?
+      elems = []
+      values = []
+      ranges_select_values.each do |p|
+
+        if p[1][0] != ""
+          values[0] = ListItem.find(p[1][0].to_i).title.to_i
+        else
+          values[0] = @category.properties.find(p[0]).list_items.first.title.to_i
+        end
+
+        if p[1][1] != ""
+          values[1] = ListItem.find(p[1][1].to_i).title.to_i
+        else
+          values[1] = @category.properties.find(p[0]).list_items.last.title.to_i
+        end
+
+        values.sort!
         elems << @category.properties.find(p[0].to_i).list_items.select {|l| l.title.to_i >= values[0] && l.title.to_i <= values[1]}.map(&:id).map(&:to_s) if values.size == 2
       end
       param_lists << elems

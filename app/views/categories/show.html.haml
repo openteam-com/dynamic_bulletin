@@ -14,42 +14,14 @@
                   %li
                     %h4= property
                     - if property.show_on_filter_as == 'range'
-                      = f.input :range_values,
-                        label: false,
-                        input_html: {class: 'js-slider', name: "properties[#{property.id}]",
-                          data: {min: min_value(property),
-                          value: value(property.id, params['properties']),
-                          max: max_value(property),
-                          ticks: ticks_value(property),
-                          ticks_labels: ticks_value(property)}}
-
-                    - elsif property.kind.to_s != 'hierarch_limited_list'
-                      = f.input :list_items,
-                        label: false,
-                        input_html: {name: 'list_items[]'},
-                        as: property.show_on_filter_as,
-                        multiple: property.show_on_filter_as == :multiselect ? true : false,
-                        collection: property.list_items,
-                        checked: params.try(:[], 'list_items'),
-                        selected: params.try(:[], 'list_items'),
-                        include_blank: true
-
-                    - else
-                      - parent = params.try(:[], 'hierarch_list_item_parents')
-                      = f.input :hierarch_list_item_parents,
-                        label: false,
-                        input_html: {class: 'js-get-list-items-parent', name: 'hierarch_list_item_parents[]'},
-                        collection: property.hierarch_list_items,
-                        selected: parent,
-                        :include_blank => true
-
-                      = f.input :hierarch_list_items,
-                        input_html: {class: 'js-get-list-items-children', name: 'hierarch_list_items[]'},
-                        label: false,
-                        collection: params[:hierarch_list_items].try(:[], hierarch_counter) ? HierarchListItem.find(params.try(:[], 'hierarch_list_items')[hierarch_counter]).parent.children : [],
-                        selected: params.try(:[], 'hierarch_list_items')
-                      - hierarch_counter+=1 #вот здесь некрасиво, нужно было грамотно иер.листы раскидать
-
+                      = render partial: 'range_inputs', locals: {:f => f, :property => property, :params => params}
+                    - if property.show_on_filter_as == 'range_select'
+                      = render partial: 'range_select_inputs', locals: {:f => f, :property => property, :params => params}
+                    - elsif property.kind == 'hierarch_limited_list'
+                      = render partial: 'hierarch_inputs', locals: {:f => f, :property => property, :params => params, :hierarch_counter => hierarch_counter}
+                      - hierarch_counter+=1
+                    - elsif ['select', 'check_boxes', 'radio_buttons', nil].include? property.show_on_filter_as
+                      = render partial: 'standart_inputs', locals: {:f => f, :property => property, :params => params}
         = f.submit 'Search'
 
 - if @category.inserted.present?

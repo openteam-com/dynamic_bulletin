@@ -1,0 +1,10 @@
+= f.input :range_values,
+  label: false,
+  input_html: {class: 'js-slider', name: "ranges[#{property.id}]",
+    data: {min: min_value(property),
+      value: value(property.id, params['ranges']),
+      max: max_value(property),
+      ticks: ticks_value(property),
+      ticks_labels: ticks_value(property)}}
+
+

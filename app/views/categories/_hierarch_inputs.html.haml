@@ -1,0 +1,14 @@
+- parent = params.try(:[], 'hierarch_list_item_parents')
+= f.input :hierarch_list_item_parents,
+  label: false,
+  input_html: {class: 'js-get-list-items-parent', name: 'hierarch_list_item_parents[]'},
+  collection: property.hierarch_list_items,
+  selected: parent,
+  :include_blank => true
+
+= f.input :hierarch_list_items,
+  input_html: {class: 'js-get-list-items-children', name: 'hierarch_list_items[]'},
+  label: false,
+  collection: params[:hierarch_list_items].try(:[], hierarch_counter) ? HierarchListItem.find(params.try(:[], 'hierarch_list_items')[hierarch_counter]).parent.children : [],
+  selected: params.try(:[], 'hierarch_list_items')
+

@@ -1,0 +1,13 @@
+= f.input :range_select_values,
+  label: false,
+  include_blank: true,
+  input_html: {name: "ranges_select[#{property.id}][]"},
+  selected: selected_for_ranges_select(params['ranges_select'], property, 'first'),
+  collection: property.list_items
+
+= f.input :range_select_values,
+  label: false,
+  include_blank: true,
+  input_html: {name: "ranges_select[#{property.id}][]"},
+  selected: selected_for_ranges_select(params['ranges_select'], property, 'last'),
+  collection: property.list_items

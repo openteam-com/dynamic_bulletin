@@ -14,9 +14,9 @@ class Metadata::PropertiesController < Metadata::ApplicationController
     when "string"
       []
     when "limited_list"
-      [:select, :range, :multiselect, :radio_buttons, :boolean, :range_buttons, :range_select]
+      [:select, :check_boxes, :range, :multiselect, :radio_buttons, :boolean, :range_buttons, :range_select]
     when "unlimited_list"
-      [:select, :range, :multiselect, :radio_buttons, :boolean, :range_buttons, :range_select]
+      [:select, :check_boxes, :range, :multiselect, :radio_buttons, :boolean, :range_buttons, :range_select]
     when "hierarch_limited_list"
       [:boolean]
     when "integer"
