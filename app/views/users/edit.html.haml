@@ -1,0 +1,12 @@
+%h3= 'Редактировать информацию'
+- flash.each do |name, msg|
+  %div{class: "#{name} alert alert-success"}= msg
+= simple_form_for [current_user] do |f|
+  = f.input :name, label: 'Имя'
+  = f.input :phone, label: 'Телефон'
+  %p= link_to 'Изменить пароль', edit_user_registration_path
+
+  .form-actions
+    = f.button :submit, 'Сохранить'
+%hr
+%p= link_to "Удалить аккаунт", registration_path(current_user), data: { confirm: "Are you sure?" }, method: :delete

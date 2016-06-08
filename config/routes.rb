@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     root to: 'categories#index'
   end
 
+  resources :users
   namespace :my do
     resources :adverts do
       get 'get_category_children', on: :collection
