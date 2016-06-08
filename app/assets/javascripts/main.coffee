@@ -14,6 +14,16 @@ $(document).on 'ready page:load', ->
       ticks: ticks,
       ticks_labels: ticks_labels
     })
+
+  $('.js-range-buttons').find('.form-group').addClass('btn-group').removeClass('check_boxes')
+  $('.js-range-buttons').find('.form-group').attr('data-toggle', 'buttons')
+  $('div.js-range-buttons label').addClass('btn btn-primary')
+  $('span.checkbox').each (index, item) ->
+    attr = $(this).find('input').attr('checked')
+    if (typeof attr != typeof undefined)
+      $(this).find('label').addClass('active')
+    $(this).replaceWith(item.children)
+
   $(document).on 'change', '.js-get-list-items-parent', ->
     item = $(this)
     selected_item = item.find(':selected').val()

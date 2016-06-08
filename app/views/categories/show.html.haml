@@ -17,10 +17,12 @@
                       = render partial: 'range_inputs', locals: {:f => f, :property => property, :params => params}
                     - if property.show_on_filter_as == 'range_select'
                       = render partial: 'range_select_inputs', locals: {:f => f, :property => property, :params => params}
+                    - if property.show_on_filter_as == 'range_buttons'
+                      = render partial: 'range_buttons_inputs', locals: {:f => f, :property => property, :params => params}
                     - elsif property.kind == 'hierarch_limited_list'
                       = render partial: 'hierarch_inputs', locals: {:f => f, :property => property, :params => params, :hierarch_counter => hierarch_counter}
                       - hierarch_counter+=1
-                    - elsif ['select', 'check_boxes', 'radio_buttons', nil].include? property.show_on_filter_as
+                    - elsif ['select', 'check_boxes', 'radio_buttons', 'range_buttons', nil].include? property.show_on_filter_as
                       = render partial: 'standart_inputs', locals: {:f => f, :property => property, :params => params}
         = f.submit 'Search'
 

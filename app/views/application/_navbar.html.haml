@@ -1,5 +1,7 @@
 %nav.navbar.navbar-default
   .container-fluid
+    %ul.nav.navbar-nav
+      = link_to 'Dynamic Bulletin', root_path
     - if current_user
       %ul.nav.navbar-nav.pull-right
         %li

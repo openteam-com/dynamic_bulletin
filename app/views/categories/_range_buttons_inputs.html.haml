@@ -1,0 +1,7 @@
+.js-range-buttons
+  = f.input :list_items,
+    label: false,
+    input_html: {name: 'list_items[]'},
+    collection: property.list_items,
+    checked: params.try(:[], 'list_items'),
+    as: 'check_boxes'
