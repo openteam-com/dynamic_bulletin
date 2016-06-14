@@ -1,4 +1,4 @@
-= simple_form_for [:my, @advert] do |f|
+= simple_nested_form_for [:my, @advert] do |f|
   = f.input :category_id, as: :hidden
   = f.input :user_id, input_html: { value: current_user.id }, as: :hidden
 
@@ -10,6 +10,17 @@
     - value_form.object.errors.full_messages.each do |msg|
       %span{:class => "help-block"}= msg
 
+  %h4= 'Изображения'
+  .js-images
+    = f.simple_fields_for :images do |i|
+      .js-image
+        = image_tag i.object.image.url(:thumb)
+        = i.file_field :image, style: 'display:none'
+        = i.link_to_remove 'Удалить'
+    = f.link_to_add 'Добавить картинку', :images
+
   = f.input :description # Стандартное описание объявления
 
   = f.submit
+
+

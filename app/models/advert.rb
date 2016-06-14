@@ -4,8 +4,9 @@ class Advert < ActiveRecord::Base
   belongs_to :user
 
   has_many :values, dependent: :delete_all
-  has_many :images, dependent: :delete_all
+  has_many :images, dependent: :destroy
   accepts_nested_attributes_for :values
+  accepts_nested_attributes_for :images, allow_destroy: true
 
   after_initialize :build_empty_values, if: :new_record?
 

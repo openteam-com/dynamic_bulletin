@@ -1,5 +1,4 @@
 $(document).on 'ready page:load', ->
-
   #поведение иерархичного листа на фильтре. надо бы вынести в модуль
   $('.js-slider').each (index, item) ->
     min = $(item).data('min')

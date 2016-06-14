@@ -75,7 +75,9 @@ class My::AdvertsController < My::ApplicationController
                                  :list_item_id,
                                  :hierarch_list_item_id,
                                  :category_id,
-                                 list_item_ids: []])
+                                 list_item_ids: []],
+              images_attributes: [:id, :image, :_destroy]
+            )
   end
 
   def find_advert

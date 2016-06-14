@@ -3,6 +3,9 @@
 
   %hr
 
+- @advert.images.each do |i|
+  = render partial: "common/values/image", locals: {:image => i}
+
 %p= @advert.description
 %p= link_to 'Редактировать', edit_my_advert_path(@advert)
 %p= link_to 'Удалить', my_advert_path(@advert), method: :delete, data: { confirm: 'Вы уверены?' }
