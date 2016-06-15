@@ -15,7 +15,7 @@
     = f.simple_fields_for :images do |i|
       .js-image
         = image_tag i.object.image.url(:thumb)
-        = i.file_field :image, style: 'display:none'
+        = i.file_field :image, style: 'display:none', class: 'js-file-input'
         = i.link_to_remove 'Удалить'
     = f.link_to_add 'Добавить картинку', :images
 
